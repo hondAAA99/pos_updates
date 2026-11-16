@@ -1,0 +1,1609 @@
+{
+  "common": {
+    "appTitle": "نظام نقاط البيع",
+    "appDescription": "نظام حديث لإدارة نقاط البيع.",
+    "language": "اللغة",
+    "english": "الإنجليزية",
+    "arabic": "العربية",
+    "toggleTheme": "تبديل السمة",
+    "toggleThemeTitle": "التبديل بين السمتين الفاتحة والداكنة"
+  },
+  "application": {
+    "name": "نقاط البيع",
+    "tagline": "إدارة تجارة التجزئة",
+    "navigation": "التنقل في التطبيق",
+    "openNavigation": "فتح قائمة التنقل",
+    "closeNavigation": "إغلاق قائمة التنقل",
+    "collapseSidebar": "طي الشريط الجانبي",
+    "expandSidebar": "توسيع الشريط الجانبي",
+    "workspaceLabel": "مساحة العمل",
+    "workspaceName": "الإدارة"
+  },
+  "profile": {
+    "openMenu": "فتح قائمة المستخدم",
+    "name": "مسؤول نقاط البيع",
+    "role": "المسؤول",
+    "email": "admin@example.com",
+    "profileAction": "الملف الشخصي",
+    "settingsAction": "الإعدادات",
+    "signOutAction": "تسجيل الخروج"
+  },
+  "auth": {
+    "eyebrow": "دخول آمن إلى مساحة العمل",
+    "title": "مرحبًا بعودتك",
+    "description": "سجّل الدخول للمتابعة إلى مساحة نقاط البيع وإدارة العمليات اليومية.",
+    "formTitle": "تسجيل الدخول",
+    "formDescription": "أدخل بيانات حسابك للمتابعة.",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور",
+    "submit": "تسجيل الدخول",
+    "submitting": "جارٍ تسجيل الدخول…",
+    "validation": {
+      "emailRequired": "أدخل بريدك الإلكتروني.",
+      "emailInvalid": "أدخل بريدًا إلكترونيًا صالحًا.",
+      "passwordRequired": "أدخل كلمة المرور.",
+      "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+      "loginFailed": "تعذّر تسجيل الدخول. حاول مرة أخرى."
+    },
+    "accessDenied": {
+      "title": "الوصول مرفوض",
+      "description": "لا يملك حسابك صلاحية فتح هذه الصفحة.",
+      "backToDashboard": "العودة إلى لوحة التحكم"
+    },
+    "states": {
+      "checkingSession": "جارٍ التحقق من جلستك…"
+    }
+  },
+  "navigation": {
+    "home": "الرئيسية",
+    "products": "المنتجات",
+    "inventory": "المخزون",
+    "sales": "المبيعات",
+    "primaryLabel": "التنقل الرئيسي",
+    "breadcrumbLabel": "مسار التنقل",
+    "placeholder": {
+      "title": "قيد التطوير",
+      "description": "نعمل على تجهيز هذه الوحدة. ستُضاف وظائفها في خطوة لاحقة."
+    },
+    "groups": {
+      "overview": "نظرة عامة",
+      "productsInventory": "المنتجات والمخزون",
+      "purchasing": "المشتريات",
+      "organization": "المؤسسة",
+      "sales": "المبيعات",
+      "customers": "العملاء",
+      "finance": "المالية",
+      "maintenance": "الصيانة"
+    },
+    "items": {
+      "dashboard": {
+        "label": "لوحة التحكم",
+        "description": "راجع أداء نشاطك التجاري في جميع الفروع."
+      },
+      "cashierDashboard": {
+        "label": "لوحة أمين الصندوق",
+        "description": "راجع مبيعات وإيصالات اليوم للفرع المعيّن لك."
+      },
+      "productTypes": {
+        "label": "أنواع المنتجات",
+        "description": "نظّم المنتجات ضمن أنواع واضحة قابلة لإعادة الاستخدام."
+      },
+      "products": {
+        "label": "المنتجات",
+        "description": "أدِر المنتجات المسجلة في النظام."
+      },
+      "inventory": {
+        "label": "المخزون",
+        "description": "أدِر كميات المخزون والأسعار الحالية للمنتجات."
+      },
+      "branchInventory": {
+        "label": "مخزون الفروع",
+        "description": "راجع كميات المنتجات المعيّنة لكل فرع."
+      },
+      "stockHistory": {
+        "label": "سجل المخزون",
+        "description": "راجع إدخالات المخزون السابقة وتفاصيل الموردين."
+      },
+      "stockTransfers": {
+        "label": "تحويلات المخزون",
+        "description": "أدِر عمليات التحويل من المخزون المركزي إلى الفروع."
+      },
+      "suppliers": {
+        "label": "الموردون",
+        "description": "أدِر بيانات اتصال الموردين ومعلومات حساباتهم."
+      },
+      "supplierTransactions": {
+        "label": "معاملات الموردين",
+        "description": "راجع المدفوعات للموردين وأدِرها."
+      },
+      "supplierDeposits": {
+        "label": "مواعيد إيداع الموردين",
+        "description": "تابع مواعيد إيداع الموردين المجدولة ومبالغها."
+      },
+      "branches": {
+        "label": "الفروع",
+        "description": "أدِر الفروع المتاحة في نظامك."
+      },
+      "employees": {
+        "label": "الموظفون",
+        "description": "أدِر أدوار الموظفين وتعييناتهم للفروع وإمكانية الوصول إلى الحسابات."
+      },
+      "salesDashboard": {
+        "label": "لوحة المبيعات",
+        "description": "هذه صفحة تمهيدية وليست لوحة تحليلات مكتملة."
+      },
+      "salesManagement": {
+        "label": "إدارة المبيعات",
+        "description": "راجع سجلات المبيعات وأداء الفروع وتفاصيل الإيصالات."
+      },
+      "clients": {
+        "label": "العملاء",
+        "description": "ستُضاف إدارة العملاء في خطوة لاحقة."
+      },
+      "wallets": {
+        "label": "المحافظ",
+        "description": "أدِر المحافظ وأنواعها وسجل المعاملات التجريبي."
+      },
+      "expenses": {
+        "label": "المصروفات",
+        "description": "أدِر مصروفات النشاط التجاري وراجعها حسب التاريخ."
+      },
+      "maintenanceManagement": {
+        "label": "إدارة الصيانة",
+        "description": "ستُضاف أدوات الصيانة في خطوة لاحقة."
+      }
+    }
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "description": "ملخص لنشاط متجرك.",
+    "sales": "المبيعات",
+    "orders": "الطلبات",
+    "products": "المنتجات",
+    "branches": "الفروع",
+    "welcome": "مرحبًا بعودتك، {name}",
+    "todayLabel": "التاريخ الحالي",
+    "overviewDescription": "إليك ملخص أداء نشاطك التجاري في جميع الفروع.",
+    "dateRange": {
+      "label": "الفترة الزمنية",
+      "options": {
+        "today": "اليوم",
+        "last7Days": "آخر ٧ أيام",
+        "last30Days": "آخر ٣٠ يومًا",
+        "thisMonth": "هذا الشهر"
+      }
+    },
+    "kpis": {
+      "sectionLabel": "مؤشرات أداء النشاط التجاري",
+      "sales": "إجمالي المبيعات",
+      "receipts": "إجمالي الإيصالات",
+      "branches": "الفروع",
+      "products": "المنتجات",
+      "vsPrevious": "مقارنة بالفترة السابقة"
+    },
+    "chart": {
+      "title": "اتجاه المبيعات",
+      "description": "أداء المبيعات خلال الفترة المحددة",
+      "accessibleLabel": "مخطط مساحي للمبيعات عبر الزمن",
+      "salesLabel": "المبيعات"
+    },
+    "branchPerformance": {
+      "title": "أداء الفروع",
+      "description": "مساهمة الفروع في إجمالي المبيعات",
+      "receipts": "{count, plural, zero {لا توجد إيصالات} one {إيصال واحد} two {إيصالان} few {# إيصالات} many {# إيصالًا} other {# إيصال}}",
+      "contribution": "مساهمة فرع {branch} في المبيعات"
+    },
+    "branchNames": {
+      "downtown": "وسط البلد",
+      "nasrCity": "مدينة نصر",
+      "alexandria": "الإسكندرية",
+      "giza": "الجيزة"
+    },
+    "topProducts": {
+      "title": "المنتجات الأعلى مبيعًا",
+      "description": "أفضل المنتجات أداءً خلال الفترة المحددة",
+      "product": "المنتج",
+      "sku": "رمز المنتج",
+      "quantity": "الكمية المباعة",
+      "sales": "المبيعات"
+    },
+    "productNames": {
+      "arabicaCoffee": "قهوة أرابيكا",
+      "wholeMilk": "حليب كامل الدسم",
+      "mineralWater": "مياه معدنية",
+      "chocolateBar": "لوح شوكولاتة",
+      "paperCups": "أكواب ورقية"
+    },
+    "activity": {
+      "title": "النشاط الأخير",
+      "description": "أمثلة توضيحية على أحداث النشاط التجاري"
+    },
+    "activities": {
+      "saleCompleted": {
+        "title": "اكتملت عملية بيع",
+        "description": "تم إصدار إيصال جديد في فرع وسط البلد."
+      },
+      "productAdded": {
+        "title": "أُضيف منتج",
+        "description": "أُضيف صنف جديد إلى قائمة المنتجات."
+      },
+      "stockTransferred": {
+        "title": "نُقل مخزون",
+        "description": "نُقلت كمية من المخزون إلى فرع الإسكندرية."
+      },
+      "employeeAdded": {
+        "title": "أُضيف موظف",
+        "description": "أُنشئ ملف موظف جديد."
+      },
+      "supplierTransaction": {
+        "title": "سُجلت معاملة مورد",
+        "description": "سُجلت معاملة مورد لمراجعتها."
+      }
+    },
+    "inventory": {
+      "title": "نظرة عامة على المخزون",
+      "description": "توفر المخزون في جميع الفروع",
+      "totalItems": "وحدات المخزون",
+      "products": "منتجًا",
+      "distribution": "توزيع المنتجات حسب حالة المخزون",
+      "inStock": "متوفر",
+      "lowStock": "مخزون منخفض",
+      "outOfStock": "نفد المخزون"
+    }
+  },
+  "cashierDashboard": {
+    "title": "لوحة أمين الصندوق",
+    "todayLabel": "تاريخ اليوم",
+    "welcome": "مرحبًا، {name}",
+    "overviewDescription": "نشاط اليوم في {branch}.",
+    "actions": {
+      "createSale": "إنشاء عملية بيع",
+      "close": "إغلاق",
+      "retry": "إعادة المحاولة"
+    },
+    "kpis": {
+      "sectionLabel": "أداء أمين الصندوق اليوم",
+      "sales": "إجمالي مبيعات اليوم",
+      "receipts": "إيصالات اليوم",
+      "completedSales": "المبيعات المكتملة",
+      "averageReceipt": "متوسط الإيصال المكتمل"
+    },
+    "receipts": {
+      "title": "إيصالات اليوم",
+      "description": "أحدث الإيصالات في الفرع المعيّن لك.",
+      "count": "{count, plural, zero {لا توجد إيصالات} one {إيصال واحد} two {إيصالان} few {# إيصالات} many {# إيصالًا} other {# إيصال}}",
+      "reference": "رقم الإيصال",
+      "time": "الوقت",
+      "amount": "الإجمالي",
+      "paymentMethod": "طريقة الدفع",
+      "status": "حالة البيع",
+      "salesman": "مندوب المبيعات",
+      "actions": "الإجراءات",
+      "view": "عرض التفاصيل",
+      "viewNamed": "عرض الإيصال {reference}",
+      "detailsDescription": "ملخص الإيصال",
+      "itemsTitle": "المنتجات",
+      "dateTime": "تاريخ ووقت البيع",
+      "cashier": "أمين الصندوق",
+      "branch": "الفرع",
+      "product": "المنتج",
+      "quantity": "الكمية",
+      "unitPrice": "سعر الوحدة",
+      "lineTotal": "إجمالي البند",
+      "subtotal": "المجموع الفرعي",
+      "discount": "الخصم",
+      "total": "الإجمالي النهائي",
+      "itemsUnavailable": "تفاصيل بنود المنتجات غير متاحة لهذا الإيصال.",
+      "emptyTitle": "لا توجد إيصالات اليوم",
+      "emptyDescription": "ستظهر إيصالات فرعك هنا عند توفرها."
+    },
+    "paymentMethods": {
+      "cash": "نقدًا",
+      "card": "بطاقة",
+      "mobileWallet": "محفظة إلكترونية",
+      "wallet": "المحفظة"
+    },
+    "statuses": {
+      "completed": "مكتملة",
+      "rejected": "الدفع مرفوض",
+      "refunded": "مستردة",
+      "voided": "ملغاة"
+    },
+    "branchCard": {
+      "title": "الفرع الحالي",
+      "description": "تعرض هذه اللوحة بيانات هذا الفرع فقط.",
+      "branch": "الفرع",
+      "completed": "المبيعات المكتملة",
+      "completedCount": "{count, plural, zero {لا توجد مبيعات} one {عملية بيع واحدة} two {عمليتا بيع} few {# عمليات بيع} many {# عملية بيع} other {# عملية بيع}}",
+      "salesTotal": "إجمالي المبيعات"
+    },
+    "createSale": {
+      "title": "إنشاء عملية بيع",
+      "description": "ابدأ عملية بيع جديدة لهذا الفرع.",
+      "nextStepTitle": "سير عمل البيع في الخطوة التالية",
+      "nextStepDescription": "ستُضاف في الخطوة التالية عمليات اختيار المنتجات والدفع وتأكيد الإيصال."
+    },
+    "states": {
+      "loading": "جارٍ تحميل لوحة أمين الصندوق…",
+      "loadError": "تعذّر تحميل بيانات لوحة أمين الصندوق. تحقق من إعدادات أمين الصندوق والفرع التجريبية ثم أعد المحاولة."
+    }
+  },
+  "saleWorkflow": {
+    "title": "إنشاء عملية بيع",
+    "description": "أنشئ عملية بيع باستخدام الفرع المعيّن لحسابك.",
+    "salesman": "الموظف المسؤول عن البيع",
+    "selectSalesman": "اختر الموظف المسؤول",
+    "clientPhone": "رقم هاتف العميل",
+    "clientName": "اسم العميل",
+    "productSerialNumber": "الرقم التسلسلي للمنتج",
+    "productSerialPlaceholder": "أدخل الرقم التسلسلي للمنتج",
+    "productQuantity": "الكمية",
+    "addLineItem": "إضافة عنصر",
+    "cartTitle": "عناصر البيع",
+    "cartCount": "{count, plural, zero {لا توجد عناصر} one {عنصر واحد} two {عنصران} few {# عناصر} many {# عنصرًا} other {# عنصر}}",
+    "quantityNamed": "كمية {serialNumber}",
+    "allowedDiscount": "الخصم المسموح: {percentage}٪",
+    "desiredDiscount": "نسبة الخصم المطلوبة",
+    "comments": "ملاحظات (اختياري)",
+    "paymentMethod": "طريقة الدفع",
+    "selectPaymentMethod": "اختر طريقة الدفع",
+    "notAvailable": "غير متوفر",
+    "operationError": "تعذّر إكمال طلب البيع. حاول مرة أخرى.",
+    "sessionExpired": "انتهت صلاحية الجلسة أو ليست لديك صلاحية. سجّل الدخول مرة أخرى.",
+    "steps": {
+      "label": "خطوات عملية البيع",
+      "process": "معالجة البيع",
+      "confirm": "تأكيد البيع"
+    },
+    "actions": {
+      "removeNamed": "إزالة {serialNumber}",
+      "increaseNamed": "زيادة كمية {serialNumber}",
+      "decreaseNamed": "تقليل كمية {serialNumber}",
+      "showReceipt": "معالجة البيع",
+      "confirmPayment": "تأكيد الدفع",
+      "cancel": "إلغاء",
+      "backToEdit": "العودة للتعديل",
+      "rejectSale": "رفض البيع",
+      "done": "تم"
+    },
+    "discard": {
+      "title": "هل تريد إلغاء عملية البيع؟",
+      "description": "ستفقد بيانات البيع التي أدخلتها إذا أغلقت الآن.",
+      "keepEditing": "متابعة التعديل",
+      "discard": "إلغاء البيع"
+    },
+    "result": {
+      "successTitle": "تم تأكيد الدفع بنجاح",
+      "successMessage": "تم تأكيد الدفع واكتملت عملية البيع.",
+      "rejectedTitle": "تم رفض البيع",
+      "rejectedMessage": "تم رفض عملية البيع في هذه الشاشة.",
+      "rejectedMockNote": "الرفض إجراء محلي في الواجهة فقط. لم تتغير حالة الإيصال في الخادم."
+    },
+    "empty": {
+      "cartTitle": "لا توجد منتجات في عملية البيع",
+      "cartDescription": "أدخل الرقم التسلسلي للمنتج ثم أضفه إلى عملية البيع."
+    },
+    "receipt": {
+      "title": "معاينة الإيصال",
+      "description": "راجع الإيصال المسعّر من الخادم ثم أكّد عملية البيع.",
+      "receiptPrice": "سعر الإيصال"
+    },
+    "validation": {
+      "employeeUnavailable": "تعذّر تحديد الموظف أو الفرع من بيانات المصادقة.",
+      "salesmanRequired": "اختر الموظف المسؤول عن البيع.",
+      "salesmanUnavailable": "الموظف المحدد غير متاح في جلسة أمين الصندوق هذه.",
+      "clientPhoneRequired": "أدخل رقم هاتف العميل.",
+      "clientNameRequired": "أدخل اسم العميل.",
+      "serialRequired": "أدخل الرقم التسلسلي للمنتج.",
+      "itemsRequired": "أضف منتجًا واحدًا على الأقل.",
+      "duplicateProduct": "الرقم التسلسلي لهذا المنتج مضاف بالفعل.",
+      "quantityInvalid": "يجب أن تكون كل كمية عددًا صحيحًا موجبًا.",
+      "discountInvalid": "أدخل نسبة خصم صالحة لا تقل عن صفر.",
+      "paymentRequired": "اختر طريقة الدفع."
+    },
+    "feedback": {
+      "completed": "تم تأكيد البيع بنجاح للإيصال {reference}."
+    },
+    "states": {
+      "processing": "جارٍ معالجة البيع…",
+      "confirming": "جارٍ تأكيد البيع…"
+    }
+  },
+  "salesManagement": {
+    "title": "إدارة المبيعات",
+    "description": "راجع سجلات المبيعات والأداء عبر جميع الفروع.",
+    "summary": {
+      "title": "ملخص المبيعات",
+      "totalSales": "إجمالي قيمة المبيعات",
+      "receipts": "إجمالي الإيصالات",
+      "completed": "المبيعات المكتملة",
+      "rejected": "المبيعات المرفوضة"
+    },
+    "records": {
+      "title": "سجلات المبيعات",
+      "description": "ابحث وراجع الإيصالات المسجلة في جميع فروعك.",
+      "count": "{count, plural, zero {لا توجد إيصالات} one {إيصال واحد} two {إيصالان} few {# إيصالات} many {# إيصالًا} other {# إيصال}}",
+      "page": "الصفحة {current} من {total}",
+      "emptyTitle": "لم يتم العثور على مبيعات",
+      "emptyDescription": "جرّب تغيير البحث أو عوامل التصفية."
+    },
+    "filters": {
+      "search": "البحث برقم الإيصال",
+      "searchPlaceholder": "ابحث برقم الإيصال",
+      "branch": "الفرع",
+      "allBranches": "جميع الفروع",
+      "status": "الحالة",
+      "allStatuses": "جميع الحالات",
+      "from": "من",
+      "to": "إلى",
+      "clear": "مسح عوامل التصفية"
+    },
+    "table": {
+      "reference": "رقم الإيصال",
+      "dateTime": "التاريخ والوقت",
+      "branch": "الفرع",
+      "cashier": "أمين الصندوق",
+      "salesman": "مندوب المبيعات",
+      "amount": "الإجمالي",
+      "paymentMethod": "طريقة الدفع",
+      "status": "حالة البيع",
+      "actions": "الإجراءات",
+      "view": "عرض الإيصال",
+      "viewNamed": "عرض الإيصال {reference}",
+      "unavailable": "غير متاح"
+    },
+    "analysis": {
+      "branchesTitle": "المبيعات حسب الفرع",
+      "branchesDescription": "إجماليات المبيعات المكتملة مجمعة حسب الفرع.",
+      "productsTitle": "المنتجات الأكثر مبيعًا",
+      "productsDescription": "الإيرادات والكميات من الإيصالات التي تتضمن تفاصيل المنتجات.",
+      "receipts": "الإيصالات المكتملة",
+      "product": "المنتج",
+      "quantity": "الكمية المباعة",
+      "revenue": "إيراد المنتج",
+      "noBranchData": "بيانات مبيعات الفروع غير متاحة.",
+      "noProductData": "إجماليات المنتجات غير متاحة لأن الإيصالات الحالية لا تتضمن تفاصيل المنتجات."
+    },
+    "actions": {
+      "retry": "إعادة المحاولة",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "states": {
+      "loading": "جارٍ تحميل سجلات المبيعات…",
+      "error": "تعذّر تحميل سجلات المبيعات. حاول مرة أخرى."
+    }
+  },
+  "expenses": {
+    "title": "إدارة المصروفات",
+    "description": "راجع مصروفات النشاط التجاري وأدِرها. تستخدم هذه الصفحة بيانات تجريبية حاليًا.",
+    "actions": {
+      "add": "إضافة مصروف",
+      "view": "عرض",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "create": "إنشاء مصروف",
+      "saveChanges": "حفظ التغييرات",
+      "cancel": "إلغاء",
+      "close": "إغلاق",
+      "clearFilter": "مسح تصفية التاريخ",
+      "retry": "إعادة المحاولة",
+      "viewNamed": "عرض {name}",
+      "editNamed": "تعديل {name}",
+      "deleteNamed": "حذف {name}"
+    },
+    "table": {
+      "name": "اسم المصروف",
+      "detail": "التفاصيل",
+      "price": "المبلغ",
+      "timestamp": "التاريخ والوقت",
+      "actions": "الإجراءات"
+    },
+    "filter": {
+      "timestampLabel": "تصفية حسب التاريخ"
+    },
+    "resultsCount": "{count, plural, zero {لا توجد مصروفات} one {مصروف واحد} two {مصروفان} few {# مصروفات} many {# مصروفًا} other {# مصروف}}",
+    "pagination": {
+      "showing": "عرض {start}–{end} من {total}",
+      "pageSize": "عدد الصفوف في الصفحة",
+      "previous": "السابق",
+      "next": "التالي",
+      "page": "الصفحة {page} من {total}"
+    },
+    "empty": {
+      "noExpensesTitle": "لا توجد مصروفات بعد",
+      "noExpensesDescription": "أضف مصروفًا لبدء متابعة نفقات النشاط التجاري.",
+      "noMatchesTitle": "لا توجد مصروفات في هذا التاريخ",
+      "noMatchesDescription": "جرّب تاريخًا آخر أو امسح تصفية التاريخ."
+    },
+    "form": {
+      "addTitle": "إضافة مصروف",
+      "editTitle": "تعديل مصروف",
+      "description": "أدخل تفاصيل المصروف وتاريخه.",
+      "nameLabel": "اسم المصروف",
+      "namePlaceholder": "مثال: مستلزمات المكتب",
+      "detailLabel": "التفاصيل",
+      "detailPlaceholder": "صف ما يغطيه هذا المصروف",
+      "priceLabel": "المبلغ (جنيه مصري)",
+      "pricePlaceholder": "0.00",
+      "timestampLabel": "التاريخ والوقت",
+      "validation": {
+        "nameRequired": "أدخل اسم المصروف.",
+        "detailRequired": "أدخل تفاصيل المصروف.",
+        "priceInvalid": "أدخل مبلغًا أكبر من صفر.",
+        "timestampRequired": "اختر تاريخًا ووقتًا صالحين."
+      }
+    },
+    "details": {
+      "id": "معرّف السجل"
+    },
+    "delete": {
+      "title": "هل تريد حذف المصروف؟",
+      "description": "سيُحذف «{name}» نهائيًا من سجلات المصروفات التجريبية."
+    },
+    "states": {
+      "loading": "جارٍ تحميل المصروفات…",
+      "notAvailable": "غير متاح"
+    },
+    "feedback": {
+      "created": "تم إنشاء المصروف.",
+      "updated": "تم تحديث المصروف.",
+      "deleted": "تم حذف المصروف.",
+      "invalid": "تحقق من تفاصيل المصروف ثم حاول مرة أخرى.",
+      "loadError": "تعذّر تحميل المصروفات. حاول مرة أخرى.",
+      "loadOneError": "تعذّر تحميل هذا المصروف. ربما حُذف.",
+      "saveError": "تعذّر حفظ المصروف. حاول مرة أخرى.",
+      "deleteError": "تعذّر حذف المصروف. حاول مرة أخرى."
+    }
+  },
+  "wallets": {
+    "title": "إدارة المحافظ",
+    "description": "أدِر المحافظ وحدودها. تستخدم هذه الوحدة حاليًا بيانات تجريبية محفوظة في الذاكرة.",
+    "actions": {
+      "close": "إغلاق",
+      "cancel": "إلغاء",
+      "create": "إنشاء",
+      "saveChanges": "حفظ التغييرات",
+      "delete": "حذف",
+      "addWallet": "إضافة محفظة",
+      "addType": "إضافة نوع محفظة",
+      "clearFilters": "مسح عوامل التصفية",
+      "viewNamed": "عرض {name}",
+      "editNamed": "تعديل {name}",
+      "deleteNamed": "حذف {name}"
+    },
+    "sections": {
+      "label": "أقسام إدارة المحافظ",
+      "wallets": "المحافظ",
+      "types": "أنواع المحافظ",
+      "transactions": "المعاملات"
+    },
+    "summary": {
+      "title": "ملخص المحافظ",
+      "wallets": "المحافظ",
+      "totalBalance": "إجمالي أرصدة المحافظ",
+      "totalCapacity": "إجمالي سعة المحافظ",
+      "availableCapacity": "السعة المتبقية",
+      "walletTypes": "أنواع المحافظ"
+    },
+    "search": {
+      "walletsLabel": "البحث في المحافظ",
+      "walletsPlaceholder": "ابحث برقم الهاتف",
+      "typesLabel": "البحث عن أنواع المحافظ",
+      "typesPlaceholder": "ابحث باسم النوع"
+    },
+    "filter": {
+      "type": "النوع",
+      "allTypes": "جميع الأنواع",
+      "allWallets": "جميع المحافظ"
+    },
+    "sort": {
+      "label": "الترتيب",
+      "phoneAsc": "رقم الهاتف تصاعديًا",
+      "phoneDesc": "رقم الهاتف تنازليًا",
+      "balanceAsc": "الرصيد من الأقل للأعلى",
+      "balanceDesc": "الرصيد من الأعلى للأقل"
+    },
+    "resultsCount": "{count, plural, zero {لا توجد نتائج} one {نتيجة واحدة} two {نتيجتان} few {# نتائج} many {# نتيجة} other {# نتيجة}}",
+    "table": {
+      "phone": "رقم الهاتف",
+      "type": "نوع المحفظة",
+      "balance": "الرصيد",
+      "actions": "الإجراءات"
+    },
+    "typeTable": {
+      "name": "الاسم",
+      "capacity": "السعة",
+      "dailyTransfer": "حد التحويل اليومي",
+      "dailyWithdraw": "حد السحب اليومي",
+      "monthlyTransfer": "حد التحويل الشهري",
+      "monthlyWithdraw": "حد السحب الشهري",
+      "walletCount": "المحافظ المرتبطة"
+    },
+    "unknownType": "نوع محفظة غير معروف",
+    "pagination": {
+      "range": "عرض {start}–{end} من {total}",
+      "rows": "عدد الصفوف في الصفحة",
+      "page": "الصفحة {page} من {pages}",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "empty": {
+      "noWalletMatches": "لا توجد محافظ مطابقة",
+      "noWallets": "لا توجد محافظ بعد",
+      "walletsDescription": "أضف محفظة لبدء إدارة الأرصدة.",
+      "noTypeMatches": "لا توجد أنواع محافظ مطابقة",
+      "noTypes": "لا توجد أنواع محافظ بعد",
+      "typesDescription": "أنشئ نوع محفظة قبل إضافة محفظة.",
+      "noTransactions": "لا توجد معاملات تطابق عوامل التصفية",
+      "transactionsDescription": "جرّب تغيير المحفظة أو النوع أو التاريخ."
+    },
+    "walletForm": {
+      "addTitle": "إضافة محفظة",
+      "editTitle": "تعديل المحفظة",
+      "description": "أدخل معلومات التواصل ونوع المحفظة ورصيدها الحالي.",
+      "typeLabel": "نوع المحفظة",
+      "selectType": "اختر نوع المحفظة",
+      "noTypes": "أنشئ نوع محفظة قبل إضافة محفظة.",
+      "phoneLabel": "رقم الهاتف",
+      "phonePlaceholder": "أدخل رقم الهاتف",
+      "balanceLabel": "الرصيد الحالي"
+    },
+    "typeForm": {
+      "addTitle": "إضافة نوع محفظة",
+      "editTitle": "تعديل نوع المحفظة",
+      "description": "حدّد سعة المحفظة وحدودها اليومية والشهرية.",
+      "nameLabel": "الاسم",
+      "capacityLabel": "السعة القصوى",
+      "dailyLimits": "الحدود اليومية",
+      "monthlyLimits": "الحدود الشهرية",
+      "transferLimit": "حد التحويل",
+      "withdrawLimit": "حد السحب"
+    },
+    "validation": {
+      "typeRequired": "اختر نوع المحفظة.",
+      "phoneRequired": "أدخل رقم الهاتف.",
+      "amountInvalid": "أدخل مبلغًا صالحًا يساوي صفرًا أو أكثر.",
+      "nameRequired": "أدخل اسم نوع المحفظة."
+    },
+    "details": {
+      "walletTitle": "تفاصيل المحفظة",
+      "typeTitle": "تفاصيل نوع المحفظة",
+      "walletDescription": "معلومات المحفظة والسعة الحالية.",
+      "typeDescription": "السعة وحدود المعاملات لهذا النوع من المحافظ.",
+      "capacity": "السعة القصوى",
+      "remainingCapacity": "السعة المتبقية",
+      "remainingLimits": "الحدود المتبقية",
+      "dailyRemainingLimits": "الحدود اليومية المتبقية",
+      "monthlyRemainingLimits": "الحدود الشهرية المتبقية",
+      "remainingDepositAmount": "مبلغ الإيداع المتبقي",
+      "remainingTransferAmount": "مبلغ التحويل المتبقي",
+      "notAvailable": "غير متاح"
+    },
+    "delete": {
+      "title": "تأكيد الحذف",
+      "walletDescription": "هل تريد حذف المحفظة «{name}»؟ سيبقى سجل المعاملات التجريبي دون تغيير.",
+      "typeDescription": "هل تريد حذف نوع المحفظة «{name}»؟",
+      "typeInUse": "هذا النوع مرتبط بـ {count, plural, zero {لا توجد محافظ} one {محفظة واحدة} two {محفظتين} few {# محافظ} many {# محفظة} other {# محفظة}}. أعد تعيين هذه المحافظ أو احذفها قبل حذف النوع."
+    },
+    "errors": {
+      "typeInUse": "لا يزال نوع المحفظة مرتبطًا بمحفظة واحدة أو أكثر.",
+      "walletNotFound": "لم تعد المحفظة موجودة. حدّث القائمة وحاول مرة أخرى.",
+      "typeNotFound": "لم يعد نوع المحفظة موجودًا. حدّث القائمة وحاول مرة أخرى."
+    },
+    "futureActions": {
+      "deposit": "إيداع",
+      "withdraw": "سحب",
+      "transfer": "تحويل",
+      "disabledHint": "هذا الإجراء غير متاح في وحدة المحافظ التجريبية فقط."
+    },
+    "transactions": {
+      "sampleDataNotice": "بيانات معاملات تجريبية فقط. أنواع المعاملات أمثلة وليست قيمًا مؤكدة من الواجهة الخلفية. السجل للقراءة فقط.",
+      "walletFilter": "المحفظة",
+      "typeFilter": "نوع المعاملة",
+      "from": "من",
+      "to": "إلى",
+      "date": "التاريخ",
+      "wallet": "هاتف المحفظة",
+      "type": "النوع",
+      "amount": "المبلغ",
+      "fee": "الرسوم",
+      "phone": "رقم الهاتف",
+      "sampleTypeA": "نوع تجريبي أ",
+      "sampleTypeB": "نوع تجريبي ب",
+      "sampleTypeC": "نوع تجريبي ج",
+      "unknownType": "نوع معاملة غير معروف"
+    }
+  },
+  "productTypes": {
+    "title": "أنواع المنتجات",
+    "description": "نظّم المنتجات ضمن أنواع واضحة قابلة لإعادة الاستخدام.",
+    "actions": {
+      "add": "إضافة نوع منتج",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "editNamed": "تعديل {name}",
+      "deleteNamed": "حذف {name}",
+      "close": "إغلاق",
+      "cancel": "إلغاء",
+      "create": "إنشاء نوع منتج",
+      "saveChanges": "حفظ التغييرات"
+    },
+    "search": {
+      "label": "البحث في أنواع المنتجات",
+      "placeholder": "ابحث بالاسم"
+    },
+    "resultsCount": "{count, plural, zero {لا توجد أنواع منتجات} one {نوع منتج واحد} two {نوعا منتج} few {# أنواع منتجات} many {# نوع منتج} other {# نوع منتج}}",
+    "table": {
+      "name": "الاسم",
+      "id": "المعرّف",
+      "createdAt": "تاريخ الإنشاء",
+      "actions": "الإجراءات"
+    },
+    "empty": {
+      "noMatchesTitle": "لا توجد أنواع منتجات مطابقة",
+      "noMatchesDescription": "جرّب عبارة بحث أخرى أو امسح البحث.",
+      "noRecordsTitle": "لا توجد أنواع منتجات بعد",
+      "noRecordsDescription": "أنشئ نوع منتج للبدء بتنظيم قائمة المنتجات."
+    },
+    "form": {
+      "addTitle": "إضافة نوع منتج",
+      "editTitle": "تعديل نوع منتج",
+      "description": "أدخل اسمًا لنوع المنتج.",
+      "nameLabel": "الاسم",
+      "namePlaceholder": "مثال: الكابلات والمحولات",
+      "validation": {
+        "required": "أدخل اسم نوع المنتج."
+      }
+    },
+    "delete": {
+      "title": "حذف نوع المنتج؟",
+      "description": "سيؤدي ذلك إلى إزالة «{name}» من قائمة أنواع المنتجات. لا يمكن التراجع عن هذا الإجراء."
+    },
+    "feedback": {
+      "loading": "جارٍ تحميل أنواع المنتجات…",
+      "created": "تم إنشاء نوع المنتج.",
+      "updated": "تم تحديث نوع المنتج.",
+      "deleted": "تم حذف نوع المنتج.",
+      "loadError": "تعذّر تحميل أنواع المنتجات.",
+      "saveError": "تعذّر حفظ نوع المنتج.",
+      "deleteError": "تعذّر حذف نوع المنتج.",
+      "unauthorized": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى."
+    }
+  },
+  "products": {
+    "title": "كتالوج المنتجات",
+    "description": "أدِر المنتجات المسجلة في النظام.",
+    "actions": {
+      "add": "إضافة منتج",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "viewNamed": "عرض {name}",
+      "edit": "تعديل",
+      "editNamed": "تعديل {name}",
+      "deleteNamed": "حذف {name}",
+      "clearFilters": "مسح عوامل التصفية",
+      "close": "إغلاق",
+      "cancel": "إلغاء",
+      "create": "إنشاء المنتج",
+      "saveChanges": "حفظ التغييرات"
+    },
+    "search": {
+      "label": "البحث عن المنتجات",
+      "placeholder": "ابحث باسم المنتج أو رقمه التسلسلي"
+    },
+    "filter": {
+      "label": "نوع المنتج",
+      "allTypes": "جميع الأنواع"
+    },
+    "resultsCount": "{count, plural, zero {لا توجد منتجات} one {منتج واحد} two {منتجان} few {# منتجات} many {# منتجًا} other {# منتج}}",
+    "table": {
+      "productName": "اسم المنتج",
+      "serialNumber": "الرقم التسلسلي",
+      "productType": "نوع المنتج",
+      "actions": "الإجراءات"
+    },
+    "unknownProductType": "نوع منتج غير معروف",
+    "pagination": {
+      "showing": "عرض {start}–{end} من {total}",
+      "pageSize": "عدد الصفوف في الصفحة",
+      "page": "الصفحة {page} من {total}",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "empty": {
+      "noMatchesTitle": "لا توجد منتجات مطابقة",
+      "noMatchesDescription": "جرّب بحثًا أو نوع منتج مختلفًا، أو امسح عوامل التصفية.",
+      "noRecordsTitle": "لا توجد منتجات بعد",
+      "noRecordsDescription": "أضف منتجًا لبدء إنشاء الكتالوج."
+    },
+    "form": {
+      "addTitle": "إضافة منتج",
+      "editTitle": "تعديل المنتج",
+      "createDescription": "أدخل تفاصيل المنتج. ستُنشئ الخدمة الوهمية رقمًا تسلسليًا.",
+      "editDescription": "حدّث اسم المنتج أو نوعه أو رقمه التسلسلي.",
+      "nameLabel": "اسم المنتج",
+      "namePlaceholder": "مثال: محول طاقة USB-C بقدرة 65 واط",
+      "typeLabel": "نوع المنتج",
+      "typePlaceholder": "اختر نوع المنتج",
+      "serialNumberLabel": "الرقم التسلسلي",
+      "serialNumberPlaceholder": "أدخل الرقم التسلسلي",
+      "mockSerialNote": "سيُعيّن رقم تسلسلي وهمي ثابت بعد الإنشاء. هذا ليس تنسيقًا معتمدًا للأرقام التسلسلية في الواجهة الخلفية.",
+      "validation": {
+        "nameRequired": "أدخل اسم المنتج.",
+        "typeRequired": "اختر نوع المنتج.",
+        "noChanges": "غيّر اسم المنتج أو نوعه قبل الحفظ."
+      }
+    },
+    "details": {
+      "description": "معلومات المنتج"
+    },
+    "delete": {
+      "title": "حذف المنتج؟",
+      "description": "سيؤدي ذلك إلى إزالة «{name}» من كتالوج المنتجات. لا يمكن التراجع عن هذا الإجراء."
+    },
+    "feedback": {
+      "loading": "جارٍ تحميل المنتجات…",
+      "created": "تم إنشاء المنتج.",
+      "createdSerial": "تم إنشاء المنتج. رقم التسلسل: {serialNumber}",
+      "updated": "تم تحديث المنتج.",
+      "deleted": "تم حذف المنتج.",
+      "loadError": "تعذّر تحميل المنتجات.",
+      "saveError": "تعذّر حفظ المنتج.",
+      "deleteError": "تعذّر حذف المنتج.",
+      "unauthorized": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى."
+    }
+  },
+  "inventory": {
+    "title": "إدارة المخزون",
+    "description": "أدِر كميات مخزون المنتجات وأسعارها الحالية.",
+    "actions": {
+      "add": "إضافة مخزون",
+      "viewNamed": "عرض مخزون {name}",
+      "editNamed": "تعديل مخزون {name}",
+      "deleteNamed": "حذف مخزون {name}",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "clearFilters": "مسح عوامل التصفية",
+      "close": "إغلاق",
+      "cancel": "إلغاء",
+      "retry": "إعادة المحاولة",
+      "create": "إضافة المخزون",
+      "saveChanges": "حفظ التغييرات"
+    },
+    "search": {
+      "label": "البحث في المخزون",
+      "placeholder": "ابحث باسم المنتج أو رقمه التسلسلي",
+      "localNote": "يقتصر البحث على السجلات المعروضة في الصفحة المحمّلة حاليًا."
+    },
+    "filter": {
+      "product": "المنتج",
+      "allProducts": "جميع المنتجات"
+    },
+    "resultsCount": "{count, plural, zero {لا توجد سجلات مخزون} one {سجل مخزون واحد} two {سجلا مخزون} few {# سجلات مخزون} many {# سجل مخزون} other {# سجل مخزون}}",
+    "table": {
+      "product": "المنتج",
+      "serialNumber": "الرقم التسلسلي",
+      "quantity": "الكمية",
+      "sellingPrice": "سعر البيع",
+      "wholesalePrice": "سعر الجملة",
+      "purchasePrice": "سعر الشراء",
+      "actions": "الإجراءات"
+    },
+    "pagination": {
+      "showing": "عرض {start}–{end} من {total}",
+      "pageSize": "عدد الصفوف في الصفحة",
+      "page": "الصفحة {page} من {total}",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "empty": {
+      "noMatchesTitle": "لا توجد سجلات مخزون مطابقة",
+      "noMatchesDescription": "جرّب بحثًا أو منتجًا مختلفًا، أو امسح عوامل التصفية.",
+      "noRecordsTitle": "لا توجد سجلات مخزون بعد",
+      "noRecordsDescription": "أضف مخزونًا إلى أحد المنتجات للبدء."
+    },
+    "form": {
+      "addTitle": "إضافة مخزون",
+      "editTitle": "تعديل المخزون",
+      "addDescription": "سجّل عملية شراء المخزون وتفاصيل المورد.",
+      "editDescription": "حدّث كمية المخزون أو الأسعار الحالية للقطعة.",
+      "product": "المنتج",
+      "selectProduct": "اختر منتجًا",
+      "quantity": "إجمالي الكمية",
+      "purchasePrice": "سعر شراء الدفعة",
+      "sellingPrice": "سعر البيع للقطعة في الدفعة",
+      "wholesalePrice": "سعر الجملة للقطعة في الدفعة",
+      "supplier": "المورد",
+      "selectSupplier": "اختر موردًا",
+      "depositAmount": "مبلغ دفعة المورد",
+      "nextDepositAmount": "مبلغ دفعة المورد التالية",
+      "nextDepositDate": "تاريخ الدفعة التالية",
+      "comments": "ملاحظات",
+      "commentsPlaceholder": "أضف ملاحظة حول عملية شراء المخزون",
+      "currentSellingPrice": "سعر البيع الحالي للقطعة",
+      "currentWholesalePrice": "سعر الجملة الحالي للقطعة",
+      "currentPurchasePrice": "سعر الشراء الحالي للقطعة",
+      "validation": {
+        "required": "هذا الحقل مطلوب.",
+        "productRequired": "اختر منتجًا من الكتالوج.",
+        "productSerialRequired": "المنتج المحدد ليس له رقم تسلسلي.",
+        "supplierRequired": "اختر موردًا.",
+        "dateRequired": "اختر تاريخ ووقت الدفعة التالية.",
+        "dateInvalid": "أدخل تاريخًا ووقتًا صالحين.",
+        "commentsRequired": "أدخل ملاحظة لسجل المخزون.",
+        "nonNegative": "أدخل رقمًا صالحًا يساوي صفرًا أو أكبر.",
+        "integerRequired": "أدخل عددًا صحيحًا للكمية."
+      }
+    },
+    "details": {
+      "description": "تفاصيل المخزون والأسعار الحالية للمنتج",
+      "productId": "معرّف المنتج",
+      "notAvailable": "غير متوفر"
+    },
+    "delete": {
+      "title": "حذف سجل المخزون؟",
+      "description": "سيؤدي ذلك إلى إزالة سجل المخزون الخاص بـ «{name}». لا يمكن التراجع عن هذا الإجراء."
+    },
+    "feedback": {
+      "loading": "جارٍ تحميل المخزون…",
+      "loadingLookups": "جارٍ تحميل المنتجات والموردين…",
+      "loadingDetails": "جارٍ تحميل تفاصيل المخزون…",
+      "created": "تمت إضافة سجل المخزون.",
+      "updated": "تم تحديث سجل المخزون.",
+      "deleted": "تم حذف سجل المخزون.",
+      "loadError": "تعذّر تحميل المخزون.",
+      "productsLoadError": "تعذّر تحميل المنتجات.",
+      "suppliersLoadError": "تعذّر تحميل الموردين.",
+      "detailsError": "تعذّر تحميل تفاصيل المخزون.",
+      "saveError": "تعذّر حفظ سجل المخزون.",
+      "deleteError": "تعذّر حذف سجل المخزون.",
+      "unauthorized": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى."
+    }
+  },
+  "stockHistory": {
+    "title": "سجل المخزون",
+    "description": "راجع إدخالات المخزون السابقة والمنتجات وتفاصيل الموردين.",
+    "actions": {
+      "view": "عرض",
+      "viewDetails": "عرض التفاصيل",
+      "viewNamed": "عرض تفاصيل سجل {name}",
+      "clearFilters": "مسح عوامل التصفية",
+      "close": "إغلاق",
+      "retry": "إعادة المحاولة"
+    },
+    "search": {
+      "label": "البحث في سجل المخزون",
+      "placeholder": "ابحث باسم المنتج",
+      "localNote": "يقتصر البحث على السجلات المعروضة في الصفحة المحمّلة حاليًا."
+    },
+    "filter": {
+      "product": "المنتج",
+      "allProducts": "جميع المنتجات"
+    },
+    "resultsCount": "{count, plural, zero {لا توجد سجلات} one {سجل واحد} two {سجلان} few {# سجلات} many {# سجلًا} other {# سجل}}",
+    "table": {
+      "product": "المنتج",
+      "supplier": "المورد",
+      "date": "التاريخ",
+      "quantity": "الكمية",
+      "batchSellingPrice": "سعر البيع للدفعة",
+      "batchPurchasePrice": "سعر الشراء للدفعة",
+      "batchWholesalePrice": "سعر الجملة للدفعة",
+      "profitMargin": "هامش الربح",
+      "actions": "الإجراءات"
+    },
+    "pagination": {
+      "showing": "عرض {start}–{end} من {total}",
+      "pageSize": "عدد الصفوف في الصفحة",
+      "page": "الصفحة {page} من {total}",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "empty": {
+      "noMatchesTitle": "لا توجد سجلات مطابقة",
+      "noMatchesDescription": "جرّب اسم منتج أو عامل تصفية آخر، أو امسح عوامل التصفية.",
+      "noRecordsTitle": "لا يوجد سجل مخزون بعد",
+      "noRecordsDescription": "ستظهر هنا إدخالات المخزون عند توفرها."
+    },
+    "details": {
+      "description": "تفاصيل سجل المخزون",
+      "productSection": "معلومات المنتج",
+      "productId": "معرّف المنتج",
+      "supplierSection": "معلومات المورد",
+      "supplierPhone": "رقم هاتف المورد",
+      "entrySection": "معلومات إدخال المخزون",
+      "notAvailable": "غير متوفر"
+    },
+    "feedback": {
+      "loading": "جارٍ تحميل سجل المخزون…",
+      "loadingProducts": "جارٍ تحميل المنتجات…",
+      "loadingDetails": "جارٍ تحميل تفاصيل السجل…",
+      "loadError": "تعذّر تحميل سجل المخزون.",
+      "productsError": "تعذّر تحميل المنتجات للتصفية.",
+      "detailsError": "تعذّر تحميل تفاصيل سجل المخزون.",
+      "unauthorized": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى."
+    }
+  },
+  "suppliers": {
+    "title": "إدارة الموردين",
+    "description": "أدِر بيانات اتصال الموردين ومعلومات حساباتهم.",
+    "actions": {
+      "add": "إضافة مورد",
+      "view": "عرض",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "viewNamed": "عرض {name}",
+      "editNamed": "تعديل {name}",
+      "deleteNamed": "حذف {name}",
+      "clearFilter": "مسح عامل التصفية",
+      "close": "إغلاق",
+      "cancel": "إلغاء",
+      "create": "إنشاء المورد",
+      "saveChanges": "حفظ التغييرات",
+      "retry": "إعادة المحاولة"
+    },
+    "search": {
+      "label": "البحث بأرقام هواتف الموردين",
+      "placeholder": "تصفية حسب رقم الهاتف"
+    },
+    "resultsCount": "{count, plural, zero {لا يوجد موردون} one {مورد واحد} two {موردان} few {# موردين} many {# موردًا} other {# مورد}}",
+    "table": {
+      "name": "اسم المورد",
+      "phoneNumber": "رقم الهاتف",
+      "actions": "الإجراءات"
+    },
+    "pagination": {
+      "showing": "عرض {start}–{end} من {total}",
+      "pageSize": "عدد الصفوف في الصفحة",
+      "page": "الصفحة {page} من {total}",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "empty": {
+      "noMatchesTitle": "لا يوجد موردون مطابقون",
+      "noMatchesDescription": "جرّب رقم هاتف آخر أو امسح عامل التصفية.",
+      "noSuppliersTitle": "لا يوجد موردون بعد",
+      "noSuppliersDescription": "أضف موردًا ليكون متاحًا في سجلات المخزون."
+    },
+    "form": {
+      "addTitle": "إضافة مورد",
+      "editTitle": "تعديل المورد",
+      "description": "أدخل بيانات الاتصال بالمورد.",
+      "nameLabel": "اسم المورد",
+      "namePlaceholder": "مثال: شركة القاهرة للتوزيع",
+      "phoneNumberLabel": "رقم الهاتف",
+      "phoneNumberPlaceholder": "أدخل رقم الهاتف",
+      "validation": {
+        "nameRequired": "أدخل اسم المورد.",
+        "phoneRequired": "أدخل رقم الهاتف."
+      }
+    },
+    "details": {
+      "description": "معلومات المورد والحساب",
+      "defferedAmount": "المبلغ المؤجل"
+    },
+    "delete": {
+      "title": "حذف المورد؟",
+      "description": "سيؤدي ذلك إلى إزالة «{name}» من قائمة الموردين. لا يمكن التراجع عن هذا الإجراء."
+    },
+    "states": {
+      "loading": "جارٍ تحميل الموردين…",
+      "loadError": "تعذّر تحميل الموردين. حاول مرة أخرى.",
+      "operationError": "تعذّر تنفيذ عملية المورد. حاول مرة أخرى.",
+      "detailsError": "تعذّر تحميل تفاصيل المورد. حاول مرة أخرى.",
+      "unauthorized": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى."
+    },
+    "feedback": {
+      "created": "تم إنشاء المورد.",
+      "updated": "تم تحديث المورد.",
+      "deleted": "تم حذف المورد."
+    }
+  },
+  "supplierRecords": {
+    "depositTitle": "مواعيد إيداع الموردين",
+    "depositDescription": "راجع مواعيد إيداع الموردين المجدولة وأدِرها.",
+    "transactionTitle": "معاملات الموردين",
+    "transactionDescription": "سجّل المدفوعات للموردين وراجعها.",
+    "actions": {
+      "addDeposit": "إضافة موعد إيداع",
+      "addTransaction": "إضافة معاملة",
+      "view": "عرض",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "viewNamed": "عرض السجل للمورد {name}",
+      "editNamed": "تعديل السجل للمورد {name}",
+      "deleteNamed": "حذف السجل للمورد {name}",
+      "clearFilter": "مسح عامل التصفية",
+      "retry": "إعادة المحاولة",
+      "close": "إغلاق",
+      "cancel": "إلغاء",
+      "create": "إنشاء",
+      "saveChanges": "حفظ التغييرات"
+    },
+    "filters": {
+      "allSuppliers": "جميع الموردين"
+    },
+    "fields": {
+      "supplier": "المورد",
+      "phoneNumber": "رقم الهاتف",
+      "depositAmount": "مبلغ الإيداع",
+      "depositDate": "تاريخ الإيداع",
+      "nextDeposit": "الإيداع التالي",
+      "transferredAmount": "المبلغ المحوّل",
+      "timestamp": "تاريخ التسجيل",
+      "comments": "ملاحظات",
+      "actions": "الإجراءات"
+    },
+    "details": {
+      "notAvailable": "غير متوفر"
+    },
+    "form": {
+      "selectSupplier": "اختر موردًا",
+      "selectNextDeposit": "اختر إيداعًا مجدولًا",
+      "noNextDeposits": "لا توجد إيداعات مجدولة لهذا المورد"
+    },
+    "depositForm": {
+      "createTitle": "إضافة موعد إيداع",
+      "editTitle": "تعديل موعد الإيداع",
+      "description": "أدخل مبلغ الإيداع وتاريخه المجدول."
+    },
+    "transactionForm": {
+      "createTitle": "إضافة معاملة مورد",
+      "editTitle": "تعديل معاملة المورد",
+      "description": "أدخل مبلغ الدفعة وملاحظات اختيارية."
+    },
+    "depositDetails": {
+      "title": "تفاصيل موعد الإيداع"
+    },
+    "transactionDetails": {
+      "title": "تفاصيل معاملة المورد"
+    },
+    "validation": {
+      "supplierRequired": "اختر موردًا.",
+      "amountRequired": "أدخل مبلغًا صالحًا.",
+      "dateRequired": "اختر تاريخ الإيداع.",
+      "dateInvalid": "أدخل تاريخ إيداع صالحًا.",
+      "nextDepositRequired": "اختر إيداعًا مجدولًا."
+    },
+    "resultsCount": "{count, plural, zero {لا توجد سجلات} one {سجل واحد} two {سجلان} few {# سجلات} many {# سجلًا} other {# سجل}}",
+    "pagination": {
+      "showing": "عرض {start}–{end} من {total}",
+      "pageSize": "عدد الصفوف في الصفحة",
+      "page": "الصفحة {page} من {total}",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "empty": {
+      "title": "لا توجد سجلات بعد",
+      "description": "ستظهر السجلات هنا بعد إنشائها.",
+      "filteredTitle": "لا توجد سجلات مطابقة",
+      "filteredDescription": "جرّب موردًا آخر أو امسح عامل التصفية."
+    },
+    "delete": {
+      "title": "حذف السجل؟",
+      "depositDescription": "سيؤدي ذلك إلى حذف موعد الإيداع للمورد {supplier}. لا يمكن التراجع عن هذا الإجراء.",
+      "transactionDescription": "سيؤدي ذلك إلى حذف معاملة المورد {supplier}. لا يمكن التراجع عن هذا الإجراء."
+    },
+    "feedback": {
+      "loading": "جارٍ تحميل سجلات الموردين…",
+      "loadError": "تعذّر تحميل سجلات الموردين.",
+      "suppliersError": "تعذّر تحميل خيارات الموردين.",
+      "saveError": "تعذّر حفظ سجل المورد.",
+      "deleteError": "تعذّر حذف سجل المورد.",
+      "unauthorized": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى.",
+      "depositCreated": "تم إنشاء موعد الإيداع.",
+      "depositUpdated": "تم تحديث موعد الإيداع.",
+      "depositDeleted": "تم حذف موعد الإيداع.",
+      "transactionCreated": "تم إنشاء معاملة المورد.",
+      "transactionUpdated": "تم تحديث معاملة المورد.",
+      "transactionDeleted": "تم حذف معاملة المورد."
+    }
+  },
+  "branchInventory": {
+    "title": "مخزون الفروع",
+    "description": "راجع كميات المخزون الموجودة في كل فرع.",
+    "actions": {
+      "retry": "إعادة المحاولة",
+      "viewNamed": "عرض {name}",
+      "edit": "تعديل",
+      "editNamed": "تعديل {name}",
+      "deleteNamed": "حذف {name}",
+      "close": "إغلاق",
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "delete": "حذف"
+    },
+    "filter": {
+      "branch": "الفرع",
+      "allBranches": "جميع الفروع",
+      "selectBranch": "اختر فرعًا",
+      "selectBranchPrompt": "اختر فرعًا لعرض مخزونه.",
+      "noBranchesAvailable": "لا توجد فروع متاحة."
+    },
+    "resultsCount": "{count, plural, zero {لا توجد منتجات} one {منتج واحد} two {منتجان} few {# منتجات} many {# منتجًا} other {# منتج}}",
+    "table": {
+      "product": "المنتج",
+      "quantity": "كمية الفرع",
+      "actions": "الإجراءات"
+    },
+    "pagination": {
+      "showing": "عرض {start}–{end} من {total}",
+      "pageSize": "عدد الصفوف في الصفحة",
+      "page": "الصفحة {page} من {total}",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "empty": {
+      "title": "لا يوجد مخزون للفروع",
+      "description": "ستظهر هنا المنتجات المحوّلة إلى هذا الفرع."
+    },
+    "form": {
+      "title": "تحديث كمية الفرع",
+      "validation": {
+        "quantity": "أدخل عددًا صحيحًا غير سالب."
+      }
+    },
+    "details": {
+      "description": "تفاصيل المنتج وكمية الفرع",
+      "productType": "نوع المنتج",
+      "notAvailable": "غير متوفر"
+    },
+    "delete": {
+      "title": "حذف سجل مخزون الفرع؟",
+      "description": "سيؤدي ذلك إلى إزالة سجل مخزون الفرع للمنتج «{name}». لا يمكن التراجع عن هذا الإجراء."
+    },
+    "feedback": {
+      "loading": "جارٍ تحميل مخزون الفروع…",
+      "loadingDetails": "جارٍ تحميل تفاصيل المخزون…",
+      "loadError": "تعذّر تحميل مخزون الفروع.",
+      "branchesError": "تعذّر تحميل الفروع.",
+      "detailsError": "تعذّر تحميل تفاصيل مخزون الفرع.",
+      "updateError": "تعذّر تحديث مخزون الفرع.",
+      "deleteError": "تعذّر حذف مخزون الفرع.",
+      "updated": "تم تحديث مخزون الفرع.",
+      "deleted": "تم حذف مخزون الفرع.",
+      "unauthorized": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى."
+    }
+  },
+  "branchManagement": {
+    "title": "إدارة الفروع",
+    "description": "أدِر الفروع المتاحة في نظامك.",
+    "actions": {
+      "add": "إضافة فرع",
+      "view": "عرض",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "viewNamed": "عرض {name}",
+      "editNamed": "تعديل {name}",
+      "deleteNamed": "حذف {name}",
+      "close": "إغلاق",
+      "cancel": "إلغاء",
+      "create": "إنشاء الفرع",
+      "saveChanges": "حفظ التغييرات",
+      "retry": "إعادة المحاولة"
+    },
+    "resultsCount": "{count, plural, zero {لا توجد فروع} one {فرع واحد} two {فرعان} few {# فروع} many {# فرعًا} other {# فرع}}",
+    "table": {
+      "name": "اسم الفرع",
+      "actions": "الإجراءات"
+    },
+    "empty": {
+      "title": "لا توجد فروع بعد",
+      "description": "أضف فرعًا ليكون متاحًا في جميع أنحاء النظام."
+    },
+    "form": {
+      "addTitle": "إضافة فرع",
+      "editTitle": "تعديل الفرع",
+      "description": "أدخل اسم هذا الفرع.",
+      "nameLabel": "اسم الفرع",
+      "namePlaceholder": "مثال: فرع وسط البلد",
+      "validation": {
+        "required": "أدخل اسم الفرع."
+      }
+    },
+    "details": {
+      "description": "معلومات الفرع",
+      "id": "معرّف الفرع"
+    },
+    "delete": {
+      "title": "حذف الفرع؟",
+      "description": "سيؤدي ذلك إلى إزالة «{name}» من قائمة الفروع. لا يمكن التراجع عن هذا الإجراء."
+    },
+    "states": {
+      "loading": "جارٍ تحميل الفروع…",
+      "loadError": "تعذّر تحميل الفروع. حاول مرة أخرى.",
+      "operationError": "تعذّر تحديث الفرع. حاول مرة أخرى.",
+      "unauthorized": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى."
+    },
+    "feedback": {
+      "created": "تم إنشاء الفرع.",
+      "updated": "تم تحديث الفرع.",
+      "deleted": "تم حذف الفرع."
+    }
+  },
+  "employees": {
+    "title": "إدارة الموظفين",
+    "description": "أدِر أدوار الموظفين وتعييناتهم للفروع وإمكانية الوصول إلى الحسابات.",
+    "actions": {
+      "add": "إضافة موظف",
+      "view": "عرض",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "activate": "تفعيل",
+      "deactivate": "إلغاء التفعيل",
+      "regeneratePassword": "إعادة إنشاء كلمة المرور",
+      "viewNamed": "عرض {name}",
+      "editNamed": "تعديل {name}",
+      "deleteNamed": "حذف {name}",
+      "activateNamed": "تفعيل {name}",
+      "deactivateNamed": "إلغاء تفعيل {name}",
+      "regeneratePasswordNamed": "إعادة إنشاء كلمة مرور {name}",
+      "clearFilters": "مسح عوامل التصفية",
+      "close": "إغلاق",
+      "cancel": "إلغاء",
+      "create": "إنشاء الموظف",
+      "saveChanges": "حفظ التغييرات",
+      "retry": "إعادة المحاولة"
+    },
+    "filters": {
+      "branch": "الفرع",
+      "allBranches": "جميع الفروع",
+      "role": "الدور",
+      "allRoles": "جميع الأدوار",
+      "status": "الحالة",
+      "allStatuses": "جميع الحالات"
+    },
+    "roles": {
+      "admin": "مسؤول",
+      "inventory-man": "مدير المخزون",
+      "cashier": "أمين الصندوق",
+      "salesman": "مندوب المبيعات",
+      "sales-man": "مندوب مبيعات"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "resultsCount": "{count, plural, zero {لا يوجد موظفون} one {موظف واحد} two {موظفان} few {# موظفين} many {# موظفًا} other {# موظف}}",
+    "table": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "role": "الدور",
+      "branch": "الفرع",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "pagination": {
+      "showing": "عرض {start}–{end} من {total}",
+      "pageSize": "عدد الصفوف في الصفحة",
+      "page": "الصفحة {page} من {total}",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "empty": {
+      "noMatchesTitle": "لا يوجد موظفون مطابقون",
+      "noMatchesDescription": "جرّب عوامل تصفية مختلفة أو امسحها.",
+      "noEmployeesTitle": "لا يوجد موظفون بعد",
+      "noEmployeesDescription": "أضف موظفًا لإدارة الوصول إلى نظامك."
+    },
+    "form": {
+      "addTitle": "إضافة موظف",
+      "editTitle": "تعديل الموظف",
+      "createDescription": "أدخل بيانات الموظف واختر دوره.",
+      "editDescription": "حدّث اسم الموظف أو دوره أو الفرع المعيّن له.",
+      "name": "الاسم",
+      "namePlaceholder": "أدخل اسم الموظف",
+      "role": "الدور",
+      "selectRole": "اختر دورًا",
+      "branch": "الفرع",
+      "selectBranch": "اختر فرعًا",
+      "validation": {
+        "nameRequired": "أدخل اسم الموظف.",
+        "roleRequired": "اختر دور الموظف.",
+        "branchRequired": "اختر فرعًا لهذا الدور."
+      }
+    },
+    "details": {
+      "description": "تفاصيل حساب الموظف وتعيينه",
+      "id": "معرّف الموظف"
+    },
+    "delete": {
+      "title": "حذف الموظف؟",
+      "description": "سيؤدي ذلك إلى إزالة «{name}» من قائمة الموظفين. لا يمكن التراجع عن هذا الإجراء."
+    },
+    "password": {
+      "confirmTitle": "إعادة إنشاء كلمة المرور؟",
+      "confirmDescription": "سيتم إنشاء كلمة مرور جديدة لـ {name}، ولن تعمل كلمة المرور الحالية بعد ذلك."
+    },
+    "credentials": {
+      "title": "بيانات دخول الموظف",
+      "description": "تُعرض بيانات الدخول الصادرة من الخادم مرة واحدة فقط. احفظها بأمان قبل الإغلاق.",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور المؤقتة",
+      "oneTimeNotice": "لن تظهر كلمة المرور مرة أخرى بعد إغلاق هذه اللوحة."
+    },
+    "notAvailable": "غير معيّن",
+    "states": {
+      "loading": "جارٍ تحميل الموظفين…",
+      "loadError": "تعذّر تحميل الموظفين. حاول مرة أخرى.",
+      "operationError": "تعذّر إكمال إجراء الموظف. حاول مرة أخرى.",
+      "unauthorized": "انتهت صلاحية الجلسة أو ليست لديك صلاحية الوصول. سجّل الدخول مرة أخرى.",
+      "branchesError": "تعذّر تحميل الفروع لتعيين الموظفين.",
+      "detailsError": "تعذّر تحميل تفاصيل الموظف. حاول مرة أخرى.",
+      "detailsLoading": "جارٍ تحميل تفاصيل الموظف…"
+    },
+    "feedback": {
+      "created": "تم إنشاء الموظف.",
+      "updated": "تم تحديث الموظف.",
+      "deleted": "تم حذف الموظف.",
+      "activated": "تم تفعيل الموظف.",
+      "deactivated": "تم إلغاء تفعيل الموظف.",
+      "passwordRegenerated": "تم إنشاء كلمة مرور جديدة للموظف."
+    }
+  },
+  "transfers": {
+    "title": "تحويلات المخزون",
+    "description": "أدِر عمليات التحويل من المخزون المركزي إلى الفروع.",
+    "actions": {
+      "new": "تحويل جديد",
+      "view": "عرض",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "viewNamed": "عرض تحويل {name}",
+      "editNamed": "تعديل تحويل {name}",
+      "deleteNamed": "حذف تحويل {name}",
+      "clearFilters": "مسح عوامل التصفية",
+      "close": "إغلاق",
+      "cancel": "إلغاء",
+      "create": "إنشاء التحويل",
+      "saveChanges": "حفظ التغييرات",
+      "retry": "إعادة المحاولة"
+    },
+    "filter": {
+      "branch": "الفرع",
+      "allBranches": "جميع الفروع",
+      "product": "المنتج",
+      "allProducts": "جميع المنتجات"
+    },
+    "resultsCount": "{count, plural, zero {لا توجد تحويلات} one {تحويل واحد} two {تحويلان} few {# تحويلات} many {# تحويلًا} other {# تحويل}}",
+    "table": {
+      "branch": "الفرع",
+      "product": "المنتج",
+      "timestamp": "تاريخ التحويل",
+      "quantity": "الكمية",
+      "actions": "الإجراءات"
+    },
+    "pagination": {
+      "showing": "عرض {start}–{end} من {total}",
+      "pageSize": "عدد الصفوف في الصفحة",
+      "page": "الصفحة {page} من {total}",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "empty": {
+      "noMatchesTitle": "لا توجد تحويلات مطابقة",
+      "noMatchesDescription": "جرّب فرعًا أو منتجًا آخر، أو امسح عوامل التصفية.",
+      "noTransfersTitle": "لا توجد تحويلات بعد",
+      "noTransfersDescription": "أنشئ تحويلًا من المخزون المركزي إلى أحد الفروع."
+    },
+    "form": {
+      "createTitle": "تحويل جديد",
+      "editTitle": "تعديل التحويل",
+      "createDescription": "اختر الفرع والمنتج والكمية المطلوب تحويلها.",
+      "editDescription": "حدّث الفرع أو المنتج أو كمية هذا التحويل.",
+      "branch": "الفرع",
+      "selectBranch": "اختر فرعًا",
+      "product": "المنتج",
+      "selectProduct": "اختر منتجًا",
+      "quantity": "الكمية",
+      "quantityPlaceholder": "أدخل عددًا صحيحًا أكبر من صفر",
+      "summaryTitle": "ملخص التحويل",
+      "validation": {
+        "branchRequired": "اختر فرعًا.",
+        "productRequired": "اختر منتجًا.",
+        "quantityRequired": "أدخل الكمية.",
+        "quantityInvalid": "يجب أن تكون الكمية عددًا صحيحًا موجبًا."
+      }
+    },
+    "details": {
+      "description": "معلومات التحويل",
+      "branchId": "معرّف الفرع",
+      "productId": "معرّف المنتج",
+      "notAvailable": "غير متوفر"
+    },
+    "delete": {
+      "title": "حذف التحويل؟",
+      "description": "سيؤدي ذلك إلى إزالة تحويل «{product}» إلى «{branch}». لا يمكن التراجع عن هذا الإجراء."
+    },
+    "feedback": {
+      "created": "تم إنشاء التحويل.",
+      "updated": "تم تحديث التحويل.",
+      "deleted": "تم حذف التحويل.",
+      "loading": "جارٍ تحميل التحويلات…",
+      "loadingOptions": "جارٍ تحميل الفروع والمنتجات…",
+      "loadingDetails": "جارٍ تحميل تفاصيل التحويل…",
+      "loadError": "تعذّر تحميل التحويلات.",
+      "optionsError": "تعذّر تحميل خيارات الفروع أو المنتجات.",
+      "detailsError": "تعذّر تحميل تفاصيل التحويل.",
+      "saveError": "تعذّر حفظ التحويل.",
+      "deleteError": "تعذّر حذف التحويل.",
+      "unauthorized": "انتهت صلاحية جلستك. سجّل الدخول مرة أخرى."
+    }
+  },
+  "designSystem": {
+    "eyebrow": "نقطة البيع / الأساسيات",
+    "title": "نظام التصميم",
+    "intro": "أساس عملي لتجربة نقطة بيع واضحة ومتناسقة.",
+    "typography": {
+      "title": "الطباعة",
+      "description": "نظام مرن يدعم العربية باستخدام خطوط النظام.",
+      "pageTitleLabel": "عنوان الصفحة",
+      "pageTitleExample": "تسلسل واضح وخطوط مميزة",
+      "sectionHeadingLabel": "عنوان القسم",
+      "sectionHeadingExample": "عنوان قسم",
+      "cardTitleLabel": "عنوان البطاقة",
+      "cardTitleExample": "عنوان موجز للبطاقة",
+      "bodyLabel": "النص الأساسي",
+      "bodyExample": "نص مريح لمحتوى الواجهة والأوصاف التوضيحية.",
+      "secondaryLabel": "نص ثانوي",
+      "secondaryExample": "نص أقل بروزًا للتلميحات والأوصاف والتفاصيل الثانوية.",
+      "smallLabel": "تسمية صغيرة",
+      "smallLabelExample": "آخر تحديث",
+      "numericLabel": "قيمة رقمية",
+      "numericExample": "١٬٢٤٠٫٥٠"
+    },
+    "buttons": {
+      "title": "الأزرار",
+      "description": "حالات وأحجام متناسقة.",
+      "primary": "إجراء أساسي",
+      "secondary": "ثانوي",
+      "outline": "محدد بإطار",
+      "destructive": "إجراء خطير",
+      "moreOptions": "خيارات إضافية",
+      "small": "صغير",
+      "default": "افتراضي",
+      "large": "كبير",
+      "disabled": "معطل"
+    },
+    "inputs": {
+      "title": "حقول الإدخال",
+      "description": "عناصر نموذج بحالات تركيز وتعطيل واضحة.",
+      "sampleLabel": "حقل نص تجريبي",
+      "samplePlaceholder": "أدخل قيمة",
+      "disabledLabel": "حقل معطل",
+      "disabledPlaceholder": "غير متاح"
+    },
+    "cards": {
+      "title": "البطاقات وتنسيق العملة",
+      "description": "أنماط الأسطح وتنسيق الجنيه المصري حسب اللغة.",
+      "surfaceTitle": "بطاقة سطحية",
+      "surfaceDescription": "حاوية قابلة لإعادة الاستخدام لتجميع محتوى الواجهة.",
+      "currencyLabel": "مثال للعملة · جنيه مصري",
+      "actionTitle": "بطاقة مع إجراء",
+      "actionDescription": "تحافظ مكونات البطاقة على تباعد متناسق وقابل للتركيب.",
+      "learnMore": "معرفة المزيد"
+    },
+    "statuses": {
+      "title": "شارات الحالة",
+      "description": "ألوان دلالية للتعبير عن الحالات الشائعة.",
+      "primary": "أساسي",
+      "neutral": "محايد",
+      "success": "ناجح",
+      "warning": "تحذير",
+      "destructive": "خطير",
+      "outline": "محدد بإطار"
+    },
+    "skeletons": {
+      "title": "هياكل التحميل",
+      "description": "عناصر مؤقتة بسيطة أثناء تحميل المحتوى."
+    }
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب.",
+    "invalidEmail": "أدخل عنوان بريد إلكتروني صالحًا.",
+    "invalidAmount": "أدخل مبلغًا صالحًا."
+  }
+}

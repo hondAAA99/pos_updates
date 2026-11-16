@@ -1,0 +1,1609 @@
+{
+  "common": {
+    "appTitle": "Point of Sale",
+    "appDescription": "A modern point of sale management application.",
+    "language": "Language",
+    "english": "English",
+    "arabic": "Arabic",
+    "toggleTheme": "Toggle color theme",
+    "toggleThemeTitle": "Toggle light and dark themes"
+  },
+  "application": {
+    "name": "Point of Sale",
+    "tagline": "Retail management",
+    "navigation": "Application navigation",
+    "openNavigation": "Open navigation",
+    "closeNavigation": "Close navigation",
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Expand sidebar",
+    "workspaceLabel": "Workspace",
+    "workspaceName": "Management"
+  },
+  "profile": {
+    "openMenu": "Open user menu",
+    "name": "POS Administrator",
+    "role": "Admin",
+    "email": "admin@example.com",
+    "profileAction": "Profile",
+    "settingsAction": "Settings",
+    "signOutAction": "Sign out"
+  },
+  "auth": {
+    "eyebrow": "Secure workspace access",
+    "title": "Welcome back",
+    "description": "Sign in to continue to your point of sale workspace and manage daily operations.",
+    "formTitle": "Sign in",
+    "formDescription": "Enter your account credentials to continue.",
+    "email": "Email address",
+    "password": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "validation": {
+      "emailRequired": "Enter your email address.",
+      "emailInvalid": "Enter a valid email address.",
+      "passwordRequired": "Enter your password.",
+      "invalidCredentials": "The email or password is incorrect.",
+      "loginFailed": "Sign-in could not be completed. Try again."
+    },
+    "accessDenied": {
+      "title": "Access denied",
+      "description": "Your account does not have permission to open this page.",
+      "backToDashboard": "Return to dashboard"
+    },
+    "states": {
+      "checkingSession": "Checking your session…"
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "products": "Products",
+    "inventory": "Inventory",
+    "sales": "Sales",
+    "primaryLabel": "Primary navigation",
+    "breadcrumbLabel": "Breadcrumb",
+    "placeholder": {
+      "title": "Under development",
+      "description": "This module is being prepared. Its functionality will be added in a later step."
+    },
+    "groups": {
+      "overview": "Overview",
+      "productsInventory": "Products & inventory",
+      "purchasing": "Purchasing",
+      "organization": "Organization",
+      "sales": "Sales",
+      "customers": "Customers",
+      "finance": "Finance",
+      "maintenance": "Maintenance"
+    },
+    "items": {
+      "dashboard": {
+        "label": "Dashboard",
+        "description": "Review business performance across your branches."
+      },
+      "cashierDashboard": {
+        "label": "Cashier dashboard",
+        "description": "Review today's sales and receipts for your assigned branch."
+      },
+      "productTypes": {
+        "label": "Product types",
+        "description": "Organize products into clear, reusable types."
+      },
+      "products": {
+        "label": "Products",
+        "description": "Manage the products registered in your system."
+      },
+      "inventory": {
+        "label": "Inventory",
+        "description": "Manage stock quantities and current product prices."
+      },
+      "branchInventory": {
+        "label": "Branch inventory",
+        "description": "Review product quantities assigned to each branch."
+      },
+      "stockHistory": {
+        "label": "Stock history",
+        "description": "Review previous stock entries and supplier details."
+      },
+      "stockTransfers": {
+        "label": "Stock transfers",
+        "description": "Manage transfers from central inventory to your branches."
+      },
+      "suppliers": {
+        "label": "Suppliers",
+        "description": "Manage supplier contact details and account information."
+      },
+      "supplierTransactions": {
+        "label": "Supplier transactions",
+        "description": "Review and manage payments made to suppliers."
+      },
+      "supplierDeposits": {
+        "label": "Supplier deposit dates",
+        "description": "Track scheduled supplier deposits and their amounts."
+      },
+      "branches": {
+        "label": "Branches",
+        "description": "Manage the branches available in your system."
+      },
+      "employees": {
+        "label": "Employees",
+        "description": "Manage employee roles, branch assignments, and account access."
+      },
+      "salesDashboard": {
+        "label": "Sales dashboard",
+        "description": "This is a placeholder, not a completed analytics dashboard."
+      },
+      "salesManagement": {
+        "label": "Sales management",
+        "description": "Review sales records, branch performance, and receipt details."
+      },
+      "clients": {
+        "label": "Clients",
+        "description": "Client management will be implemented in a future step."
+      },
+      "wallets": {
+        "label": "Wallets",
+        "description": "Manage wallets, wallet types, and sample transaction history."
+      },
+      "expenses": {
+        "label": "Expenses",
+        "description": "Manage business-wide expenses and review spending by date."
+      },
+      "maintenanceManagement": {
+        "label": "Maintenance management",
+        "description": "Maintenance tools will be implemented in a future step."
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "A summary of your store activity.",
+    "sales": "Sales",
+    "orders": "Orders",
+    "products": "Products",
+    "branches": "Branches",
+    "welcome": "Welcome back, {name}",
+    "todayLabel": "Current date",
+    "overviewDescription": "Here is your business performance across all branches.",
+    "dateRange": {
+      "label": "Date range",
+      "options": {
+        "today": "Today",
+        "last7Days": "Last 7 days",
+        "last30Days": "Last 30 days",
+        "thisMonth": "This month"
+      }
+    },
+    "kpis": {
+      "sectionLabel": "Business performance indicators",
+      "sales": "Total sales",
+      "receipts": "Total receipts",
+      "branches": "Branches",
+      "products": "Products",
+      "vsPrevious": "vs. previous period"
+    },
+    "chart": {
+      "title": "Sales trend",
+      "description": "Sales performance for the selected period",
+      "accessibleLabel": "Area chart of sales over time",
+      "salesLabel": "Sales"
+    },
+    "branchPerformance": {
+      "title": "Branch performance",
+      "description": "Sales contribution across your branches",
+      "receipts": "{count, plural, one {# receipt} other {# receipts}}",
+      "contribution": "Sales contribution for {branch}"
+    },
+    "branchNames": {
+      "downtown": "Downtown",
+      "nasrCity": "Nasr City",
+      "alexandria": "Alexandria",
+      "giza": "Giza"
+    },
+    "topProducts": {
+      "title": "Top-selling products",
+      "description": "Best-performing products for the selected period",
+      "product": "Product",
+      "sku": "SKU",
+      "quantity": "Quantity sold",
+      "sales": "Sales"
+    },
+    "productNames": {
+      "arabicaCoffee": "Arabica coffee",
+      "wholeMilk": "Whole milk",
+      "mineralWater": "Mineral water",
+      "chocolateBar": "Chocolate bar",
+      "paperCups": "Paper cups"
+    },
+    "activity": {
+      "title": "Recent activity",
+      "description": "Illustrative business events"
+    },
+    "activities": {
+      "saleCompleted": {
+        "title": "Sale completed",
+        "description": "A new receipt was completed at Downtown."
+      },
+      "productAdded": {
+        "title": "Product added",
+        "description": "A new item was added to the product catalog."
+      },
+      "stockTransferred": {
+        "title": "Stock transferred",
+        "description": "Inventory was transferred to Alexandria."
+      },
+      "employeeAdded": {
+        "title": "Employee added",
+        "description": "A new employee profile was created."
+      },
+      "supplierTransaction": {
+        "title": "Supplier transaction recorded",
+        "description": "A supplier transaction was recorded for review."
+      }
+    },
+    "inventory": {
+      "title": "Inventory overview",
+      "description": "Stock availability across all branches",
+      "totalItems": "Units in inventory",
+      "products": "products",
+      "distribution": "Distribution of products by stock status",
+      "inStock": "In stock",
+      "lowStock": "Low stock",
+      "outOfStock": "Out of stock"
+    }
+  },
+  "cashierDashboard": {
+    "title": "Cashier Dashboard",
+    "todayLabel": "Today's date",
+    "welcome": "Welcome, {name}",
+    "overviewDescription": "Today's activity for {branch}.",
+    "actions": {
+      "createSale": "Create Sale",
+      "close": "Close",
+      "retry": "Retry"
+    },
+    "kpis": {
+      "sectionLabel": "Today's cashier performance",
+      "sales": "Today's total sales",
+      "receipts": "Today's receipts",
+      "completedSales": "Completed sales",
+      "averageReceipt": "Average completed receipt"
+    },
+    "receipts": {
+      "title": "Today's receipts",
+      "description": "Recent receipt activity for your assigned branch.",
+      "count": "{count, plural, one {# receipt} other {# receipts}}",
+      "reference": "Receipt number",
+      "time": "Time",
+      "amount": "Total amount",
+      "paymentMethod": "Payment method",
+      "status": "Sale status",
+      "salesman": "Salesman",
+      "actions": "Actions",
+      "view": "View details",
+      "viewNamed": "View receipt {reference}",
+      "detailsDescription": "Receipt summary",
+      "itemsTitle": "Products",
+      "dateTime": "Sale date and time",
+      "cashier": "Cashier",
+      "branch": "Branch",
+      "product": "Product",
+      "quantity": "Quantity",
+      "unitPrice": "Unit price",
+      "lineTotal": "Line total",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "total": "Final total",
+      "itemsUnavailable": "Product line details are unavailable for this receipt.",
+      "emptyTitle": "No receipts today",
+      "emptyDescription": "Receipts for your branch will appear here when available."
+    },
+    "paymentMethods": {
+      "cash": "Cash",
+      "card": "Card",
+      "mobileWallet": "Mobile wallet",
+      "wallet": "Wallet"
+    },
+    "statuses": {
+      "completed": "Completed",
+      "rejected": "Payment rejected",
+      "refunded": "Refunded",
+      "voided": "Voided"
+    },
+    "branchCard": {
+      "title": "Current branch",
+      "description": "Your dashboard is scoped to this branch.",
+      "branch": "Branch",
+      "completed": "Completed sales",
+      "completedCount": "{count, plural, one {# sale} other {# sales}}",
+      "salesTotal": "Sales total"
+    },
+    "createSale": {
+      "title": "Create Sale",
+      "description": "Start a new sale for this branch.",
+      "nextStepTitle": "Sale workflow coming next",
+      "nextStepDescription": "Product selection, payment, and receipt confirmation will be added in the next step."
+    },
+    "states": {
+      "loading": "Loading cashier dashboard…",
+      "loadError": "Cashier dashboard data could not be loaded. Check the mock cashier and branch setup, then retry."
+    }
+  },
+  "saleWorkflow": {
+    "title": "Create Sale",
+    "description": "Create a sale using your assigned branch.",
+    "salesman": "Salesman responsible",
+    "selectSalesman": "Select the responsible employee",
+    "clientPhone": "Client phone number",
+    "clientName": "Client name",
+    "productSerialNumber": "Product serial number",
+    "productSerialPlaceholder": "Enter the product serial number",
+    "productQuantity": "Quantity",
+    "addLineItem": "Add item",
+    "cartTitle": "Sale items",
+    "cartCount": "{count, plural, one {# item} other {# items}}",
+    "quantityNamed": "Quantity for {serialNumber}",
+    "allowedDiscount": "Allowed discount: {percentage}%",
+    "desiredDiscount": "Desired discount percentage",
+    "comments": "Comments (optional)",
+    "paymentMethod": "Payment method",
+    "selectPaymentMethod": "Select payment method",
+    "notAvailable": "Not available",
+    "operationError": "The sale request could not be completed. Try again.",
+    "sessionExpired": "Your session has expired or is not authorized. Sign in again.",
+    "steps": {
+      "label": "Sale workflow steps",
+      "process": "Process Sale",
+      "confirm": "Confirm Sale"
+    },
+    "actions": {
+      "removeNamed": "Remove {serialNumber}",
+      "increaseNamed": "Increase quantity for {serialNumber}",
+      "decreaseNamed": "Decrease quantity for {serialNumber}",
+      "showReceipt": "Process sale",
+      "confirmPayment": "Confirm Payment",
+      "cancel": "Cancel",
+      "backToEdit": "Back to Edit",
+      "rejectSale": "Reject Sale",
+      "done": "Done"
+    },
+    "discard": {
+      "title": "Discard this sale?",
+      "description": "Your entered sale information will be lost if you close now.",
+      "keepEditing": "Keep editing",
+      "discard": "Discard sale"
+    },
+    "result": {
+      "successTitle": "Payment Confirmed Successfully",
+      "successMessage": "The payment was confirmed and the sale is complete.",
+      "rejectedTitle": "Sale Rejected",
+      "rejectedMessage": "This sale was rejected in this screen.",
+      "rejectedMockNote": "Rejection is a local UI action only. The backend has not changed the receipt status."
+    },
+    "empty": {
+      "cartTitle": "No products in this sale",
+      "cartDescription": "Enter a product serial number and add it to the sale."
+    },
+    "receipt": {
+      "title": "Receipt preview",
+      "description": "Review the backend-priced receipt and confirm the sale.",
+      "receiptPrice": "Receipt price"
+    },
+    "validation": {
+      "employeeUnavailable": "Your authenticated employee or branch context is unavailable.",
+      "salesmanRequired": "Select the responsible employee.",
+      "salesmanUnavailable": "The selected employee is not available in this cashier session.",
+      "clientPhoneRequired": "Enter the client's phone number.",
+      "clientNameRequired": "Enter the client's name.",
+      "serialRequired": "Enter a product serial number.",
+      "itemsRequired": "Add at least one product.",
+      "duplicateProduct": "This product serial number is already in the sale.",
+      "quantityInvalid": "Each quantity must be a positive whole number.",
+      "discountInvalid": "Enter a valid discount percentage of zero or more.",
+      "paymentRequired": "Select a payment method."
+    },
+    "feedback": {
+      "completed": "Sale confirmed successfully for receipt {reference}."
+    },
+    "states": {
+      "processing": "Processing sale…",
+      "confirming": "Confirming sale…"
+    }
+  },
+  "salesManagement": {
+    "title": "Sales Management",
+    "description": "Review sales records and performance across all branches.",
+    "summary": {
+      "title": "Sales summary",
+      "totalSales": "Total sales amount",
+      "receipts": "Total receipts",
+      "completed": "Completed sales",
+      "rejected": "Rejected sales"
+    },
+    "records": {
+      "title": "Sales records",
+      "description": "Search and review receipts processed across your branches.",
+      "count": "{count, plural, one {# receipt} other {# receipts}}",
+      "page": "Page {current} of {total}",
+      "emptyTitle": "No sales found",
+      "emptyDescription": "Try changing the search or filters."
+    },
+    "filters": {
+      "search": "Search by receipt number",
+      "searchPlaceholder": "Search receipt number",
+      "branch": "Branch",
+      "allBranches": "All branches",
+      "status": "Status",
+      "allStatuses": "All statuses",
+      "from": "From",
+      "to": "To",
+      "clear": "Clear filters"
+    },
+    "table": {
+      "reference": "Receipt number",
+      "dateTime": "Date and time",
+      "branch": "Branch",
+      "cashier": "Cashier",
+      "salesman": "Salesman",
+      "amount": "Total amount",
+      "paymentMethod": "Payment method",
+      "status": "Sale status",
+      "actions": "Actions",
+      "view": "View receipt",
+      "viewNamed": "View receipt {reference}",
+      "unavailable": "Not available"
+    },
+    "analysis": {
+      "branchesTitle": "Sales by branch",
+      "branchesDescription": "Completed sale totals grouped by branch.",
+      "productsTitle": "Best-selling products",
+      "productsDescription": "Revenue and quantities from receipts with item details.",
+      "receipts": "Completed receipts",
+      "product": "Product",
+      "quantity": "Quantity sold",
+      "revenue": "Product revenue",
+      "noBranchData": "No branch sales data is available.",
+      "noProductData": "Product totals are unavailable because the existing receipts do not include item details."
+    },
+    "actions": {
+      "retry": "Retry",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "states": {
+      "loading": "Loading sales records…",
+      "error": "Sales records could not be loaded. Try again."
+    }
+  },
+  "expenses": {
+    "title": "Expense Management",
+    "description": "Review and manage business-wide expenses. This view currently uses sample data.",
+    "actions": {
+      "add": "Add expense",
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete",
+      "create": "Create expense",
+      "saveChanges": "Save changes",
+      "cancel": "Cancel",
+      "close": "Close",
+      "clearFilter": "Clear date filter",
+      "retry": "Retry",
+      "viewNamed": "View {name}",
+      "editNamed": "Edit {name}",
+      "deleteNamed": "Delete {name}"
+    },
+    "table": {
+      "name": "Expense name",
+      "detail": "Details",
+      "price": "Amount",
+      "timestamp": "Date and time",
+      "actions": "Actions"
+    },
+    "filter": {
+      "timestampLabel": "Filter by date"
+    },
+    "resultsCount": "{count, plural, one {# expense} other {# expenses}}",
+    "pagination": {
+      "showing": "Showing {start}–{end} of {total}",
+      "pageSize": "Rows per page",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {page} of {total}"
+    },
+    "empty": {
+      "noExpensesTitle": "No expenses yet",
+      "noExpensesDescription": "Add an expense to start keeping track of business spending.",
+      "noMatchesTitle": "No expenses for this date",
+      "noMatchesDescription": "Try another date or clear the date filter."
+    },
+    "form": {
+      "addTitle": "Add expense",
+      "editTitle": "Edit expense",
+      "description": "Enter the expense details and date.",
+      "nameLabel": "Expense name",
+      "namePlaceholder": "e.g. Office supplies",
+      "detailLabel": "Details",
+      "detailPlaceholder": "Describe what this expense covers",
+      "priceLabel": "Amount (EGP)",
+      "pricePlaceholder": "0.00",
+      "timestampLabel": "Date and time",
+      "validation": {
+        "nameRequired": "Enter an expense name.",
+        "detailRequired": "Enter expense details.",
+        "priceInvalid": "Enter an amount greater than zero.",
+        "timestampRequired": "Choose a valid date and time."
+      }
+    },
+    "details": {
+      "id": "Record ID"
+    },
+    "delete": {
+      "title": "Delete expense?",
+      "description": "This will permanently delete “{name}” from the sample expense records."
+    },
+    "states": {
+      "loading": "Loading expenses…",
+      "notAvailable": "Not available"
+    },
+    "feedback": {
+      "created": "Expense created.",
+      "updated": "Expense updated.",
+      "deleted": "Expense deleted.",
+      "invalid": "Check the expense details and try again.",
+      "loadError": "Expenses could not be loaded. Try again.",
+      "loadOneError": "This expense could not be loaded. It may have been removed.",
+      "saveError": "The expense could not be saved. Try again.",
+      "deleteError": "The expense could not be deleted. Try again."
+    }
+  },
+  "wallets": {
+    "title": "Wallets Management",
+    "description": "Manage wallets and their limits. This module currently uses in-memory sample data.",
+    "actions": {
+      "close": "Close",
+      "cancel": "Cancel",
+      "create": "Create",
+      "saveChanges": "Save changes",
+      "delete": "Delete",
+      "addWallet": "Add wallet",
+      "addType": "Add wallet type",
+      "clearFilters": "Clear filters",
+      "viewNamed": "View {name}",
+      "editNamed": "Edit {name}",
+      "deleteNamed": "Delete {name}"
+    },
+    "sections": {
+      "label": "Wallet management sections",
+      "wallets": "Wallets",
+      "types": "Wallet Types",
+      "transactions": "Transactions"
+    },
+    "summary": {
+      "title": "Wallet summary",
+      "wallets": "Wallets",
+      "totalBalance": "Total wallet balance",
+      "totalCapacity": "Total wallet capacity",
+      "availableCapacity": "Remaining capacity",
+      "walletTypes": "Wallet types"
+    },
+    "search": {
+      "walletsLabel": "Search wallets",
+      "walletsPlaceholder": "Search by phone number",
+      "typesLabel": "Search wallet types",
+      "typesPlaceholder": "Search by type name"
+    },
+    "filter": {
+      "type": "Type",
+      "allTypes": "All types",
+      "allWallets": "All wallets"
+    },
+    "sort": {
+      "label": "Sort",
+      "phoneAsc": "Phone number A–Z",
+      "phoneDesc": "Phone number Z–A",
+      "balanceAsc": "Balance low to high",
+      "balanceDesc": "Balance high to low"
+    },
+    "resultsCount": "{count, plural, one {# result} other {# results}}",
+    "table": {
+      "phone": "Phone number",
+      "type": "Wallet type",
+      "balance": "Balance",
+      "actions": "Actions"
+    },
+    "typeTable": {
+      "name": "Name",
+      "capacity": "Capacity",
+      "dailyTransfer": "Daily transfer limit",
+      "dailyWithdraw": "Daily withdrawal limit",
+      "monthlyTransfer": "Monthly transfer limit",
+      "monthlyWithdraw": "Monthly withdrawal limit",
+      "walletCount": "Assigned wallets"
+    },
+    "unknownType": "Unknown wallet type",
+    "pagination": {
+      "range": "Showing {start}–{end} of {total}",
+      "rows": "Rows per page",
+      "page": "Page {page} of {pages}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "empty": {
+      "noWalletMatches": "No matching wallets",
+      "noWallets": "No wallets yet",
+      "walletsDescription": "Add a wallet to start managing wallet balances.",
+      "noTypeMatches": "No matching wallet types",
+      "noTypes": "No wallet types yet",
+      "typesDescription": "Create a wallet type before adding a wallet.",
+      "noTransactions": "No transactions match these filters",
+      "transactionsDescription": "Try changing the wallet, type, or date filters."
+    },
+    "walletForm": {
+      "addTitle": "Add wallet",
+      "editTitle": "Edit wallet",
+      "description": "Enter the wallet contact, type, and current balance.",
+      "typeLabel": "Wallet type",
+      "selectType": "Select a wallet type",
+      "noTypes": "Create a wallet type before adding a wallet.",
+      "phoneLabel": "Phone number",
+      "phonePlaceholder": "Enter a phone number",
+      "balanceLabel": "Current balance"
+    },
+    "typeForm": {
+      "addTitle": "Add wallet type",
+      "editTitle": "Edit wallet type",
+      "description": "Set the wallet capacity and daily and monthly limits.",
+      "nameLabel": "Name",
+      "capacityLabel": "Maximum capacity",
+      "dailyLimits": "Daily limits",
+      "monthlyLimits": "Monthly limits",
+      "transferLimit": "Transfer limit",
+      "withdrawLimit": "Withdrawal limit"
+    },
+    "validation": {
+      "typeRequired": "Select a wallet type.",
+      "phoneRequired": "Enter a phone number.",
+      "amountInvalid": "Enter a valid amount that is zero or greater.",
+      "nameRequired": "Enter a wallet type name."
+    },
+    "details": {
+      "walletTitle": "Wallet details",
+      "typeTitle": "Wallet type details",
+      "walletDescription": "Current wallet and capacity information.",
+      "typeDescription": "Capacity and transaction limits for this wallet type.",
+      "capacity": "Maximum capacity",
+      "remainingCapacity": "Remaining capacity",
+      "remainingLimits": "Remaining Limits",
+      "dailyRemainingLimits": "Daily Remaining Limits",
+      "monthlyRemainingLimits": "Monthly Remaining Limits",
+      "remainingDepositAmount": "Remaining Deposit Amount",
+      "remainingTransferAmount": "Remaining Transfer Amount",
+      "notAvailable": "Not available"
+    },
+    "delete": {
+      "title": "Confirm deletion",
+      "walletDescription": "Delete wallet “{name}”? Sample transaction history will remain unchanged.",
+      "typeDescription": "Delete wallet type “{name}”?",
+      "typeInUse": "This wallet type is assigned to {count, plural, one {# wallet} other {# wallets}}. Reassign or delete those wallets before deleting the type."
+    },
+    "errors": {
+      "typeInUse": "This wallet type is still assigned to one or more wallets.",
+      "walletNotFound": "The wallet no longer exists. Refresh the list and try again.",
+      "typeNotFound": "The wallet type no longer exists. Refresh the list and try again."
+    },
+    "futureActions": {
+      "deposit": "Deposit",
+      "withdraw": "Withdraw",
+      "transfer": "Transfer",
+      "disabledHint": "This action is not available in the mock-only Wallets module."
+    },
+    "transactions": {
+      "sampleDataNotice": "Sample transaction data only. Transaction type labels are examples, not confirmed backend enum values. This history is read-only.",
+      "walletFilter": "Wallet",
+      "typeFilter": "Transaction type",
+      "from": "From",
+      "to": "To",
+      "date": "Date",
+      "wallet": "Wallet phone",
+      "type": "Type",
+      "amount": "Amount",
+      "fee": "Fee",
+      "phone": "Phone number",
+      "sampleTypeA": "Sample type A",
+      "sampleTypeB": "Sample type B",
+      "sampleTypeC": "Sample type C",
+      "unknownType": "Unknown transaction type"
+    }
+  },
+  "productTypes": {
+    "title": "Product types",
+    "description": "Organize products into clear, reusable types.",
+    "actions": {
+      "add": "Add product type",
+      "edit": "Edit",
+      "delete": "Delete",
+      "editNamed": "Edit {name}",
+      "deleteNamed": "Delete {name}",
+      "close": "Close",
+      "cancel": "Cancel",
+      "create": "Create product type",
+      "saveChanges": "Save changes"
+    },
+    "search": {
+      "label": "Search product types",
+      "placeholder": "Search by name"
+    },
+    "resultsCount": "{count, plural, one {# product type} other {# product types}}",
+    "table": {
+      "name": "Name",
+      "id": "ID",
+      "createdAt": "Date created",
+      "actions": "Actions"
+    },
+    "empty": {
+      "noMatchesTitle": "No matching product types",
+      "noMatchesDescription": "Try another search term or clear your search.",
+      "noRecordsTitle": "No product types yet",
+      "noRecordsDescription": "Create a product type to begin organizing the product catalogue."
+    },
+    "form": {
+      "addTitle": "Add product type",
+      "editTitle": "Edit product type",
+      "description": "Enter a name for this product type.",
+      "nameLabel": "Name",
+      "namePlaceholder": "e.g. Cables & Adapters",
+      "validation": {
+        "required": "Enter a product type name."
+      }
+    },
+    "delete": {
+      "title": "Delete product type?",
+      "description": "This will remove “{name}” from the product types list. This action cannot be undone."
+    },
+    "feedback": {
+      "loading": "Loading product types…",
+      "created": "Product type created.",
+      "updated": "Product type updated.",
+      "deleted": "Product type deleted.",
+      "loadError": "Product types could not be loaded.",
+      "saveError": "The product type could not be saved.",
+      "deleteError": "The product type could not be deleted.",
+      "unauthorized": "Your session has expired. Please sign in again."
+    }
+  },
+  "products": {
+    "title": "Product Catalogue",
+    "description": "Manage the products registered in your system.",
+    "actions": {
+      "add": "Add Product",
+      "edit": "Edit",
+      "delete": "Delete",
+      "viewNamed": "View {name}",
+      "edit": "Edit",
+      "editNamed": "Edit {name}",
+      "deleteNamed": "Delete {name}",
+      "clearFilters": "Clear filters",
+      "close": "Close",
+      "cancel": "Cancel",
+      "create": "Create product",
+      "saveChanges": "Save changes"
+    },
+    "search": {
+      "label": "Search products",
+      "placeholder": "Search by product name or serial number"
+    },
+    "filter": {
+      "label": "Product Type",
+      "allTypes": "All types"
+    },
+    "resultsCount": "{count, plural, one {# product} other {# products}}",
+    "table": {
+      "productName": "Product Name",
+      "serialNumber": "Serial Number",
+      "productType": "Product Type",
+      "actions": "Actions"
+    },
+    "unknownProductType": "Unknown product type",
+    "pagination": {
+      "showing": "Showing {start}–{end} of {total}",
+      "pageSize": "Rows per page",
+      "page": "Page {page} of {total}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "empty": {
+      "noMatchesTitle": "No matching products",
+      "noMatchesDescription": "Try a different search or product type, or clear your filters.",
+      "noRecordsTitle": "No products yet",
+      "noRecordsDescription": "Add a product to start building your catalogue."
+    },
+    "form": {
+      "addTitle": "Add product",
+      "editTitle": "Edit product",
+      "createDescription": "Enter the product details. A serial number will be assigned by the mock service.",
+      "editDescription": "Update the product name, type, or serial number.",
+      "nameLabel": "Product Name",
+      "namePlaceholder": "e.g. USB-C 65W Power Adapter",
+      "typeLabel": "Product Type",
+      "typePlaceholder": "Select a product type",
+      "serialNumberLabel": "Serial Number",
+      "serialNumberPlaceholder": "Enter a serial number",
+      "mockSerialNote": "A deterministic mock serial number will be assigned after creation. This is not a backend serial-number rule.",
+      "validation": {
+        "nameRequired": "Enter a product name.",
+        "typeRequired": "Select a product type.",
+        "noChanges": "Change the product name or type before saving."
+      }
+    },
+    "details": {
+      "description": "Product information"
+    },
+    "delete": {
+      "title": "Delete product?",
+      "description": "This will remove “{name}” from the product catalogue. This action cannot be undone."
+    },
+    "feedback": {
+      "loading": "Loading products…",
+      "created": "Product created.",
+      "createdSerial": "Product created. Serial number: {serialNumber}",
+      "updated": "Product updated.",
+      "deleted": "Product deleted.",
+      "loadError": "Products could not be loaded.",
+      "saveError": "The product could not be saved.",
+      "deleteError": "The product could not be deleted.",
+      "unauthorized": "Your session has expired. Please sign in again."
+    }
+  },
+  "inventory": {
+    "title": "Stock Management",
+    "description": "Manage product stock quantities and current prices.",
+    "actions": {
+      "add": "Add Stock",
+      "viewNamed": "View stock for {name}",
+      "editNamed": "Edit stock for {name}",
+      "deleteNamed": "Delete stock for {name}",
+      "edit": "Edit",
+      "delete": "Delete",
+      "clearFilters": "Clear filters",
+      "close": "Close",
+      "cancel": "Cancel",
+      "retry": "Retry",
+      "create": "Add stock",
+      "saveChanges": "Save changes"
+    },
+    "search": {
+      "label": "Search stock",
+      "placeholder": "Search by product name or serial number",
+      "localNote": "Search applies only to records on the currently loaded page."
+    },
+    "filter": {
+      "product": "Product",
+      "allProducts": "All products"
+    },
+    "resultsCount": "{count, plural, one {# stock record} other {# stock records}}",
+    "table": {
+      "product": "Product",
+      "serialNumber": "Serial Number",
+      "quantity": "Quantity",
+      "sellingPrice": "Selling Price",
+      "wholesalePrice": "Wholesale Price",
+      "purchasePrice": "Purchase Price",
+      "actions": "Actions"
+    },
+    "pagination": {
+      "showing": "Showing {start}–{end} of {total}",
+      "pageSize": "Rows per page",
+      "page": "Page {page} of {total}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "empty": {
+      "noMatchesTitle": "No matching stock records",
+      "noMatchesDescription": "Try another search or product, or clear your filters.",
+      "noRecordsTitle": "No stock records yet",
+      "noRecordsDescription": "Add stock to a product to get started."
+    },
+    "form": {
+      "addTitle": "Add stock",
+      "editTitle": "Edit stock",
+      "addDescription": "Record a stock purchase and its supplier details.",
+      "editDescription": "Update stock quantity or current per-piece prices.",
+      "product": "Product",
+      "selectProduct": "Select a product",
+      "quantity": "Total Quantity",
+      "purchasePrice": "Batch Purchase Price",
+      "sellingPrice": "Batch Selling Price per Piece",
+      "wholesalePrice": "Batch Wholesale Price per Piece",
+      "supplier": "Supplier",
+      "selectSupplier": "Select a supplier",
+      "depositAmount": "Supplier Deposit Amount",
+      "nextDepositAmount": "Supplier Next Deposit Amount",
+      "nextDepositDate": "Next Deposit Date",
+      "comments": "Comments",
+      "commentsPlaceholder": "Add a note about this stock purchase",
+      "currentSellingPrice": "Current Selling Price per Piece",
+      "currentWholesalePrice": "Current Wholesale Price per Piece",
+      "currentPurchasePrice": "Current Purchase Price per Piece",
+      "validation": {
+        "required": "This field is required.",
+        "productRequired": "Select a product from the catalogue.",
+        "productSerialRequired": "The selected product has no serial number.",
+        "supplierRequired": "Select a supplier.",
+        "dateRequired": "Choose the next deposit date and time.",
+        "dateInvalid": "Enter a valid date and time.",
+        "commentsRequired": "Enter a comment for this stock record.",
+        "nonNegative": "Enter a valid number that is zero or greater.",
+        "integerRequired": "Enter a whole number for quantity."
+      }
+    },
+    "details": {
+      "description": "Stock and current product price details",
+      "productId": "Product Identifier",
+      "notAvailable": "Not available"
+    },
+    "delete": {
+      "title": "Delete stock record?",
+      "description": "This will remove the stock record for “{name}”. This action cannot be undone."
+    },
+    "feedback": {
+      "loading": "Loading inventory…",
+      "loadingLookups": "Loading products and suppliers…",
+      "loadingDetails": "Loading stock details…",
+      "created": "Stock record added.",
+      "updated": "Stock record updated.",
+      "deleted": "Stock record deleted.",
+      "loadError": "Inventory could not be loaded.",
+      "productsLoadError": "Products could not be loaded.",
+      "suppliersLoadError": "Suppliers could not be loaded.",
+      "detailsError": "Stock details could not be loaded.",
+      "saveError": "The stock record could not be saved.",
+      "deleteError": "The stock record could not be deleted.",
+      "unauthorized": "Your session has expired. Please sign in again."
+    }
+  },
+  "stockHistory": {
+    "title": "Stock History",
+    "description": "Review previous stock entries, products, and supplier details.",
+    "actions": {
+      "view": "View",
+      "viewDetails": "View details",
+      "viewNamed": "View history details for {name}",
+      "clearFilters": "Clear filters",
+      "close": "Close",
+      "retry": "Retry"
+    },
+    "search": {
+      "label": "Search stock history",
+      "placeholder": "Search by product name",
+      "localNote": "Search applies only to records on the currently loaded page."
+    },
+    "filter": {
+      "product": "Product",
+      "allProducts": "All products"
+    },
+    "resultsCount": "{count, plural, one {# history record} other {# history records}}",
+    "table": {
+      "product": "Product",
+      "supplier": "Supplier",
+      "date": "Date",
+      "quantity": "Quantity",
+      "batchSellingPrice": "Batch Selling Price",
+      "batchPurchasePrice": "Batch Purchase Price",
+      "batchWholesalePrice": "Batch Wholesale Price",
+      "profitMargin": "Profit Margin",
+      "actions": "Actions"
+    },
+    "pagination": {
+      "showing": "Showing {start}–{end} of {total}",
+      "pageSize": "Rows per page",
+      "page": "Page {page} of {total}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "empty": {
+      "noMatchesTitle": "No matching history records",
+      "noMatchesDescription": "Try another product name or filter, or clear your filters.",
+      "noRecordsTitle": "No stock history yet",
+      "noRecordsDescription": "Stock entries will appear here when available."
+    },
+    "details": {
+      "description": "Stock history record details",
+      "productSection": "Product information",
+      "productId": "Product ID",
+      "supplierSection": "Supplier information",
+      "supplierPhone": "Supplier Phone Number",
+      "entrySection": "Stock entry information",
+      "notAvailable": "Not available"
+    },
+    "feedback": {
+      "loading": "Loading stock history…",
+      "loadingProducts": "Loading products…",
+      "loadingDetails": "Loading history details…",
+      "loadError": "Stock history could not be loaded.",
+      "productsError": "Products could not be loaded for filtering.",
+      "detailsError": "Stock history details could not be loaded.",
+      "unauthorized": "Your session has expired. Please sign in again."
+    }
+  },
+  "suppliers": {
+    "title": "Supplier Management",
+    "description": "Manage supplier contact details and account information.",
+    "actions": {
+      "add": "Add Supplier",
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete",
+      "viewNamed": "View {name}",
+      "editNamed": "Edit {name}",
+      "deleteNamed": "Delete {name}",
+      "clearFilter": "Clear filter",
+      "close": "Close",
+      "cancel": "Cancel",
+      "create": "Create supplier",
+      "saveChanges": "Save changes",
+      "retry": "Retry"
+    },
+    "search": {
+      "label": "Search supplier phone numbers",
+      "placeholder": "Filter by phone number"
+    },
+    "resultsCount": "{count, plural, one {# supplier} other {# suppliers}}",
+    "table": {
+      "name": "Supplier Name",
+      "phoneNumber": "Phone Number",
+      "actions": "Actions"
+    },
+    "pagination": {
+      "showing": "Showing {start}–{end} of {total}",
+      "pageSize": "Rows per page",
+      "page": "Page {page} of {total}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "empty": {
+      "noMatchesTitle": "No matching suppliers",
+      "noMatchesDescription": "Try a different phone number or clear the filter.",
+      "noSuppliersTitle": "No suppliers yet",
+      "noSuppliersDescription": "Add a supplier to make it available in stock records."
+    },
+    "form": {
+      "addTitle": "Add supplier",
+      "editTitle": "Edit supplier",
+      "description": "Enter the supplier contact details.",
+      "nameLabel": "Supplier Name",
+      "namePlaceholder": "e.g. Cairo Distribution Co.",
+      "phoneNumberLabel": "Phone Number",
+      "phoneNumberPlaceholder": "Enter a phone number",
+      "validation": {
+        "nameRequired": "Enter a supplier name.",
+        "phoneRequired": "Enter a phone number."
+      }
+    },
+    "details": {
+      "description": "Supplier and account information",
+      "defferedAmount": "Deferred Amount"
+    },
+    "delete": {
+      "title": "Delete supplier?",
+      "description": "This will remove “{name}” from the supplier list. This action cannot be undone."
+    },
+    "states": {
+      "loading": "Loading suppliers…",
+      "loadError": "Suppliers could not be loaded. Try again.",
+      "operationError": "The supplier operation could not be completed. Try again.",
+      "detailsError": "Supplier details could not be loaded. Try again.",
+      "unauthorized": "Your session has expired. Please sign in again."
+    },
+    "feedback": {
+      "created": "Supplier created.",
+      "updated": "Supplier updated.",
+      "deleted": "Supplier deleted."
+    }
+  },
+  "supplierRecords": {
+    "depositTitle": "Supplier Deposit Dates",
+    "depositDescription": "Review and manage scheduled supplier deposits.",
+    "transactionTitle": "Supplier Transactions",
+    "transactionDescription": "Record and review payments made to suppliers.",
+    "actions": {
+      "addDeposit": "Add Deposit Date",
+      "addTransaction": "Add Transaction",
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete",
+      "viewNamed": "View record for {name}",
+      "editNamed": "Edit record for {name}",
+      "deleteNamed": "Delete record for {name}",
+      "clearFilter": "Clear filter",
+      "retry": "Retry",
+      "close": "Close",
+      "cancel": "Cancel",
+      "create": "Create",
+      "saveChanges": "Save changes"
+    },
+    "filters": {
+      "allSuppliers": "All suppliers"
+    },
+    "fields": {
+      "supplier": "Supplier",
+      "phoneNumber": "Phone number",
+      "depositAmount": "Deposit amount",
+      "depositDate": "Deposit date",
+      "nextDeposit": "Next deposit",
+      "transferredAmount": "Transferred amount",
+      "timestamp": "Recorded at",
+      "comments": "Comments",
+      "actions": "Actions"
+    },
+    "details": {
+      "notAvailable": "Not available"
+    },
+    "form": {
+      "selectSupplier": "Select a supplier",
+      "selectNextDeposit": "Select a scheduled deposit",
+      "noNextDeposits": "No scheduled deposits for this supplier"
+    },
+    "depositForm": {
+      "createTitle": "Add deposit date",
+      "editTitle": "Edit deposit date",
+      "description": "Enter the deposit amount and scheduled date."
+    },
+    "transactionForm": {
+      "createTitle": "Add supplier transaction",
+      "editTitle": "Edit supplier transaction",
+      "description": "Enter the payment amount and optional comments."
+    },
+    "depositDetails": {
+      "title": "Deposit date details"
+    },
+    "transactionDetails": {
+      "title": "Supplier transaction details"
+    },
+    "validation": {
+      "supplierRequired": "Select a supplier.",
+      "amountRequired": "Enter a valid amount.",
+      "dateRequired": "Select a deposit date.",
+      "dateInvalid": "Enter a valid deposit date.",
+      "nextDepositRequired": "Select a scheduled deposit."
+    },
+    "resultsCount": "{count, plural, one {# record} other {# records}}",
+    "pagination": {
+      "showing": "Showing {start}–{end} of {total}",
+      "pageSize": "Rows per page",
+      "page": "Page {page} of {total}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "empty": {
+      "title": "No records yet",
+      "description": "Records will appear here after they are created.",
+      "filteredTitle": "No matching records",
+      "filteredDescription": "Try another supplier or clear the filter."
+    },
+    "delete": {
+      "title": "Delete record?",
+      "depositDescription": "This will remove the deposit date for {supplier}. This action cannot be undone.",
+      "transactionDescription": "This will remove the transaction for {supplier}. This action cannot be undone."
+    },
+    "feedback": {
+      "loading": "Loading supplier records…",
+      "loadError": "Supplier records could not be loaded.",
+      "suppliersError": "Supplier options could not be loaded.",
+      "saveError": "The supplier record could not be saved.",
+      "deleteError": "The supplier record could not be deleted.",
+      "unauthorized": "Your session has expired. Please sign in again.",
+      "depositCreated": "Deposit date created.",
+      "depositUpdated": "Deposit date updated.",
+      "depositDeleted": "Deposit date deleted.",
+      "transactionCreated": "Supplier transaction created.",
+      "transactionUpdated": "Supplier transaction updated.",
+      "transactionDeleted": "Supplier transaction deleted."
+    }
+  },
+  "branchInventory": {
+    "title": "Branch Inventory",
+    "description": "Review stock quantities held by each branch.",
+    "actions": {
+      "retry": "Retry",
+      "viewNamed": "View {name}",
+      "edit": "Edit",
+      "editNamed": "Edit {name}",
+      "deleteNamed": "Delete {name}",
+      "close": "Close",
+      "cancel": "Cancel",
+      "save": "Save",
+      "delete": "Delete"
+    },
+    "filter": {
+      "branch": "Branch",
+      "allBranches": "All branches",
+      "selectBranch": "Select a branch",
+      "selectBranchPrompt": "Select a branch to view its inventory.",
+      "noBranchesAvailable": "No branches are available."
+    },
+    "resultsCount": "{count, plural, one {# product} other {# products}}",
+    "table": {
+      "product": "Product",
+      "quantity": "Branch quantity",
+      "actions": "Actions"
+    },
+    "pagination": {
+      "showing": "Showing {start}–{end} of {total}",
+      "pageSize": "Rows per page",
+      "page": "Page {page} of {total}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "empty": {
+      "title": "No branch inventory found",
+      "description": "Inventory transferred to this branch will appear here."
+    },
+    "form": {
+      "title": "Update branch quantity",
+      "validation": {
+        "quantity": "Enter a non-negative whole number."
+      }
+    },
+    "details": {
+      "description": "Product and branch quantity details",
+      "productType": "Product Type",
+      "notAvailable": "Not available"
+    },
+    "delete": {
+      "title": "Delete branch inventory record?",
+      "description": "This will remove the branch inventory record for “{name}”. This action cannot be undone."
+    },
+    "feedback": {
+      "loading": "Loading branch inventory…",
+      "loadingDetails": "Loading inventory details…",
+      "loadError": "Branch inventory could not be loaded.",
+      "branchesError": "Branches could not be loaded.",
+      "detailsError": "Branch inventory details could not be loaded.",
+      "updateError": "Branch inventory could not be updated.",
+      "deleteError": "Branch inventory could not be deleted.",
+      "updated": "Branch inventory updated.",
+      "deleted": "Branch inventory deleted.",
+      "unauthorized": "Your session has expired. Please sign in again."
+    }
+  },
+  "branchManagement": {
+    "title": "Branch Management",
+    "description": "Manage the branches available in your system.",
+    "actions": {
+      "add": "Add Branch",
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete",
+      "viewNamed": "View {name}",
+      "editNamed": "Edit {name}",
+      "deleteNamed": "Delete {name}",
+      "close": "Close",
+      "cancel": "Cancel",
+      "create": "Create branch",
+      "saveChanges": "Save changes",
+      "retry": "Retry"
+    },
+    "resultsCount": "{count, plural, one {# branch} other {# branches}}",
+    "table": {
+      "name": "Branch Name",
+      "actions": "Actions"
+    },
+    "empty": {
+      "title": "No branches yet",
+      "description": "Add a branch to make it available across your system."
+    },
+    "form": {
+      "addTitle": "Add branch",
+      "editTitle": "Edit branch",
+      "description": "Enter a name for this branch.",
+      "nameLabel": "Branch Name",
+      "namePlaceholder": "e.g. Downtown Cairo Branch",
+      "validation": {
+        "required": "Enter a branch name."
+      }
+    },
+    "details": {
+      "description": "Branch information",
+      "id": "Branch ID"
+    },
+    "delete": {
+      "title": "Delete branch?",
+      "description": "This will remove “{name}” from the branch list. This action cannot be undone."
+    },
+    "states": {
+      "loading": "Loading branches…",
+      "loadError": "Branches could not be loaded. Try again.",
+      "operationError": "The branch could not be updated. Try again.",
+      "unauthorized": "Your session has expired. Please sign in again."
+    },
+    "feedback": {
+      "created": "Branch created.",
+      "updated": "Branch updated.",
+      "deleted": "Branch deleted."
+    }
+  },
+  "employees": {
+    "title": "Employee Management",
+    "description": "Manage employee roles, branch assignments, and account access.",
+    "actions": {
+      "add": "Add Employee",
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "regeneratePassword": "Regenerate password",
+      "viewNamed": "View {name}",
+      "editNamed": "Edit {name}",
+      "deleteNamed": "Delete {name}",
+      "activateNamed": "Activate {name}",
+      "deactivateNamed": "Deactivate {name}",
+      "regeneratePasswordNamed": "Regenerate password for {name}",
+      "clearFilters": "Clear filters",
+      "close": "Close",
+      "cancel": "Cancel",
+      "create": "Create employee",
+      "saveChanges": "Save changes",
+      "retry": "Retry"
+    },
+    "filters": {
+      "branch": "Branch",
+      "allBranches": "All branches",
+      "role": "Role",
+      "allRoles": "All roles",
+      "status": "Status",
+      "allStatuses": "All statuses"
+    },
+    "roles": {
+      "admin": "Admin",
+      "inventory-man": "Inventory Manager",
+      "cashier": "Cashier",
+      "salesman": "Salesman",
+      "sales-man": "Sales Man"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "resultsCount": "{count, plural, one {# employee} other {# employees}}",
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "branch": "Branch",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "pagination": {
+      "showing": "Showing {start}–{end} of {total}",
+      "pageSize": "Rows per page",
+      "page": "Page {page} of {total}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "empty": {
+      "noMatchesTitle": "No matching employees",
+      "noMatchesDescription": "Try different filters or clear your filters.",
+      "noEmployeesTitle": "No employees yet",
+      "noEmployeesDescription": "Add an employee to manage access to your system."
+    },
+    "form": {
+      "addTitle": "Add employee",
+      "editTitle": "Edit employee",
+      "createDescription": "Enter the employee details and choose their role.",
+      "editDescription": "Update the employee name, role, or branch assignment.",
+      "name": "Name",
+      "namePlaceholder": "Enter employee name",
+      "role": "Role",
+      "selectRole": "Select a role",
+      "branch": "Branch",
+      "selectBranch": "Select a branch",
+      "validation": {
+        "nameRequired": "Enter an employee name.",
+        "roleRequired": "Select an employee role.",
+        "branchRequired": "Select a branch for this role."
+      }
+    },
+    "details": {
+      "description": "Employee account and assignment details",
+      "id": "Employee ID"
+    },
+    "delete": {
+      "title": "Delete employee?",
+      "description": "This will remove “{name}” from the employee list. This action cannot be undone."
+    },
+    "password": {
+      "confirmTitle": "Regenerate password?",
+      "confirmDescription": "A new password will be generated for {name}. The current password will no longer work."
+    },
+    "credentials": {
+      "title": "Employee credentials",
+      "description": "These backend-issued credentials are displayed only once. Store them securely before closing.",
+      "email": "Email",
+      "password": "Temporary password",
+      "oneTimeNotice": "The password will not be shown again after you close this panel."
+    },
+    "notAvailable": "Not assigned",
+    "states": {
+      "loading": "Loading employees…",
+      "loadError": "Employees could not be loaded. Try again.",
+      "operationError": "The employee operation could not be completed. Try again.",
+      "unauthorized": "Your session has expired or you are not authorized. Sign in again.",
+      "branchesError": "Branches could not be loaded for employee assignments.",
+      "detailsError": "Employee details could not be loaded. Try again.",
+      "detailsLoading": "Loading employee details…"
+    },
+    "feedback": {
+      "created": "Employee created.",
+      "updated": "Employee updated.",
+      "deleted": "Employee deleted.",
+      "activated": "Employee activated.",
+      "deactivated": "Employee deactivated.",
+      "passwordRegenerated": "Employee password regenerated."
+    }
+  },
+  "transfers": {
+    "title": "Inventory Transfers",
+    "description": "Manage transfers from central inventory to your branches.",
+    "actions": {
+      "new": "New Transfer",
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete",
+      "viewNamed": "View transfer for {name}",
+      "editNamed": "Edit transfer for {name}",
+      "deleteNamed": "Delete transfer for {name}",
+      "clearFilters": "Clear filters",
+      "close": "Close",
+      "cancel": "Cancel",
+      "create": "Create transfer",
+      "saveChanges": "Save changes",
+      "retry": "Retry"
+    },
+    "filter": {
+      "branch": "Branch",
+      "allBranches": "All branches",
+      "product": "Product",
+      "allProducts": "All products"
+    },
+    "resultsCount": "{count, plural, one {# transfer} other {# transfers}}",
+    "table": {
+      "branch": "Branch",
+      "product": "Product",
+      "timestamp": "Transfer date",
+      "quantity": "Quantity",
+      "actions": "Actions"
+    },
+    "pagination": {
+      "showing": "Showing {start}–{end} of {total}",
+      "pageSize": "Rows per page",
+      "page": "Page {page} of {total}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "empty": {
+      "noMatchesTitle": "No matching transfers",
+      "noMatchesDescription": "Try another branch or product, or clear your filters.",
+      "noTransfersTitle": "No transfers yet",
+      "noTransfersDescription": "Create a transfer from central inventory to a branch."
+    },
+    "form": {
+      "createTitle": "New transfer",
+      "editTitle": "Edit transfer",
+      "createDescription": "Select a branch, product, and quantity to transfer.",
+      "editDescription": "Update the branch, product, or quantity for this transfer.",
+      "branch": "Branch",
+      "selectBranch": "Select a branch",
+      "product": "Product",
+      "selectProduct": "Select a product",
+      "quantity": "Quantity",
+      "quantityPlaceholder": "Enter a whole number greater than zero",
+      "summaryTitle": "Transfer summary",
+      "validation": {
+        "branchRequired": "Select a branch.",
+        "productRequired": "Select a product.",
+        "quantityRequired": "Enter a quantity.",
+        "quantityInvalid": "Quantity must be a positive whole number."
+      }
+    },
+    "details": {
+      "description": "Transfer information",
+      "branchId": "Branch ID",
+      "productId": "Product ID",
+      "notAvailable": "Not available"
+    },
+    "delete": {
+      "title": "Delete transfer?",
+      "description": "This will remove the transfer of “{product}” to “{branch}”. This action cannot be undone."
+    },
+    "feedback": {
+      "created": "Transfer created.",
+      "updated": "Transfer updated.",
+      "deleted": "Transfer deleted.",
+      "loading": "Loading transfers…",
+      "loadingOptions": "Loading branches and products…",
+      "loadingDetails": "Loading transfer details…",
+      "loadError": "Transfers could not be loaded.",
+      "optionsError": "Branch or product options could not be loaded.",
+      "detailsError": "Transfer details could not be loaded.",
+      "saveError": "The transfer could not be saved.",
+      "deleteError": "The transfer could not be deleted.",
+      "unauthorized": "Your session has expired. Sign in again."
+    }
+  },
+  "designSystem": {
+    "eyebrow": "POS / FOUNDATION",
+    "title": "Design system",
+    "intro": "A practical foundation for a clear, consistent point of sale experience.",
+    "typography": {
+      "title": "Typography",
+      "description": "A flexible system with Arabic-friendly system fallbacks.",
+      "pageTitleLabel": "Page title",
+      "pageTitleExample": "Clear hierarchy, confident type",
+      "sectionHeadingLabel": "Section heading",
+      "sectionHeadingExample": "A section heading",
+      "cardTitleLabel": "Card title",
+      "cardTitleExample": "A concise card title",
+      "bodyLabel": "Body text",
+      "bodyExample": "Comfortable body text for interface content and supporting descriptions.",
+      "secondaryLabel": "Secondary text",
+      "secondaryExample": "Subdued text for hints, descriptions, and secondary details.",
+      "smallLabel": "Small label",
+      "smallLabelExample": "LAST UPDATED",
+      "numericLabel": "Numeric value",
+      "numericExample": "1,240.50"
+    },
+    "buttons": {
+      "title": "Buttons",
+      "description": "Consistent states and sizes.",
+      "primary": "Primary action",
+      "secondary": "Secondary",
+      "outline": "Outline",
+      "destructive": "Destructive",
+      "moreOptions": "More options",
+      "small": "Small",
+      "default": "Default",
+      "large": "Large",
+      "disabled": "Disabled"
+    },
+    "inputs": {
+      "title": "Inputs",
+      "description": "Form controls with clear focus and disabled states.",
+      "sampleLabel": "Sample text field",
+      "samplePlaceholder": "Enter a value",
+      "disabledLabel": "Disabled field",
+      "disabledPlaceholder": "Unavailable"
+    },
+    "cards": {
+      "title": "Cards and currency",
+      "description": "Surface styles and locale-ready Egyptian pound formatting.",
+      "surfaceTitle": "Surface card",
+      "surfaceDescription": "A reusable container for grouped interface content.",
+      "currencyLabel": "Currency example · EGP",
+      "actionTitle": "Card with an action",
+      "actionDescription": "Card slots keep spacing predictable and composable.",
+      "learnMore": "Learn more"
+    },
+    "statuses": {
+      "title": "Status badges",
+      "description": "Semantic color variants for common status communication.",
+      "primary": "Primary",
+      "neutral": "Neutral",
+      "success": "Success",
+      "warning": "Warning",
+      "destructive": "Destructive",
+      "outline": "Outline"
+    },
+    "skeletons": {
+      "title": "Loading skeletons",
+      "description": "Subtle placeholders for content loading states."
+    }
+  },
+  "validation": {
+    "required": "This field is required.",
+    "invalidEmail": "Enter a valid email address.",
+    "invalidAmount": "Enter a valid amount."
+  }
+}

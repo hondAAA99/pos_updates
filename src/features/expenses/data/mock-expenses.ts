@@ -1,0 +1,88 @@
+import type { Expense } from "../types/expense";
+
+export const initialExpenses: Expense[] = [
+  {
+    _id: "expense-2026-11-16-01",
+    expenseName: "Office supplies",
+    expenseDetail: "Printer paper, folders, and pens for the head office.",
+    price: 1840,
+    timestamp: "2026-11-16T08:30:00.000Z",
+  },
+  {
+    _id: "expense-2026-11-16-02",
+    expenseName: "Internet service",
+    expenseDetail: "Monthly business internet subscription.",
+    price: 1250,
+    timestamp: "2026-11-16T10:15:00.000Z",
+  },
+  {
+    _id: "expense-2026-11-15-01",
+    expenseName: "Cleaning supplies",
+    expenseDetail: "General cleaning supplies for shared business premises.",
+    price: 960,
+    timestamp: "2026-11-15T07:45:00.000Z",
+  },
+  {
+    _id: "expense-2026-11-14-01",
+    expenseName: "Equipment maintenance",
+    expenseDetail: "Routine maintenance for office equipment.",
+    price: 2750,
+    timestamp: "2026-11-14T12:20:00.000Z",
+  },
+  {
+    _id: "expense-2026-11-13-01",
+    expenseName: "Courier service",
+    expenseDetail: "Document delivery and business correspondence.",
+    price: 380,
+    timestamp: "2026-11-13T09:10:00.000Z",
+  },
+  {
+    _id: "expense-2026-11-12-01",
+    expenseName: "Utilities",
+    expenseDetail: "Shared utilities invoice for the business office.",
+    price: 4310,
+    timestamp: "2026-11-12T11:00:00.000Z",
+  },
+  {
+    _id: "expense-2026-11-11-01",
+    expenseName: "Stationery",
+    expenseDetail: "Notebooks and filing materials.",
+    price: 725,
+    timestamp: "2026-11-11T08:05:00.000Z",
+  },
+  {
+    _id: "expense-2026-11-10-01",
+    expenseName: "Software subscription",
+    expenseDetail: "Monthly productivity software subscription.",
+    price: 2190,
+    timestamp: "2026-11-10T13:40:00.000Z",
+  },
+  {
+    _id: "expense-2026-11-09-01",
+    expenseName: "Packaging materials",
+    expenseDetail: "Shared business packaging stock.",
+    price: 1675,
+    timestamp: "2026-11-09T06:25:00.000Z",
+  },
+  {
+    _id: "expense-2026-11-08-01",
+    expenseName: "Professional services",
+    expenseDetail: "Accounting consultation for the current reporting period.",
+    price: 3200,
+    timestamp: "2026-11-08T14:30:00.000Z",
+  },
+  {
+    _id: "expense-2026-11-07-01",
+    expenseName: "Office repairs",
+    expenseDetail: "Minor repairs to shared office fixtures.",
+    price: 1425,
+    timestamp: "2026-11-07T10:40:00.000Z",
+  },
+  {
+    _id: "expense-2026-11-06-01",
+    expenseName: "Business insurance",
+    expenseDetail: "Business-wide insurance premium installment.",
+    price: 5500,
+    timestamp: "2026-11-06T09:20:00.000Z",
+  },
+];
