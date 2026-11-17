@@ -27,7 +27,7 @@ import {
   listWallets,
   updateWallet,
   updateWalletType,
-  WalletMockServiceError,
+  // WalletMockServiceError,
 } from "../services/wallets-service";
 import type {
   Wallet,
@@ -54,21 +54,21 @@ type WalletMessageKey =
   | "validation.amountInvalid"
   | "validation.nameRequired";
 
-function getErrorTranslationKey(error: unknown): WalletMessageKey {
-  if (error instanceof WalletMockServiceError) {
-    if (error.code === "wallet-type-in-use") return "errors.typeInUse";
-    if (error.code === "wallet-not-found") return "errors.walletNotFound";
-    return "errors.typeNotFound";
-  }
-  if (error instanceof Error) {
-    if (error.message === "wallet-phone-required") return "validation.phoneRequired";
-    if (error.message === "wallet-balance-invalid" || error.message === "wallet-limit-invalid") {
-      return "validation.amountInvalid";
-    }
-    if (error.message === "wallet-type-name-required") return "validation.nameRequired";
-  }
-  throw error;
-}
+// function getErrorTranslationKey(error: unknown): WalletMessageKey {
+//   if (error instanceof WalletMockServiceError) {
+//     if (error.code === "wallet-type-in-use") return "errors.typeInUse";
+//     if (error.code === "wallet-not-found") return "errors.walletNotFound";
+//     return "errors.typeNotFound";
+//   }
+//   if (error instanceof Error) {
+//     if (error.message === "wallet-phone-required") return "validation.phoneRequired";
+//     if (error.message === "wallet-balance-invalid" || error.message === "wallet-limit-invalid") {
+//       return "validation.amountInvalid";
+//     }
+//     if (error.message === "wallet-type-name-required") return "validation.nameRequired";
+//   }
+//   throw error;
+// }
 
 function SummaryCard({ label, value }: { label: string; value: string }) {
   return (
