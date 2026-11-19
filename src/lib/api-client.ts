@@ -83,6 +83,7 @@ export async function requestJson<T>(
     ...rest
   } = options;
   const requestHeaders = new Headers(headers);
+  requestHeaders.set("ngrok-skip-browser-warning", "true");
   const requestBody =
     body === undefined || body === null
       ? undefined
