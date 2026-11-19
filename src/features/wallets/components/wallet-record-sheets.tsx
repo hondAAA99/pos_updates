@@ -11,14 +11,17 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency, formatDate } from "@/lib/format";
 import type { Locale } from "@/i18n/routing";
-import type { Wallet, WalletType } from "../types/wallet";
+import type { Wallet, WalletTransaction, WalletType } from "../types/wallet";
 
 type WalletDetailsSheetProps = {
   wallet: Wallet | null;
   walletType: WalletType | null;
   resolvedWalletType: WalletType | null;
+  isLoading: boolean;
+  error: string;
+  onRetry: () => void;
   onClose: () => void;
 };
 
@@ -44,6 +47,9 @@ export function WalletDetailsSheet({
   wallet,
   walletType,
   resolvedWalletType,
+  isLoading,
+  error,
+  onRetry,
   onClose,
 }: WalletDetailsSheetProps) {
   const t = useTranslations("wallets");
@@ -74,6 +80,22 @@ export function WalletDetailsSheet({
             {isWallet ? t("details.walletDescription") : t("details.typeDescription")}
           </SheetDescription>
         </SheetHeader>
+        {isLoading && (
+          <p role="status" className="px-6 pt-4 text-sm text-muted-foreground">
+            {t("feedback.loadingDetails")}
+          </p>
+        )}
+        {error && (
+          <div
+            role="alert"
+            className="mx-6 mt-4 flex flex-wrap items-center justify-between gap-3 rounded-md border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive"
+          >
+            <span>{error}</span>
+            <Button type="button" variant="outline" size="sm" onClick={onRetry}>
+              {t("actions.retry")}
+            </Button>
+          </div>
+        )}
         <dl className="px-6 py-3">
           {wallet ? (
             <>
@@ -141,15 +163,151 @@ export function WalletDetailsSheet({
             <>
               <Detail label={t("typeTable.name")} value={walletType.name} />
               <Detail label={t("typeTable.capacity")} value={formatCurrency(walletType.capacity, locale as Locale)} />
-              <Detail label={t("typeTable.dailyTransfer")} value={formatCurrency(walletType.daily.transfer, locale as Locale)} />
-              <Detail label={t("typeTable.dailyWithdraw")} value={formatCurrency(walletType.daily.withdraw, locale as Locale)} />
-              <Detail label={t("typeTable.monthlyTransfer")} value={formatCurrency(walletType.monthly.transfer, locale as Locale)} />
-              <Detail label={t("typeTable.monthlyWithdraw")} value={formatCurrency(walletType.monthly.withdraw, locale as Locale)} />
+              <Detail label={t("typeTable.daily")} value={formatCurrency(walletType.daily, locale as Locale)} />
+              <Detail label={t("typeTable.monthly")} value={formatCurrency(walletType.monthly, locale as Locale)} />
             </>
           ) : null}
         </dl>
         <SheetFooter className="border-t border-border p-6">
           <Button type="button" variant="outline" onClick={onClose}>{t("actions.close")}</Button>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+type WalletTransactionDetailsSheetProps = {
+  transaction: WalletTransaction | null;
+  isLoading: boolean;
+  error: string;
+  onRetry: () => void;
+  onClose: () => void;
+};
+
+export function WalletTransactionDetailsSheet({
+  transaction,
+  isLoading,
+  error,
+  onRetry,
+  onClose,
+}: WalletTransactionDetailsSheetProps) {
+  const t = useTranslations("wallets");
+  const locale = useLocale();
+
+  return (
+    <Sheet open={Boolean(transaction)} onOpenChange={(open) => !open && onClose()}>
+      <SheetContent
+        side={locale === "ar" ? "left" : "right"}
+        showCloseButton={false}
+        className="w-full gap-0 overflow-y-auto p-0 sm:max-w-lg"
+      >
+        <SheetHeader className="relative border-b border-border p-6 pe-14">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label={t("actions.close")}
+            onClick={onClose}
+            className="absolute end-3 top-3"
+          >
+            <X aria-hidden="true" />
+          </Button>
+          <SheetTitle>{t("transactions.detailsTitle")}</SheetTitle>
+          <SheetDescription>{t("transactions.detailsDescription")}</SheetDescription>
+        </SheetHeader>
+        {isLoading && (
+          <p role="status" className="px-6 pt-4 text-sm text-muted-foreground">
+            {t("feedback.loadingDetails")}
+          </p>
+        )}
+        {error && (
+          <div
+            role="alert"
+            className="mx-6 mt-4 flex flex-wrap items-center justify-between gap-3 rounded-md border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive"
+          >
+            <span>{error}</span>
+            <Button type="button" variant="outline" size="sm" onClick={onRetry}>
+              {t("actions.retry")}
+            </Button>
+          </div>
+        )}
+        {transaction && (
+          <dl className="px-6 py-3">
+            <Detail label={t("transactions.date")} value={formatDate(transaction.timestamp, locale as Locale, { dateStyle: "medium", timeStyle: "short" })} />
+            <Detail label={t("transactions.wallet")} value={transaction.walletId || t("details.notAvailable")} />
+            <Detail label={t("transactions.type")} value={transaction.transactionType} />
+            <Detail label={t("transactions.amount")} value={formatCurrency(transaction.moneyAmount, locale as Locale)} />
+            <Detail label={t("transactions.fee")} value={formatCurrency(transaction.transaction_fee, locale as Locale)} />
+            <Detail label={t("transactions.phone")} value={transaction.phoneNumber || t("details.notAvailable")} />
+          </dl>
+        )}
+        <SheetFooter className="border-t border-border p-6">
+          <Button type="button" variant="outline" onClick={onClose}>{t("actions.close")}</Button>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+type WalletTransactionDeleteSheetProps = {
+  transaction: WalletTransaction | null;
+  isDeleting: boolean;
+  error: string;
+  onClose: () => void;
+  onConfirm: () => Promise<void>;
+};
+
+export function WalletTransactionDeleteSheet({
+  transaction,
+  isDeleting,
+  error,
+  onClose,
+  onConfirm,
+}: WalletTransactionDeleteSheetProps) {
+  const t = useTranslations("wallets");
+  const locale = useLocale();
+
+  return (
+    <Sheet open={Boolean(transaction)} onOpenChange={(open) => !open && onClose()}>
+      <SheetContent
+        side={locale === "ar" ? "left" : "right"}
+        showCloseButton={false}
+        className="w-full gap-0 sm:max-w-md"
+      >
+        <SheetHeader className="relative pe-12">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label={t("actions.close")}
+            onClick={onClose}
+            disabled={isDeleting}
+            className="absolute end-0 top-0"
+          >
+            <X aria-hidden="true" />
+          </Button>
+          <SheetTitle>{t("transactions.deleteTitle")}</SheetTitle>
+          <SheetDescription>
+            {transaction ? t("transactions.deleteDescription", { id: transaction.id }) : ""}
+          </SheetDescription>
+        </SheetHeader>
+        {error && (
+          <p role="alert" className="mt-4 rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
+            {error}
+          </p>
+        )}
+        <SheetFooter className="mt-6 flex-row justify-end">
+          <Button type="button" variant="outline" onClick={onClose} disabled={isDeleting}>
+            {t("actions.cancel")}
+          </Button>
+          <Button
+            type="button"
+            variant="destructive"
+            disabled={!transaction || isDeleting}
+            onClick={() => void onConfirm()}
+          >
+            {isDeleting ? t("actions.deleting") : t("actions.delete")}
+          </Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>
@@ -162,12 +320,16 @@ export type WalletDeleteTarget =
 
 type WalletDeleteSheetProps = {
   target: WalletDeleteTarget | null;
+  isDeleting: boolean;
+  error: string;
   onClose: () => void;
-  onConfirm: (target: WalletDeleteTarget) => void;
+  onConfirm: (target: WalletDeleteTarget) => Promise<void>;
 };
 
 export function WalletDeleteSheet({
   target,
+  isDeleting,
+  error,
   onClose,
   onConfirm,
 }: WalletDeleteSheetProps) {
@@ -189,6 +351,7 @@ export function WalletDeleteSheet({
             size="icon"
             aria-label={t("actions.close")}
             onClick={onClose}
+            disabled={isDeleting}
             className="absolute end-0 top-0"
           >
             <X aria-hidden="true" />
@@ -207,17 +370,22 @@ export function WalletDeleteSheet({
             {t("delete.typeInUse", { count: target.assignedWalletCount })}
           </p>
         )}
+        {error && (
+          <p role="alert" className="mt-4 rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
+            {error}
+          </p>
+        )}
         <SheetFooter className="mt-6 flex-row justify-end">
-          <Button type="button" variant="outline" onClick={onClose}>
+          <Button type="button" variant="outline" onClick={onClose} disabled={isDeleting}>
             {t("actions.cancel")}
           </Button>
           <Button
             type="button"
             variant="destructive"
-            disabled={!target || Boolean(typeInUse)}
-            onClick={() => target && onConfirm(target)}
+            disabled={!target || Boolean(typeInUse) || isDeleting}
+            onClick={() => target && void onConfirm(target)}
           >
-            {t("actions.delete")}
+            {isDeleting ? t("actions.deleting") : t("actions.delete")}
           </Button>
         </SheetFooter>
       </SheetContent>

@@ -560,13 +560,16 @@
   },
   "wallets": {
     "title": "إدارة المحافظ",
-    "description": "أدِر المحافظ وحدودها. تستخدم هذه الوحدة حاليًا بيانات تجريبية محفوظة في الذاكرة.",
+    "description": "أدِر المحافظ وأنواعها.",
     "actions": {
       "close": "إغلاق",
       "cancel": "إلغاء",
       "create": "إنشاء",
+      "saving": "جارٍ الحفظ…",
       "saveChanges": "حفظ التغييرات",
       "delete": "حذف",
+      "deleting": "جارٍ الحذف…",
+      "retry": "إعادة المحاولة",
       "addWallet": "إضافة محفظة",
       "addType": "إضافة نوع محفظة",
       "clearFilters": "مسح عوامل التصفية",
@@ -583,9 +586,9 @@
     "summary": {
       "title": "ملخص المحافظ",
       "wallets": "المحافظ",
-      "totalBalance": "إجمالي أرصدة المحافظ",
-      "totalCapacity": "إجمالي سعة المحافظ",
-      "availableCapacity": "السعة المتبقية",
+      "totalBalance": "الرصيد في هذه الصفحة",
+      "totalCapacity": "السعة في هذه الصفحة",
+      "availableCapacity": "السعة المتبقية في هذه الصفحة",
       "walletTypes": "أنواع المحافظ"
     },
     "search": {
@@ -616,11 +619,9 @@
     "typeTable": {
       "name": "الاسم",
       "capacity": "السعة",
-      "dailyTransfer": "حد التحويل اليومي",
-      "dailyWithdraw": "حد السحب اليومي",
-      "monthlyTransfer": "حد التحويل الشهري",
-      "monthlyWithdraw": "حد السحب الشهري",
-      "walletCount": "المحافظ المرتبطة"
+      "daily": "اليومي",
+      "monthly": "الشهري",
+      "walletCount": "المحافظ في هذه الصفحة"
     },
     "unknownType": "نوع محفظة غير معروف",
     "pagination": {
@@ -654,13 +655,12 @@
     "typeForm": {
       "addTitle": "إضافة نوع محفظة",
       "editTitle": "تعديل نوع المحفظة",
-      "description": "حدّد سعة المحفظة وحدودها اليومية والشهرية.",
+      "description": "حدّد سعة المحفظة وقيمتيها اليومية والشهرية.",
       "nameLabel": "الاسم",
       "capacityLabel": "السعة القصوى",
-      "dailyLimits": "الحدود اليومية",
-      "monthlyLimits": "الحدود الشهرية",
-      "transferLimit": "حد التحويل",
-      "withdrawLimit": "حد السحب"
+      "dailyLimits": "اليومي",
+      "monthlyLimits": "الشهري",
+      "amountLabel": "المبلغ"
     },
     "validation": {
       "typeRequired": "اختر نوع المحفظة.",
@@ -672,7 +672,7 @@
       "walletTitle": "تفاصيل المحفظة",
       "typeTitle": "تفاصيل نوع المحفظة",
       "walletDescription": "معلومات المحفظة والسعة الحالية.",
-      "typeDescription": "السعة وحدود المعاملات لهذا النوع من المحافظ.",
+      "typeDescription": "السعة والقيمتان اليومية والشهرية لهذا النوع من المحافظ.",
       "capacity": "السعة القصوى",
       "remainingCapacity": "السعة المتبقية",
       "remainingLimits": "الحدود المتبقية",
@@ -686,35 +686,80 @@
       "title": "تأكيد الحذف",
       "walletDescription": "هل تريد حذف المحفظة «{name}»؟ سيبقى سجل المعاملات التجريبي دون تغيير.",
       "typeDescription": "هل تريد حذف نوع المحفظة «{name}»؟",
-      "typeInUse": "هذا النوع مرتبط بـ {count, plural, zero {لا توجد محافظ} one {محفظة واحدة} two {محفظتين} few {# محافظ} many {# محفظة} other {# محفظة}}. أعد تعيين هذه المحافظ أو احذفها قبل حذف النوع."
+      "typeInUse": "هناك {count, plural, zero {لا توجد محافظ} one {محفظة واحدة على الأقل في هذه الصفحة تستخدم} two {محفظتان على الأقل في هذه الصفحة تستخدمان} few {# محافظ على الأقل في هذه الصفحة تستخدم} many {# محفظة على الأقل في هذه الصفحة تستخدم} other {# محفظة على الأقل في هذه الصفحة تستخدم}} هذا النوع. أعد تعيين هذه المحافظ أو احذفها قبل حذف النوع."
     },
     "errors": {
       "typeInUse": "لا يزال نوع المحفظة مرتبطًا بمحفظة واحدة أو أكثر.",
       "walletNotFound": "لم تعد المحفظة موجودة. حدّث القائمة وحاول مرة أخرى.",
       "typeNotFound": "لم يعد نوع المحفظة موجودًا. حدّث القائمة وحاول مرة أخرى."
     },
+    "feedback": {
+      "loadingWallets": "جارٍ تحميل المحافظ…",
+      "loadingTypes": "جارٍ تحميل أنواع المحافظ…",
+      "loadingDetails": "جارٍ تحميل التفاصيل…",
+      "walletsLoadError": "تعذّر تحميل المحافظ.",
+      "typesLoadError": "تعذّر تحميل أنواع المحافظ.",
+      "detailsLoadError": "تعذّر تحميل التفاصيل.",
+      "unauthorized": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى.",
+      "operationError": "تعذّر إكمال عملية المحفظة. تحقق من البيانات وحاول مرة أخرى.",
+      "walletCreated": "تم إنشاء المحفظة.",
+      "walletUpdated": "تم تحديث المحفظة.",
+      "walletDeleted": "تم حذف المحفظة.",
+      "typeCreated": "تم إنشاء نوع المحفظة.",
+      "typeUpdated": "تم تحديث نوع المحفظة.",
+      "typeDeleted": "تم حذف نوع المحفظة.",
+      "saveError": "تعذّر حفظ التغييرات.",
+      "deleteError": "تعذّر حذف السجل."
+    },
     "futureActions": {
       "deposit": "إيداع",
       "withdraw": "سحب",
       "transfer": "تحويل",
-      "disabledHint": "هذا الإجراء غير متاح في وحدة المحافظ التجريبية فقط."
+      "walletLabel": "المحفظة المصدر",
+      "selectWallet": "اختر محفظة",
+      "noWallets": "لا توجد محافظ متاحة",
+      "walletHint": "اختر محفظة من الصفحة المحمّلة حاليًا قبل بدء العملية."
+    },
+    "operationForm": {
+      "depositTitle": "إيداع",
+      "withdrawTitle": "سحب",
+      "transferTitle": "تحويل",
+      "depositDescription": "أدخل المبلغ والرسوم لإيداعهما في هذه المحفظة.",
+      "withdrawDescription": "أدخل المبلغ والرسوم لسحبهما من هذه المحفظة.",
+      "transferDescription": "أدخل المبلغ والرسوم ورقم هاتف المستلم لإجراء التحويل.",
+      "phoneLabel": "رقم هاتف المستلم",
+      "phonePlaceholder": "أدخل رقم هاتف المستلم",
+      "amountLabel": "المبلغ",
+      "transactionFeeLabel": "رسوم المعاملة",
+      "amountInvalid": "أدخل مبلغًا صالحًا أكبر من صفر.",
+      "transactionFeeInvalid": "أدخل رسوم معاملة صالحة تساوي صفرًا أو أكثر.",
+      "phoneRequired": "أدخل رقم هاتف المستلم.",
+      "submit": "تنفيذ العملية"
+    },
+    "operationFeedback": {
+      "depositSuccess": "تم الإيداع بنجاح.",
+      "withdrawSuccess": "تم السحب بنجاح.",
+      "transferSuccess": "تم التحويل بنجاح."
     },
     "transactions": {
-      "sampleDataNotice": "بيانات معاملات تجريبية فقط. أنواع المعاملات أمثلة وليست قيمًا مؤكدة من الواجهة الخلفية. السجل للقراءة فقط.",
-      "walletFilter": "المحفظة",
+      "apiDataNotice": "يتم تحميل سجل المعاملات من الواجهة الخلفية، ويُطبّق التصفية حسب نوع المعاملة على الخادم.",
       "typeFilter": "نوع المعاملة",
-      "from": "من",
-      "to": "إلى",
       "date": "التاريخ",
-      "wallet": "هاتف المحفظة",
+      "wallet": "معرّف المحفظة",
       "type": "النوع",
       "amount": "المبلغ",
       "fee": "الرسوم",
       "phone": "رقم الهاتف",
-      "sampleTypeA": "نوع تجريبي أ",
-      "sampleTypeB": "نوع تجريبي ب",
-      "sampleTypeC": "نوع تجريبي ج",
-      "unknownType": "نوع معاملة غير معروف"
+      "loading": "جارٍ تحميل المعاملات…",
+      "loadError": "تعذّر تحميل المعاملات.",
+      "detailsLoadError": "تعذّر تحميل تفاصيل المعاملة.",
+      "detailsTitle": "تفاصيل المعاملة",
+      "detailsDescription": "معلومات المعاملة من الواجهة الخلفية.",
+      "deleted": "تم حذف المعاملة.",
+      "deleteError": "تعذّر حذف المعاملة.",
+      "deleteTitle": "حذف المعاملة؟",
+      "deleteDescription": "هل تريد حذف المعاملة {id}؟ لا يمكن التراجع عن هذا الإجراء.",
+      "emptyDescription": "لا توجد معاملات متاحة لنوع المعاملة هذا."
     }
   },
   "productTypes": {

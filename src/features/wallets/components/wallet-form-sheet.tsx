@@ -19,14 +19,18 @@ type WalletFormSheetProps = {
   open: boolean;
   wallet: Wallet | null;
   walletTypes: WalletType[];
+  isSubmitting: boolean;
+  submissionError: string;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (input: WalletInput) => void;
+  onSubmit: (input: WalletInput) => Promise<void>;
 };
 
 export function WalletFormSheet({
   open,
   wallet,
   walletTypes,
+  isSubmitting,
+  submissionError,
   onOpenChange,
   onSubmit,
 }: WalletFormSheetProps) {
@@ -52,7 +56,7 @@ export function WalletFormSheet({
       return;
     }
 
-    onSubmit({
+    void onSubmit({
       typeId,
       phoneNumber: phoneNumber.trim(),
       money_amount: amount,
@@ -74,6 +78,7 @@ export function WalletFormSheet({
               size="icon"
               aria-label={t("actions.close")}
               onClick={() => onOpenChange(false)}
+              disabled={isSubmitting}
               className="absolute end-3 top-3"
             >
               <X aria-hidden="true" />
@@ -83,6 +88,11 @@ export function WalletFormSheet({
             </SheetTitle>
             <SheetDescription>{t("walletForm.description")}</SheetDescription>
           </SheetHeader>
+          {submissionError && (
+            <p role="alert" className="mx-6 mt-5 rounded-md border border-destructive/40 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+              {submissionError}
+            </p>
+          )}
           <div className="space-y-5 p-6">
             <div className="space-y-2">
               <label htmlFor="wallet-type" className="text-sm font-medium">
@@ -91,6 +101,7 @@ export function WalletFormSheet({
               <select
                 id="wallet-type"
                 value={typeId}
+                disabled={isSubmitting}
                 onChange={(event) => {
                   setTypeId(event.currentTarget.value);
                   setErrors((current) => ({ ...current, typeId: false }));
@@ -117,6 +128,7 @@ export function WalletFormSheet({
                 inputMode="tel"
                 dir="auto"
                 value={phoneNumber}
+                disabled={isSubmitting}
                 onChange={(event) => {
                   setPhoneNumber(event.currentTarget.value);
                   setErrors((current) => ({ ...current, phoneNumber: false }));
@@ -138,6 +150,7 @@ export function WalletFormSheet({
                 step="0.01"
                 inputMode="decimal"
                 value={balance}
+                disabled={isSubmitting}
                 onChange={(event) => {
                   setBalance(event.currentTarget.value);
                   setErrors((current) => ({ ...current, balance: false }));
@@ -149,11 +162,15 @@ export function WalletFormSheet({
             </div>
           </div>
           <SheetFooter className="mt-auto flex-row justify-end border-t border-border p-6">
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isSubmitting}>
               {t("actions.cancel")}
             </Button>
-            <Button type="submit" disabled={!walletTypes.length}>
-              {wallet ? t("actions.saveChanges") : t("actions.create")}
+            <Button type="submit" disabled={!walletTypes.length || isSubmitting}>
+              {isSubmitting
+                ? t("actions.saving")
+                : wallet
+                  ? t("actions.saveChanges")
+                  : t("actions.create")}
             </Button>
           </SheetFooter>
         </form>

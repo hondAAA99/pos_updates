@@ -560,13 +560,16 @@
   },
   "wallets": {
     "title": "Wallets Management",
-    "description": "Manage wallets and their limits. This module currently uses in-memory sample data.",
+    "description": "Manage wallets and their types.",
     "actions": {
       "close": "Close",
       "cancel": "Cancel",
       "create": "Create",
+      "saving": "Saving…",
       "saveChanges": "Save changes",
       "delete": "Delete",
+      "deleting": "Deleting…",
+      "retry": "Retry",
       "addWallet": "Add wallet",
       "addType": "Add wallet type",
       "clearFilters": "Clear filters",
@@ -583,9 +586,9 @@
     "summary": {
       "title": "Wallet summary",
       "wallets": "Wallets",
-      "totalBalance": "Total wallet balance",
-      "totalCapacity": "Total wallet capacity",
-      "availableCapacity": "Remaining capacity",
+      "totalBalance": "Balance on this page",
+      "totalCapacity": "Capacity on this page",
+      "availableCapacity": "Remaining capacity on this page",
       "walletTypes": "Wallet types"
     },
     "search": {
@@ -616,11 +619,9 @@
     "typeTable": {
       "name": "Name",
       "capacity": "Capacity",
-      "dailyTransfer": "Daily transfer limit",
-      "dailyWithdraw": "Daily withdrawal limit",
-      "monthlyTransfer": "Monthly transfer limit",
-      "monthlyWithdraw": "Monthly withdrawal limit",
-      "walletCount": "Assigned wallets"
+      "daily": "Daily",
+      "monthly": "Monthly",
+      "walletCount": "Wallets on this page"
     },
     "unknownType": "Unknown wallet type",
     "pagination": {
@@ -654,13 +655,12 @@
     "typeForm": {
       "addTitle": "Add wallet type",
       "editTitle": "Edit wallet type",
-      "description": "Set the wallet capacity and daily and monthly limits.",
+      "description": "Set the wallet capacity and daily and monthly values.",
       "nameLabel": "Name",
       "capacityLabel": "Maximum capacity",
-      "dailyLimits": "Daily limits",
-      "monthlyLimits": "Monthly limits",
-      "transferLimit": "Transfer limit",
-      "withdrawLimit": "Withdrawal limit"
+      "dailyLimits": "Daily",
+      "monthlyLimits": "Monthly",
+      "amountLabel": "Amount"
     },
     "validation": {
       "typeRequired": "Select a wallet type.",
@@ -672,7 +672,7 @@
       "walletTitle": "Wallet details",
       "typeTitle": "Wallet type details",
       "walletDescription": "Current wallet and capacity information.",
-      "typeDescription": "Capacity and transaction limits for this wallet type.",
+      "typeDescription": "Capacity and daily and monthly values for this wallet type.",
       "capacity": "Maximum capacity",
       "remainingCapacity": "Remaining capacity",
       "remainingLimits": "Remaining Limits",
@@ -686,35 +686,80 @@
       "title": "Confirm deletion",
       "walletDescription": "Delete wallet “{name}”? Sample transaction history will remain unchanged.",
       "typeDescription": "Delete wallet type “{name}”?",
-      "typeInUse": "This wallet type is assigned to {count, plural, one {# wallet} other {# wallets}}. Reassign or delete those wallets before deleting the type."
+      "typeInUse": "At least {count, plural, one {# wallet on this page uses} other {# wallets on this page use}} this type. Reassign or delete these wallets before deleting the type."
     },
     "errors": {
       "typeInUse": "This wallet type is still assigned to one or more wallets.",
       "walletNotFound": "The wallet no longer exists. Refresh the list and try again.",
       "typeNotFound": "The wallet type no longer exists. Refresh the list and try again."
     },
+    "feedback": {
+      "loadingWallets": "Loading wallets…",
+      "loadingTypes": "Loading wallet types…",
+      "loadingDetails": "Loading details…",
+      "walletsLoadError": "Wallets could not be loaded.",
+      "typesLoadError": "Wallet types could not be loaded.",
+      "detailsLoadError": "Details could not be loaded.",
+      "unauthorized": "Your session has expired. Please sign in again.",
+      "operationError": "The wallet operation could not be completed. Check the details and try again.",
+      "walletCreated": "Wallet created.",
+      "walletUpdated": "Wallet updated.",
+      "walletDeleted": "Wallet deleted.",
+      "typeCreated": "Wallet type created.",
+      "typeUpdated": "Wallet type updated.",
+      "typeDeleted": "Wallet type deleted.",
+      "saveError": "The changes could not be saved.",
+      "deleteError": "The record could not be deleted."
+    },
     "futureActions": {
       "deposit": "Deposit",
       "withdraw": "Withdraw",
       "transfer": "Transfer",
-      "disabledHint": "This action is not available in the mock-only Wallets module."
+      "walletLabel": "Source wallet",
+      "selectWallet": "Select a wallet",
+      "noWallets": "No wallets available",
+      "walletHint": "Choose a wallet from the currently loaded page before starting an operation."
+    },
+    "operationForm": {
+      "depositTitle": "Deposit",
+      "withdrawTitle": "Withdraw",
+      "transferTitle": "Transfer",
+      "depositDescription": "Enter the amount and fee to deposit into this wallet.",
+      "withdrawDescription": "Enter the amount and fee to withdraw from this wallet.",
+      "transferDescription": "Enter the amount, fee, and recipient phone number for this transfer.",
+      "phoneLabel": "Recipient phone number",
+      "phonePlaceholder": "Enter the recipient phone number",
+      "amountLabel": "Amount",
+      "transactionFeeLabel": "Transaction fee",
+      "amountInvalid": "Enter a valid amount greater than zero.",
+      "transactionFeeInvalid": "Enter a valid transaction fee of zero or more.",
+      "phoneRequired": "Enter the recipient phone number.",
+      "submit": "Submit operation"
+    },
+    "operationFeedback": {
+      "depositSuccess": "Deposit completed successfully.",
+      "withdrawSuccess": "Withdrawal completed successfully.",
+      "transferSuccess": "Transfer completed successfully."
     },
     "transactions": {
-      "sampleDataNotice": "Sample transaction data only. Transaction type labels are examples, not confirmed backend enum values. This history is read-only.",
-      "walletFilter": "Wallet",
+      "apiDataNotice": "Transaction history is loaded from the backend. Transaction type is filtered on the server.",
       "typeFilter": "Transaction type",
-      "from": "From",
-      "to": "To",
       "date": "Date",
-      "wallet": "Wallet phone",
+      "wallet": "Wallet ID",
       "type": "Type",
       "amount": "Amount",
       "fee": "Fee",
       "phone": "Phone number",
-      "sampleTypeA": "Sample type A",
-      "sampleTypeB": "Sample type B",
-      "sampleTypeC": "Sample type C",
-      "unknownType": "Unknown transaction type"
+      "loading": "Loading transactions…",
+      "loadError": "Transactions could not be loaded.",
+      "detailsLoadError": "Transaction details could not be loaded.",
+      "detailsTitle": "Transaction details",
+      "detailsDescription": "Transaction information from the backend.",
+      "deleted": "Transaction deleted.",
+      "deleteError": "The transaction could not be deleted.",
+      "deleteTitle": "Delete transaction?",
+      "deleteDescription": "Delete transaction {id}? This action cannot be undone.",
+      "emptyDescription": "No transactions are available for this transaction type."
     }
   },
   "productTypes": {

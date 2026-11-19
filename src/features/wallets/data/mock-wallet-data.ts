@@ -1,6 +1,14 @@
-import type { Wallet, WalletTransaction, WalletType } from "../types/wallet";
+import type { Wallet, WalletTransaction } from "../types/wallet";
 
-export const initialWalletTypes: WalletType[] = [
+type MockWalletType = {
+  id: string;
+  name: string;
+  capacity: number;
+  daily: { transfer: number; withdraw: number };
+  monthly: { transfer: number; withdraw: number };
+};
+
+export const initialWalletTypes: MockWalletType[] = [
   {
     id: "wallet-type-standard",
     name: "Standard",
