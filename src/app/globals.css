@@ -174,3 +174,35 @@
     @apply font-semibold tabular-nums tracking-tight;
   }
 }
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+
+  .receipt-print-root,
+  .receipt-print-root * {
+    visibility: visible !important;
+  }
+
+  .receipt-print-root {
+    position: absolute;
+    inset: 0 auto auto 0;
+    display: block !important;
+    width: 100%;
+    padding: 0;
+    color: #111;
+    background: #fff;
+  }
+
+  .receipt-print-root * {
+    color: #111 !important;
+    background-color: transparent !important;
+    border-color: #d1d5db !important;
+    box-shadow: none !important;
+  }
+
+  @page {
+    margin: 14mm;
+  }
+}

@@ -87,6 +87,7 @@ export async function listProductItems(
 ): Promise<ProductListItemPage> {
   const response = await apiClient.get<ProductListApiResponse>("/products", {
     token,
+    cache: "no-store",
     params: {
       page: params.page,
       limit: params.limit,

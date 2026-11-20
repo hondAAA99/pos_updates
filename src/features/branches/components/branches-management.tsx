@@ -2,7 +2,7 @@
 
 import { Plus, RefreshCw } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useAuth } from "@/features/auth/providers/auth-provider";
@@ -11,11 +11,11 @@ import { ApiClientError } from "@/lib/api-client";
 import {
   createBranchOnApi,
   deleteBranchFromApi,
-  getBranchFromApi,
+  getBranchDetailsFromApi,
   listBranchesFromApi,
   updateBranchOnApi,
 } from "../services/branches-api-service";
-import type { Branch } from "../types/branch";
+import type { Branch, BranchSupply } from "../types/branch";
 import { BranchDetailsSheet } from "./branch-details-sheet";
 import { BranchFormSheet } from "./branch-form-sheet";
 import { BranchesTable } from "./branches-table";
@@ -34,9 +34,14 @@ export function BranchesManagement() {
   const [editorOpen, setEditorOpen] = useState(false);
   const [editingBranch, setEditingBranch] = useState<Branch | null>(null);
   const [viewingBranch, setViewingBranch] = useState<Branch | null>(null);
+  const [viewingSupply, setViewingSupply] = useState<BranchSupply | null>(null);
+  const [detailsLoadState, setDetailsLoadState] =
+    useState<LoadState>("loading");
+  const [detailsError, setDetailsError] = useState("");
   const [deletingBranch, setDeletingBranch] = useState<Branch | null>(null);
   const [feedback, setFeedback] = useState("");
   const [error, setError] = useState("");
+  const detailsRequestId = useRef(0);
 
   const handleApiError = useCallback(
     (caught: unknown, fallback = t("states.operationError")) => {
@@ -111,7 +116,9 @@ export function BranchesManagement() {
   }
 
   function openEditForm(branch: Branch) {
+    detailsRequestId.current += 1;
     setViewingBranch(null);
+    setViewingSupply(null);
     setEditingBranch(branch);
     setEditorOpen(true);
     setFeedback("");
@@ -149,7 +156,9 @@ export function BranchesManagement() {
       setFeedback(t("feedback.deleted"));
       setError("");
       setDeletingBranch(null);
+      detailsRequestId.current += 1;
       setViewingBranch(null);
+      setViewingSupply(null);
       await loadBranches();
     } catch (caught) {
       handleApiError(caught);
@@ -157,14 +166,38 @@ export function BranchesManagement() {
   }
 
   async function openDetails(branch: Branch) {
-    if (!token) return;
+    const requestId = ++detailsRequestId.current;
+    setViewingBranch(branch);
+    setViewingSupply(null);
+    setDetailsLoadState("loading");
+    setDetailsError("");
+
+    if (!token) {
+      setDetailsLoadState("error");
+      setDetailsError(t("states.unauthorized"));
+      return;
+    }
+
     try {
-      const detail = await getBranchFromApi(token, branch._id);
-      setViewingBranch(detail);
+      const details = await getBranchDetailsFromApi(token, branch._id);
+      if (requestId !== detailsRequestId.current) return;
+      setViewingBranch(details.branch);
+      setViewingSupply(details.supply);
+      setDetailsLoadState("ready");
       setFeedback("");
       setError("");
     } catch (caught) {
-      handleApiError(caught);
+      if (requestId !== detailsRequestId.current) return;
+      setDetailsLoadState("error");
+      setDetailsError(
+        caught instanceof ApiClientError && caught.status === 401
+          ? t("states.unauthorized")
+          : t("details.loadError"),
+      );
+      if (caught instanceof ApiClientError && caught.status === 401) {
+        logout();
+        router.replace("/login");
+      }
     }
   }
 
@@ -247,13 +280,25 @@ export function BranchesManagement() {
       )}
       <BranchDetailsSheet
         branch={viewingBranch}
+        supply={viewingSupply}
+        loadState={detailsLoadState}
+        error={detailsError}
         canManage={canManage}
         onOpenChange={(open) => {
-          if (!open) setViewingBranch(null);
+          if (!open) {
+            detailsRequestId.current += 1;
+            setViewingBranch(null);
+            setViewingSupply(null);
+          }
+        }}
+        onRetry={() => {
+          if (viewingBranch) void openDetails(viewingBranch);
         }}
         onEdit={openEditForm}
         onDelete={(branch) => {
+          detailsRequestId.current += 1;
           setViewingBranch(null);
+          setViewingSupply(null);
           setDeletingBranch(branch);
         }}
       />

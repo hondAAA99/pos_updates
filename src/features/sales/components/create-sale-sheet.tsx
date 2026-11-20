@@ -3,24 +3,30 @@
 import {
   Check,
   CheckCircle2,
+  LoaderCircle,
   Minus,
   Plus,
   Trash2,
   X,
-  XCircle,
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { Dialog } from "@base-ui/react/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/features/auth/providers/auth-provider";
+import type { BranchInventoryPage } from "@/features/branches/types/branch-inventory";
+import { listBranchInventory } from "@/features/branches/services/branch-inventory-service";
+import { listBranchSalesmen } from "@/features/employees/services/employees-api-service";
+import type { BranchSalesman } from "@/features/employees/types/employee";
+import type { ProductListItem } from "@/features/products/types/product";
 import { useRouter } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
-import { ApiClientError } from "@/lib/api-client";
+import { ApiClientError, ApiConfigurationError } from "@/lib/api-client";
 import {
   confirmSale,
+  isConfirmSaleOutcomeUnknown,
   processSale,
   type ProcessSaleResponse,
   type SaleLineItemRequest,
@@ -35,7 +41,48 @@ type CreateSaleSheetProps = {
   onSaleComplete: (receiptId: string) => void;
 };
 
-type WorkflowStep = "build" | "receipt" | "success" | "rejected";
+type WorkflowStep = "build" | "receipt" | "success";
+type LookupState = "loading" | "ready" | "error";
+
+const productLookupPageSize = 100;
+const processSaleUncertainKey = "pos.sales.process-outcome-uncertain";
+
+function mapInventoryProducts(
+  items: BranchInventoryPage["items"],
+): ProductListItem[] {
+  return items.flatMap(({ productId }) =>
+    productId
+      ? [{
+          _id: productId._id,
+          productName: productId.productName,
+          serialNumber: productId.serialNumber,
+        }]
+      : [],
+  );
+}
+
+async function loadSaleProducts(
+  token: string,
+  branchId: string,
+): Promise<ProductListItem[]> {
+  const firstPage = await listBranchInventory(token, {
+    page: 1,
+    limit: productLookupPageSize,
+    branchId,
+  });
+  const products = mapInventoryProducts(firstPage.items);
+
+  for (let page = 2; page <= firstPage.totalPages; page += 1) {
+    const result = await listBranchInventory(token, {
+      page,
+      limit: productLookupPageSize,
+      branchId,
+    });
+    products.push(...mapInventoryProducts(result.items));
+  }
+
+  return products;
+}
 
 export function CreateSaleSheet({
   open,
@@ -49,9 +96,18 @@ export function CreateSaleSheet({
   const router = useRouter();
   const { token, user, logout } = useAuth();
   const [step, setStep] = useState<WorkflowStep>("build");
-  const [salesmanId, setSalesmanId] = useState(user?.id ?? "");
+  const [salesmen, setSalesmen] = useState<BranchSalesman[]>([]);
+  const [salesmenState, setSalesmenState] = useState<LookupState>("loading");
+  const [salesmenError, setSalesmenError] = useState("");
+  const [salesmenRetry, setSalesmenRetry] = useState(0);
+  const [products, setProducts] = useState<ProductListItem[]>([]);
+  const [productsState, setProductsState] = useState<LookupState>("loading");
+  const [productsError, setProductsError] = useState("");
+  const [productsRetry, setProductsRetry] = useState(0);
+  const [salesmanId, setSalesmanId] = useState("");
   const [lineItems, setLineItems] = useState<SaleLineItemRequest[]>([]);
-  const [serialInput, setSerialInput] = useState("");
+  const [productSearch, setProductSearch] = useState("");
+  const [selectedProductId, setSelectedProductId] = useState("");
   const [quantityInput, setQuantityInput] = useState("1");
   const [clientPhoneNumber, setClientPhoneNumber] = useState("");
   const [clientName, setClientName] = useState("");
@@ -64,33 +120,123 @@ export function CreateSaleSheet({
   const [operationError, setOperationError] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
+  const [confirmOutcomeUncertain, setConfirmOutcomeUncertain] = useState(false);
   const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
+  const [processOutcomeUncertain, setProcessOutcomeUncertain] = useState(false);
   const requestInFlight = useRef(false);
 
-  function showRequestError(error: unknown) {
-    if (error instanceof ApiClientError && error.status === 401) {
-      setOperationError(t("sessionExpired"));
-      logout();
-      router.replace("/login");
-      return;
-    }
+  const requestErrorMessage = useCallback(
+    (error: unknown, fallback: string) => {
+      if (error instanceof ApiClientError && error.status === 401) {
+        logout();
+        router.replace("/login");
+        return t("sessionExpired");
+      }
 
-    setOperationError(
-      error instanceof ApiClientError && error.message
+      return error instanceof ApiClientError && error.message
         ? error.message
-        : t("operationError"),
-    );
+        : fallback;
+    },
+    [logout, router, t],
+  );
+
+  function showRequestError(error: unknown) {
+    setOperationError(requestErrorMessage(error, t("operationError")));
   }
 
+  useEffect(() => {
+    if (!open || !token) return;
+
+    let active = true;
+    void Promise.resolve().then(async () => {
+      if (!active) return;
+      setSalesmenState("loading");
+      setSalesmenError("");
+      try {
+        const result = await listBranchSalesmen(token);
+        if (!active) return;
+        setSalesmen(result);
+        setSalesmenState("ready");
+      } catch (error) {
+        if (!active) return;
+        setSalesmenError(requestErrorMessage(error, t("salesmenLoadError")));
+        setSalesmenState("error");
+      }
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [open, requestErrorMessage, salesmenRetry, t, token]);
+
+  useEffect(() => {
+    if (!open || !token || !user?.branchId) return;
+
+    const branchId = user.branchId;
+    let active = true;
+    void Promise.resolve().then(async () => {
+      if (!active) return;
+      setProductsState("loading");
+      setProductsError("");
+      try {
+        const result = await loadSaleProducts(token, branchId);
+        if (!active) return;
+        setProducts(result);
+        setProductsState("ready");
+      } catch (error) {
+        if (!active) return;
+        setProductsError(requestErrorMessage(error, t("productsLoadError")));
+        setProductsState("error");
+      }
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [open, productsRetry, requestErrorMessage, t, token, user?.branchId]);
+
+  useEffect(() => {
+    if (window.sessionStorage.getItem(processSaleUncertainKey) === "true") {
+      // Preserve the process lock when a cashier closes and reopens this sheet.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setProcessOutcomeUncertain(true);
+    }
+  }, []);
+
+  const normalizedProductSearch = productSearch.trim().toLocaleLowerCase();
+  const matchingProducts = products.filter(
+    (product) =>
+      !normalizedProductSearch ||
+      product.productName.toLocaleLowerCase().includes(normalizedProductSearch) ||
+      product.serialNumber.toLocaleLowerCase().includes(normalizedProductSearch),
+  );
+  const selectedProduct = products.find(
+    (product) => product._id === selectedProductId,
+  );
+  const selectedSalesman = salesmen.find(
+    (salesman) => salesman._id === salesmanId,
+  );
+  const salesmenLoadState =
+    open && !token ? "error" : salesmenState;
+  const salesmenLoadError =
+    open && !token ? t("sessionExpired") : salesmenError;
+  const productsLoadState =
+    open && (!token || !user?.branchId) ? "error" : productsState;
+  const productsLoadError =
+    open && !token
+      ? t("sessionExpired")
+      : open && !user?.branchId
+        ? t("validation.employeeUnavailable")
+        : productsError;
+
   function addLineItem() {
-    const serialNumber = serialInput.trim();
     const quantity = Number(quantityInput);
 
-    if (!serialNumber) {
-      setValidationError(t("validation.serialRequired"));
+    if (!selectedProduct) {
+      setValidationError(t("validation.productRequired"));
       return;
     }
-    if (lineItems.some((item) => item.productSerialNumber === serialNumber)) {
+    if (lineItems.some((item) => item.productId === selectedProduct._id)) {
       setValidationError(t("validation.duplicateProduct"));
       return;
     }
@@ -102,11 +248,12 @@ export function CreateSaleSheet({
     setLineItems((items) => [
       ...items,
       {
-        productSerialNumber: serialNumber,
+        productId: selectedProduct._id,
         productQuantity: String(quantity),
       },
     ]);
-    setSerialInput("");
+    setSelectedProductId("");
+    setProductSearch("");
     setQuantityInput("1");
     setValidationError("");
     setOperationError("");
@@ -131,8 +278,15 @@ export function CreateSaleSheet({
   async function handleProcessSale(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (requestInFlight.current) return;
+    if (
+      processOutcomeUncertain ||
+      window.sessionStorage.getItem(processSaleUncertainKey) === "true"
+    ) {
+      setProcessOutcomeUncertain(true);
+      return;
+    }
 
-    if (!token || user?.role !== "cashier" || !user.branchId) {
+    if (!token || user?.role !== "cashier") {
       setValidationError(t("validation.employeeUnavailable"));
       return;
     }
@@ -140,7 +294,7 @@ export function CreateSaleSheet({
       setValidationError(t("validation.salesmanRequired"));
       return;
     }
-    if (salesmanId !== user.id) {
+    if (salesmenLoadState !== "ready" || !selectedSalesman) {
       setValidationError(t("validation.salesmanUnavailable"));
       return;
     }
@@ -152,10 +306,23 @@ export function CreateSaleSheet({
       setValidationError(t("validation.itemsRequired"));
       return;
     }
+    if (productsLoadState !== "ready") {
+      setOperationError(productsLoadError || t("productsLoadError"));
+      return;
+    }
     if (
       lineItems.some(
         (item) =>
-          !item.productSerialNumber.trim() ||
+          !item.productId.trim() ||
+          !products.some((product) => product._id === item.productId),
+      )
+    ) {
+      setValidationError(t("validation.productRequired"));
+      return;
+    }
+    if (
+      lineItems.some(
+        (item) =>
           !Number.isInteger(Number(item.productQuantity)) ||
           Number(item.productQuantity) < 1,
       )
@@ -173,7 +340,7 @@ export function CreateSaleSheet({
         employeeId: salesmanId,
         client_phone_number: clientPhoneNumber.trim(),
         lineItems: lineItems.map((item) => ({
-          productSerialNumber: item.productSerialNumber.trim(),
+          productId: item.productId,
           productQuantity: String(Number(item.productQuantity)),
         })),
       });
@@ -182,7 +349,16 @@ export function CreateSaleSheet({
       setClientPhoneNumber(result.clientData.phoneNumber);
       setStep("receipt");
     } catch (error) {
-      showRequestError(error);
+      const outcomeMayBeUnknown =
+        error instanceof ApiClientError
+          ? error.status === 0 || error.status >= 500
+          : !(error instanceof ApiConfigurationError);
+      if (outcomeMayBeUnknown) {
+        setProcessOutcomeUncertain(true);
+        window.sessionStorage.setItem(processSaleUncertainKey, "true");
+      } else {
+        showRequestError(error);
+      }
     } finally {
       requestInFlight.current = false;
       setIsProcessing(false);
@@ -191,14 +367,16 @@ export function CreateSaleSheet({
 
   async function handleConfirmSale(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (requestInFlight.current || !processedSale) return;
-
-    if (!token || user?.role !== "cashier" || !user.branchId || !salesmanId) {
-      setValidationError(t("validation.employeeUnavailable"));
+    if (
+      requestInFlight.current ||
+      confirmOutcomeUncertain ||
+      !processedSale?.receiptId.trim()
+    ) {
       return;
     }
-    if (salesmanId !== user.id) {
-      setValidationError(t("validation.salesmanUnavailable"));
+
+    if (!token || user?.role !== "cashier" || !salesmanId) {
+      setValidationError(t("validation.employeeUnavailable"));
       return;
     }
     if (!clientPhoneNumber.trim()) {
@@ -218,6 +396,14 @@ export function CreateSaleSheet({
       setValidationError(t("validation.discountInvalid"));
       return;
     }
+    if (percentage > processedSale.allowed_sale_perc) {
+      setValidationError(
+        t("validation.discountTooHigh", {
+          percentage: processedSale.allowed_sale_perc,
+        }),
+      );
+      return;
+    }
     if (!paymentMethod) {
       setValidationError(t("validation.paymentRequired"));
       return;
@@ -234,13 +420,18 @@ export function CreateSaleSheet({
         desiredSalePercentage: desiredSalePercentage.trim(),
         clientData: {
           name: clientName.trim(),
-          phone_number: clientPhoneNumber.trim(),
+          phoneNumber: clientPhoneNumber.trim(),
         },
-        comments: comments.trim(),
+        ...(comments.trim() ? { comments: comments.trim() } : {}),
       });
       setStep("success");
     } catch (error) {
-      showRequestError(error);
+      if (isConfirmSaleOutcomeUnknown(error)) {
+        setConfirmOutcomeUncertain(true);
+        setOperationError("");
+      } else {
+        showRequestError(error);
+      }
     } finally {
       requestInFlight.current = false;
       setIsConfirming(false);
@@ -259,9 +450,10 @@ export function CreateSaleSheet({
 
   function resetWorkflow() {
     setStep("build");
-    setSalesmanId(user?.id ?? "");
+    setSalesmanId("");
     setLineItems([]);
-    setSerialInput("");
+    setProductSearch("");
+    setSelectedProductId("");
     setQuantityInput("1");
     setClientPhoneNumber("");
     setClientName("");
@@ -278,24 +470,25 @@ export function CreateSaleSheet({
     return (
       lineItems.length > 0 ||
       Boolean(clientPhoneNumber.trim()) ||
-      Boolean(serialInput.trim()) ||
+      Boolean(productSearch.trim()) ||
+      Boolean(selectedProductId) ||
       quantityInput !== "1" ||
       Boolean(clientName.trim()) ||
       Boolean(comments.trim()) ||
       desiredSalePercentage !== "0" ||
       Boolean(paymentMethod) ||
-      Boolean(user?.id && salesmanId !== user.id) ||
+      Boolean(salesmanId) ||
       step === "receipt"
     );
   }
 
   function handleClose(nextOpen: boolean, discardConfirmed = false) {
     if (requestInFlight.current) return;
+    if (step === "receipt" && confirmOutcomeUncertain) return;
     if (!nextOpen) {
       if (
         !discardConfirmed &&
         step !== "success" &&
-        step !== "rejected" &&
         hasUnsavedSale()
       ) {
         setShowDiscardConfirmation(true);
@@ -314,23 +507,27 @@ export function CreateSaleSheet({
   }
 
   function handleRejectSale() {
-    if (requestInFlight.current) return;
+    if (requestInFlight.current || confirmOutcomeUncertain) return;
     setValidationError("");
-    setOperationError("");
-    setStep("rejected");
+    setOperationError(t("rejectUnavailable"));
   }
 
   const validationText = validationError;
   const isReceiptStep = step === "receipt";
-  const isResultStep = step === "success" || step === "rejected";
+  const isResultStep = step === "success";
   const currentStep = isReceiptStep || isResultStep ? 2 : 1;
-  const salesmanName = user?.name ?? t("notAvailable");
+  const salesmanName = selectedSalesman?.name ?? t("notAvailable");
+  const discountTooHighMessage = processedSale
+    ? t("validation.discountTooHigh", {
+        percentage: processedSale.allowed_sale_perc,
+      })
+    : "";
   const buildInlineValidationMessages = [
     t("validation.employeeUnavailable"),
     t("validation.salesmanRequired"),
     t("validation.salesmanUnavailable"),
     t("validation.clientPhoneRequired"),
-    t("validation.serialRequired"),
+    t("validation.productRequired"),
     t("validation.duplicateProduct"),
     t("validation.quantityInvalid"),
   ];
@@ -338,6 +535,7 @@ export function CreateSaleSheet({
     t("validation.clientPhoneRequired"),
     t("validation.clientNameRequired"),
     t("validation.discountInvalid"),
+    discountTooHighMessage,
     t("validation.paymentRequired"),
   ];
 
@@ -365,7 +563,9 @@ export function CreateSaleSheet({
               aria-label={cashier("actions.close")}
               title={cashier("actions.close")}
               onClick={() => handleClose(false)}
-              disabled={isProcessing || isConfirming}
+              disabled={
+                isProcessing || isConfirming || confirmOutcomeUncertain
+              }
               className="absolute end-3 top-3"
             >
               <X aria-hidden="true" />
@@ -375,7 +575,7 @@ export function CreateSaleSheet({
                 ? t("title")
                 : step === "receipt"
                   ? t("receipt.title")
-                  : t(step === "success" ? "result.successTitle" : "result.rejectedTitle")}
+                  : t("result.successTitle")}
             </Dialog.Title>
             <Dialog.Description className="mt-1 text-sm text-muted-foreground">
               {step === "build" ? t("description") : t("receipt.description")}
@@ -428,13 +628,42 @@ export function CreateSaleSheet({
                       setSalesmanId(event.currentTarget.value);
                       setValidationError("");
                     }}
-                    disabled={isProcessing || !user?.id}
+                    disabled={isProcessing || salesmenLoadState !== "ready"}
                     aria-required="true"
                     className="h-10 w-full rounded-md border border-input bg-background px-3 text-foreground outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20"
                   >
                     <option value="">{t("selectSalesman")}</option>
-                    {user?.id && <option value={user.id}>{user.name}</option>}
+                    {salesmen.map((salesman) => (
+                      <option key={salesman._id} value={salesman._id}>
+                        {salesman.name} — {salesman.email}
+                      </option>
+                    ))}
                   </select>
+                  {salesmenLoadState === "loading" && (
+                    <p role="status" className="text-sm text-muted-foreground">
+                      {t("salesmenLoading")}
+                    </p>
+                  )}
+                  {salesmenLoadState === "error" && (
+                    <div className="flex items-center justify-between gap-3">
+                      <p role="alert" className="text-sm text-destructive">
+                        {salesmenLoadError}
+                      </p>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setSalesmenRetry((count) => count + 1)}
+                      >
+                        {t("actions.retry")}
+                      </Button>
+                    </div>
+                  )}
+                  {salesmenLoadState === "ready" && salesmen.length === 0 && (
+                    <p role="status" className="text-sm text-muted-foreground">
+                      {t("salesmenEmpty")}
+                    </p>
+                  )}
                   {validationError &&
                     [
                       t("validation.employeeUnavailable"),
@@ -473,36 +702,89 @@ export function CreateSaleSheet({
               </div>
 
               <section className="space-y-3">
-                <h2 className="text-sm font-semibold">{t("productSerialNumber")}</h2>
+                <h2 className="text-sm font-semibold">{t("productSelect")}</h2>
                 <div className="grid items-end gap-3 sm:grid-cols-[minmax(0,1fr)_10rem_auto]">
                   <div className="space-y-2">
-                    <label htmlFor="sale-product-serial" className="text-sm font-medium">
-                      {t("productSerialNumber")}
+                    <label htmlFor="sale-product-search" className="text-sm font-medium">
+                      {t("productSearch")}
                     </label>
                     <Input
-                      id="sale-product-serial"
+                      id="sale-product-search"
                       dir="ltr"
-                      value={serialInput}
-                      disabled={isProcessing}
-                      placeholder={t("productSerialPlaceholder")}
+                      value={productSearch}
+                      disabled={isProcessing || productsLoadState !== "ready"}
+                      placeholder={t("productSearchPlaceholder")}
                       autoComplete="off"
                       autoCapitalize="off"
                       spellCheck={false}
                       onChange={(event) => {
-                        setSerialInput(event.currentTarget.value);
+                        setProductSearch(event.currentTarget.value);
+                        setSelectedProductId("");
                         setValidationError("");
                         setOperationError("");
                       }}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter") {
-                          event.preventDefault();
-                          addLineItem();
-                        }
-                      }}
                     />
+                    <label htmlFor="sale-product-select" className="sr-only">
+                      {t("productSelect")}
+                    </label>
+                    <select
+                      id="sale-product-select"
+                      value={selectedProductId}
+                      disabled={
+                        isProcessing ||
+                        productsLoadState !== "ready" ||
+                        matchingProducts.length === 0
+                      }
+                      onChange={(event) => {
+                        setSelectedProductId(event.currentTarget.value);
+                        setValidationError("");
+                        setOperationError("");
+                      }}
+                      aria-required="true"
+                      className="h-10 w-full rounded-md border border-input bg-background px-3 text-foreground outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20"
+                    >
+                      <option value="">{t("selectProduct")}</option>
+                      {matchingProducts.map((product) => (
+                        <option key={product._id} value={product._id}>
+                          {product.productName} — {product.serialNumber}
+                        </option>
+                      ))}
+                    </select>
+                    {productsLoadState === "loading" && (
+                      <p role="status" className="text-sm text-muted-foreground">
+                        {t("productsLoading")}
+                      </p>
+                    )}
+                    {productsLoadState === "error" && (
+                      <div className="flex items-center justify-between gap-3">
+                        <p role="alert" className="text-sm text-destructive">
+                          {productsLoadError}
+                        </p>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setProductsRetry((count) => count + 1)}
+                        >
+                          {t("actions.retry")}
+                        </Button>
+                      </div>
+                    )}
+                    {productsLoadState === "ready" && products.length === 0 && (
+                      <p role="status" className="text-sm text-muted-foreground">
+                        {t("productsEmpty")}
+                      </p>
+                    )}
+                    {productsLoadState === "ready" &&
+                      products.length > 0 &&
+                      matchingProducts.length === 0 && (
+                        <p role="status" className="text-sm text-muted-foreground">
+                          {t("productNoMatches")}
+                        </p>
+                      )}
                     {validationError &&
                       [
-                        t("validation.serialRequired"),
+                        t("validation.productRequired"),
                         t("validation.duplicateProduct"),
                       ].includes(validationError) && (
                         <p role="alert" className="text-sm text-destructive">
@@ -537,7 +819,7 @@ export function CreateSaleSheet({
                   <Button
                     type="button"
                     onClick={addLineItem}
-                    disabled={isProcessing}
+                    disabled={isProcessing || productsLoadState !== "ready"}
                   >
                     <Plus aria-hidden="true" />
                     {t("addLineItem")}
@@ -556,6 +838,11 @@ export function CreateSaleSheet({
                   {operationError}
                 </p>
               )}
+              {processOutcomeUncertain && (
+                <p role="alert" className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
+                  {t("processOutcomeUncertain")}
+                </p>
+              )}
 
               <section className="space-y-3">
                 <div className="flex items-center justify-between gap-3">
@@ -567,25 +854,35 @@ export function CreateSaleSheet({
                 {lineItems.length > 0 ? (
                   <div className="space-y-2">
                     {lineItems.map((item, index) => {
+                      const product = products.find(
+                        (candidate) => candidate._id === item.productId,
+                      );
+                      const productSerialNumber =
+                        product?.serialNumber ?? item.productId;
                       const quantity = Number(item.productQuantity);
                       const quantityValid =
                         Number.isInteger(quantity) && quantity >= 1;
                       return (
                         <Card
-                          key={item.productSerialNumber}
+                          key={item.productId}
                           className="gap-3 p-4"
                         >
                           <CardContent className="flex flex-wrap items-center justify-between gap-4 p-0">
-                            <p dir="ltr" className="min-w-0 break-all text-sm font-medium">
-                              {item.productSerialNumber}
-                            </p>
+                            <div className="min-w-0 space-y-1">
+                              <p className="break-words text-sm font-medium">
+                                {product?.productName ?? t("notAvailable")}
+                              </p>
+                              <p dir="ltr" className="break-all text-xs text-muted-foreground">
+                                {productSerialNumber}
+                              </p>
+                            </div>
                             <div className="flex items-center gap-2">
                               <Button
                                 type="button"
                                 variant="outline"
                                 size="icon-sm"
                                 aria-label={t("actions.decreaseNamed", {
-                                  serialNumber: item.productSerialNumber,
+                                  serialNumber: productSerialNumber,
                                 })}
                                 disabled={
                                   isProcessing || !quantityValid || quantity <= 1
@@ -602,7 +899,7 @@ export function CreateSaleSheet({
                                 step="1"
                                 inputMode="numeric"
                                 aria-label={t("quantityNamed", {
-                                  serialNumber: item.productSerialNumber,
+                                  serialNumber: productSerialNumber,
                                 })}
                                 value={item.productQuantity}
                                 disabled={isProcessing}
@@ -616,7 +913,7 @@ export function CreateSaleSheet({
                                 variant="outline"
                                 size="icon-sm"
                                 aria-label={t("actions.increaseNamed", {
-                                  serialNumber: item.productSerialNumber,
+                                  serialNumber: productSerialNumber,
                                 })}
                                 disabled={isProcessing || !quantityValid}
                                 onClick={() =>
@@ -630,7 +927,7 @@ export function CreateSaleSheet({
                                 variant="ghost"
                                 size="icon-sm"
                                 aria-label={t("actions.removeNamed", {
-                                  serialNumber: item.productSerialNumber,
+                                  serialNumber: productSerialNumber,
                                 })}
                                 onClick={() => removeLineItem(index)}
                                 disabled={isProcessing}
@@ -670,6 +967,16 @@ export function CreateSaleSheet({
               {operationError && (
                 <p role="alert" className="text-sm text-destructive">
                   {operationError}
+                </p>
+              )}
+              {confirmOutcomeUncertain && processedSale && (
+                <p
+                  role="alert"
+                  className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive"
+                >
+                  {t("confirmOutcomeUncertain", {
+                    receiptId: processedSale.receiptId,
+                  })}
                 </p>
               )}
               {processedSale && (
@@ -730,7 +1037,7 @@ export function CreateSaleSheet({
                             <Input
                               id="sale-client-name"
                               value={clientName}
-                              disabled={isConfirming}
+                              disabled={isConfirming || confirmOutcomeUncertain}
                               onChange={(event) => {
                                 setClientName(event.currentTarget.value);
                                 setValidationError("");
@@ -757,7 +1064,7 @@ export function CreateSaleSheet({
                               type="tel"
                               inputMode="tel"
                               value={clientPhoneNumber}
-                              disabled={isConfirming}
+                              disabled={isConfirming || confirmOutcomeUncertain}
                               onChange={(event) => {
                                 setClientPhoneNumber(event.currentTarget.value);
                                 setValidationError("");
@@ -786,14 +1093,15 @@ export function CreateSaleSheet({
                               step="any"
                               inputMode="decimal"
                               value={desiredSalePercentage}
-                              disabled={isConfirming}
+                              disabled={isConfirming || confirmOutcomeUncertain}
                               onChange={(event) => {
                                 setDesiredSalePercentage(event.currentTarget.value);
                                 setValidationError("");
                               }}
                             />
-                            {validationError ===
-                              t("validation.discountInvalid") && (
+                            {(validationError ===
+                              t("validation.discountInvalid") ||
+                              validationError === discountTooHighMessage) && (
                               <p role="alert" className="text-sm text-destructive">
                                 {validationError}
                               </p>
@@ -809,7 +1117,7 @@ export function CreateSaleSheet({
                             <select
                               id="sale-payment-method"
                               value={paymentMethod}
-                              disabled={isConfirming}
+                              disabled={isConfirming || confirmOutcomeUncertain}
                               onChange={(event) => {
                                 const value = event.currentTarget.value;
                                 setPaymentMethod(
@@ -847,7 +1155,7 @@ export function CreateSaleSheet({
                             <textarea
                               id="sale-comments"
                               value={comments}
-                              disabled={isConfirming}
+                              disabled={isConfirming || confirmOutcomeUncertain}
                               onChange={(event) =>
                                 setComments(event.currentTarget.value)
                               }
@@ -864,36 +1172,16 @@ export function CreateSaleSheet({
             </div>
           ) : (
             <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-5 overflow-y-auto p-8 text-center sm:p-12">
-              {step === "success" ? (
-                <CheckCircle2
-                  aria-hidden="true"
-                  className="size-16 text-emerald-600 dark:text-emerald-400"
-                />
-              ) : (
-                <>
-                  <XCircle
-                    aria-hidden="true"
-                    className="size-16 text-destructive"
-                  />
-                  <p className="max-w-lg text-sm text-muted-foreground">
-                    {t("result.rejectedMockNote")}
-                  </p>
-                </>
-              )}
+              <CheckCircle2
+                aria-hidden="true"
+                className="size-16 text-emerald-600 dark:text-emerald-400"
+              />
               <div className="space-y-2">
                 <h2 className="text-xl font-semibold">
-                  {t(
-                    step === "success"
-                      ? "result.successTitle"
-                      : "result.rejectedTitle",
-                  )}
+                  {t("result.successTitle")}
                 </h2>
                 <p className="text-muted-foreground">
-                  {t(
-                    step === "success"
-                      ? "result.successMessage"
-                      : "result.rejectedMessage",
-                  )}
+                  {t("result.successMessage")}
                 </p>
                 {processedSale && (
                   <p dir="ltr" className="font-mono text-sm text-muted-foreground">
@@ -916,7 +1204,7 @@ export function CreateSaleSheet({
                       setValidationError("");
                       setOperationError("");
                     }}
-                    disabled={isConfirming}
+                    disabled={isConfirming || confirmOutcomeUncertain}
                   >
                     {t("actions.backToEdit")}
                   </Button>
@@ -925,14 +1213,30 @@ export function CreateSaleSheet({
                       type="button"
                       variant="destructive"
                       onClick={handleRejectSale}
-                      disabled={isConfirming}
+                      disabled={isConfirming || confirmOutcomeUncertain}
                     >
                       {t("actions.rejectSale")}
                     </Button>
-                    <Button type="submit" disabled={isConfirming || !processedSale}>
-                      {isConfirming
-                        ? t("states.confirming")
-                        : t("actions.confirmPayment")}
+                    <Button
+                      type="submit"
+                      disabled={
+                        isConfirming ||
+                        confirmOutcomeUncertain ||
+                        !processedSale?.receiptId.trim()
+                      }
+                      aria-busy={isConfirming}
+                    >
+                      {isConfirming ? (
+                        <>
+                          <LoaderCircle
+                            aria-hidden="true"
+                            className="size-4 animate-spin"
+                          />
+                          {t("states.confirming")}
+                        </>
+                      ) : (
+                        t("actions.confirmPayment")
+                      )}
                     </Button>
                   </div>
                 </>
@@ -946,7 +1250,10 @@ export function CreateSaleSheet({
                   >
                     {t("actions.cancel")}
                   </Button>
-                  <Button type="submit" disabled={isProcessing}>
+                  <Button
+                    type="submit"
+                    disabled={isProcessing || processOutcomeUncertain}
+                  >
                     {isProcessing
                       ? t("states.processing")
                       : t("actions.showReceipt")}

@@ -1,28 +1,12 @@
-import { getBranchById, listBranches } from "@/features/branches/services/branches-service";
-import {
-  getEmployeeById,
-  mockCurrentCashierId,
-} from "@/features/employees/services/employees-service";
 import { listCashierReceipts } from "@/features/sales/services/sales-service";
 import type { CashierDashboardData } from "../types/cashier-dashboard";
 
 export function getCashierDashboardData(
   dateKey: string,
+  branchId: string,
+  cashierName: string,
 ): CashierDashboardData {
-  const cashier = getEmployeeById(mockCurrentCashierId);
-  if (!cashier || cashier.role !== "cashier" || !cashier.active) {
-    throw new Error("The current mock cashier is unavailable.");
-  }
-  if (!cashier.branchId) {
-    throw new Error("The current mock cashier has no assigned branch.");
-  }
-
-  const branch = getBranchById(listBranches(), cashier.branchId);
-  if (!branch) {
-    throw new Error("The current mock cashier branch is unavailable.");
-  }
-
-  const receipts = listCashierReceipts(cashier.branchId, dateKey);
+  const receipts = listCashierReceipts(branchId, dateKey);
   const completedReceipts = receipts.filter(
     (receipt) => receipt.status === "completed",
   );
@@ -32,8 +16,7 @@ export function getCashierDashboardData(
   );
 
   return {
-    cashierName: cashier.name,
-    branch,
+    cashierName,
     receipts,
     totalSales,
     receiptCount: receipts.length,

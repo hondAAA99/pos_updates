@@ -12,6 +12,7 @@ import type {
   EmployeeItem,
   EmployeeListFilters,
   EmployeePage,
+  BranchSalesman,
   UpdateEmployeeInput,
 } from "../types/employee";
 
@@ -49,6 +50,15 @@ function mapEmployee(item: EmployeeApiItem): EmployeeItem {
     branchId: item.branchId,
     active: item.active,
   };
+}
+
+export async function listBranchSalesmen(
+  token: string,
+): Promise<BranchSalesman[]> {
+  return apiClient.get<BranchSalesman[]>("/branch/salesmen", {
+    token,
+    cache: "no-store",
+  });
 }
 
 export async function listEmployeesFromApi(

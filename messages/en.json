@@ -271,8 +271,8 @@
       "averageReceipt": "Average completed receipt"
     },
     "receipts": {
-      "title": "Today's receipts",
-      "description": "Recent receipt activity for your assigned branch.",
+      "title": "Branch receipts",
+      "description": "Receipt activity for your assigned branch.",
       "count": "{count, plural, one {# receipt} other {# receipts}}",
       "reference": "Receipt number",
       "time": "Time",
@@ -280,13 +280,19 @@
       "paymentMethod": "Payment method",
       "status": "Sale status",
       "salesman": "Salesman",
+      "employee": "Employee",
       "actions": "Actions",
       "view": "View details",
       "viewNamed": "View receipt {reference}",
+      "print": "Print receipt",
+      "printNamed": "Print receipt {reference}",
+      "printTitle": "Sales receipt",
       "detailsDescription": "Receipt summary",
       "itemsTitle": "Products",
       "dateTime": "Sale date and time",
       "cashier": "Cashier",
+      "employeeId": "Employee ID",
+      "clientId": "Client ID",
       "branch": "Branch",
       "product": "Product",
       "quantity": "Quantity",
@@ -294,10 +300,23 @@
       "lineTotal": "Line total",
       "subtotal": "Subtotal",
       "discount": "Discount",
+      "salePercentage": "Sale percentage",
+      "allowedSalePercentage": "Allowed sale percentage",
       "total": "Final total",
+      "confirmation": "Payment confirmed",
+      "confirmed": "Confirmed",
+      "notConfirmed": "Not confirmed",
+      "comments": "Comments",
+      "notAvailable": "Not available",
       "itemsUnavailable": "Product line details are unavailable for this receipt.",
-      "emptyTitle": "No receipts today",
-      "emptyDescription": "Receipts for your branch will appear here when available."
+      "emptyTitle": "No receipts",
+      "emptyDescription": "Receipts for your branch will appear here when available.",
+      "loading": "Loading receipts…",
+      "loadError": "Receipts could not be loaded. Try again.",
+      "printError": "The complete receipt could not be loaded for printing.",
+      "page": "Page {current} of {total}",
+      "previous": "Previous",
+      "next": "Next"
     },
     "paymentMethods": {
       "cash": "Cash",
@@ -317,7 +336,15 @@
       "branch": "Branch",
       "completed": "Completed sales",
       "completedCount": "{count, plural, one {# sale} other {# sales}}",
-      "salesTotal": "Sales total"
+      "salesSection": "Branch supply",
+      "salesSum": "Sales sum",
+      "salesTotal": "Sales total",
+      "maintenanceSum": "Maintenance sum",
+      "maintenanceTotal": "Maintenance total",
+      "loading": "Loading branch supply…",
+      "loadError": "Branch supply could not be loaded.",
+      "supplyUnavailable": "Supply data is not available for this branch.",
+      "unassigned": "No assigned branch is available."
     },
     "createSale": {
       "title": "Create Sale",
@@ -327,7 +354,7 @@
     },
     "states": {
       "loading": "Loading cashier dashboard…",
-      "loadError": "Cashier dashboard data could not be loaded. Check the mock cashier and branch setup, then retry."
+      "loadError": "Cashier dashboard data could not be loaded. Verify your cashier account and assigned branch, then retry."
     }
   },
   "saleWorkflow": {
@@ -337,8 +364,18 @@
     "selectSalesman": "Select the responsible employee",
     "clientPhone": "Client phone number",
     "clientName": "Client name",
-    "productSerialNumber": "Product serial number",
-    "productSerialPlaceholder": "Enter the product serial number",
+    "productSearch": "Search products",
+    "productSearchPlaceholder": "Search by product name or serial number",
+    "productSelect": "Product",
+    "selectProduct": "Select a product",
+    "salesmenLoading": "Loading salesmen…",
+    "salesmenLoadError": "Salesmen could not be loaded.",
+    "salesmenEmpty": "No salesmen are available for this branch.",
+    "productsLoading": "Loading products…",
+    "productsLoadError": "Products could not be loaded.",
+    "productsEmpty": "No products are available.",
+    "productNoMatches": "No products match this search.",
+    "processOutcomeUncertain": "The request may have created a pending receipt. Do not process this sale again until you verify the receipt and inventory state.",
     "productQuantity": "Quantity",
     "addLineItem": "Add item",
     "cartTitle": "Sale items",
@@ -352,12 +389,15 @@
     "notAvailable": "Not available",
     "operationError": "The sale request could not be completed. Try again.",
     "sessionExpired": "Your session has expired or is not authorized. Sign in again.",
+    "confirmOutcomeUncertain": "Confirmation for receipt {receiptId} may have completed, but its outcome is unknown. Do not retry. Verify the receipt and inventory state before taking further action.",
+    "rejectUnavailable": "Rejection is not available yet. This receipt remains pending.",
     "steps": {
       "label": "Sale workflow steps",
       "process": "Process Sale",
       "confirm": "Confirm Sale"
     },
     "actions": {
+      "retry": "Retry",
       "removeNamed": "Remove {serialNumber}",
       "increaseNamed": "Increase quantity for {serialNumber}",
       "decreaseNamed": "Decrease quantity for {serialNumber}",
@@ -376,14 +416,11 @@
     },
     "result": {
       "successTitle": "Payment Confirmed Successfully",
-      "successMessage": "The payment was confirmed and the sale is complete.",
-      "rejectedTitle": "Sale Rejected",
-      "rejectedMessage": "This sale was rejected in this screen.",
-      "rejectedMockNote": "Rejection is a local UI action only. The backend has not changed the receipt status."
+      "successMessage": "The payment was confirmed and the sale is complete."
     },
     "empty": {
       "cartTitle": "No products in this sale",
-      "cartDescription": "Enter a product serial number and add it to the sale."
+      "cartDescription": "Search for a product, select it, and add it to the sale."
     },
     "receipt": {
       "title": "Receipt preview",
@@ -391,16 +428,17 @@
       "receiptPrice": "Receipt price"
     },
     "validation": {
-      "employeeUnavailable": "Your authenticated employee or branch context is unavailable.",
+      "employeeUnavailable": "Your authenticated cashier session is unavailable.",
       "salesmanRequired": "Select the responsible employee.",
-      "salesmanUnavailable": "The selected employee is not available in this cashier session.",
+      "salesmanUnavailable": "The selected salesman is no longer available. Reload the list.",
       "clientPhoneRequired": "Enter the client's phone number.",
       "clientNameRequired": "Enter the client's name.",
-      "serialRequired": "Enter a product serial number.",
+      "productRequired": "Select a product.",
       "itemsRequired": "Add at least one product.",
-      "duplicateProduct": "This product serial number is already in the sale.",
+      "duplicateProduct": "This product is already in the sale.",
       "quantityInvalid": "Each quantity must be a positive whole number.",
       "discountInvalid": "Enter a valid discount percentage of zero or more.",
+      "discountTooHigh": "The discount cannot exceed the allowed {percentage}% for this receipt.",
       "paymentRequired": "Select a payment method."
     },
     "feedback": {
@@ -1351,7 +1389,22 @@
     },
     "details": {
       "description": "Branch information",
-      "id": "Branch ID"
+      "id": "Branch ID",
+      "loadError": "Branch details could not be loaded. Try again.",
+      "supply": {
+        "title": "Sales and maintenance statistics",
+        "description": "Supply values reported for this branch.",
+        "sales": "Sales",
+        "maintenance": "Maintenance",
+        "salesSum": "Sales sum",
+        "salesTotal": "Sales total",
+        "maintenanceSum": "Maintenance sum",
+        "maintenanceTotal": "Maintenance total",
+        "timestamp": "Supply timestamp",
+        "loading": "Loading supply data…",
+        "unavailable": "Supply data is not available for this branch.",
+        "missingTimestamp": "Timestamp is not available."
+      }
     },
     "delete": {
       "title": "Delete branch?",

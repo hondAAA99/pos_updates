@@ -3,12 +3,16 @@
 import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
-import { formatCurrency, formatDate } from "@/lib/format";
+import { formatCurrency, formatDate, formatNumber } from "@/lib/format";
 import type { Locale } from "@/i18n/routing";
 import type {
   ReceiptPaymentMethod,
   ReceiptSaleStatus,
 } from "@/features/dashboard/types/cashier-dashboard";
+import {
+  getReceiptPaymentTranslationKey,
+  getReceiptStatusTranslationKey,
+} from "@/features/dashboard/utils/receipt-labels";
 
 export type ReceiptPresentationData = {
   referenceNumber: string;
@@ -17,18 +21,25 @@ export type ReceiptPresentationData = {
   salesmanName?: string;
   cashierName?: string;
   branchName?: string;
+  employeeId?: string;
+  clientId?: string;
+  branchId?: string;
   paymentMethod?: ReceiptPaymentMethod;
+  confirmed?: boolean;
+  comments?: string;
   items?: Array<{
     productId?: string;
-    productName: string;
-    serialNumber: string;
-    quantity: number;
-    unitPrice: number;
-    lineTotal: number;
+    productName?: string;
+    serialNumber?: string;
+    quantity?: number;
+    unitPrice?: number;
+    lineTotal?: number;
   }>;
   subtotal?: number;
   discount?: number;
-  totalAmount: number;
+  salePercentage?: number;
+  allowedSalePercentage?: number;
+  totalAmount?: number;
   totalLabel?: string;
 };
 
@@ -46,6 +57,7 @@ export function ReceiptPresentation({
   paymentMethodControl,
 }: ReceiptPresentationProps) {
   const t = useTranslations("cashierDashboard");
+  const unavailable = t("receipts.notAvailable");
 
   const statusVariant =
     receipt.status === "completed"
@@ -67,7 +79,10 @@ export function ReceiptPresentation({
         </div>
         {receipt.status && (
           <Badge variant={statusVariant} className="shrink-0">
-            {t(`statuses.${receipt.status}`)}
+            {(() => {
+              const key = getReceiptStatusTranslationKey(receipt.status);
+              return key ? t(key) : receipt.status;
+            })()}
           </Badge>
         )}
       </section>
@@ -85,16 +100,43 @@ export function ReceiptPresentation({
         {receipt.salesmanName && (
           <Detail label={t("receipts.salesman")} value={receipt.salesmanName} />
         )}
+        {receipt.employeeId && (
+          <Detail
+            label={t("receipts.employeeId")}
+            value={receipt.employeeId}
+          />
+        )}
         {receipt.cashierName && (
           <Detail label={t("receipts.cashier")} value={receipt.cashierName} />
+        )}
+        {receipt.clientId && (
+          <Detail label={t("receipts.clientId")} value={receipt.clientId} />
         )}
         {receipt.branchName && (
           <Detail label={t("receipts.branch")} value={receipt.branchName} />
         )}
+        {!receipt.branchName && receipt.branchId && (
+          <Detail label={t("receipts.branch")} value={receipt.branchId} />
+        )}
         {receipt.paymentMethod && (
           <Detail
             label={t("receipts.paymentMethod")}
-            value={t(`paymentMethods.${receipt.paymentMethod}`)}
+            value={(() => {
+              const key = getReceiptPaymentTranslationKey(
+                receipt.paymentMethod,
+              );
+              return key ? t(key) : receipt.paymentMethod;
+            })()}
+          />
+        )}
+        {receipt.confirmed !== undefined && (
+          <Detail
+            label={t("receipts.confirmation")}
+            value={
+              receipt.confirmed
+                ? t("receipts.confirmed")
+                : t("receipts.notConfirmed")
+            }
           />
         )}
       </dl>
@@ -125,18 +167,29 @@ export function ReceiptPresentation({
                   <tr key={item.productId ?? item.serialNumber}>
                     <th className="px-4 py-3 text-start font-medium">
                       <span className="block break-words">
-                        {item.productName}
+                        {item.productName ?? unavailable}
                       </span>
-                      <span dir="ltr" className="text-xs text-muted-foreground">
-                        {item.serialNumber}
-                      </span>
+                      {item.serialNumber && (
+                        <span
+                          dir="ltr"
+                          className="text-xs text-muted-foreground"
+                        >
+                          {item.serialNumber}
+                        </span>
+                      )}
                     </th>
-                    <td className="px-3 py-3 text-end">{item.quantity}</td>
+                    <td className="px-3 py-3 text-end">
+                      {item.quantity ?? unavailable}
+                    </td>
                     <td dir="ltr" className="px-3 py-3 text-end">
-                      {formatCurrency(item.unitPrice, locale)}
+                      {item.unitPrice === undefined
+                        ? unavailable
+                        : formatCurrency(item.unitPrice, locale)}
                     </td>
                     <td dir="ltr" className="px-4 py-3 text-end font-medium">
-                      {formatCurrency(item.lineTotal, locale)}
+                      {item.lineTotal === undefined
+                        ? unavailable
+                        : formatCurrency(item.lineTotal, locale)}
                     </td>
                   </tr>
                 ))}
@@ -169,15 +222,36 @@ export function ReceiptPresentation({
             )}
           </div>
         )}
+        {receipt.salePercentage !== undefined && (
+          <SummaryRow
+            label={t("receipts.salePercentage")}
+            value={`${formatNumber(receipt.salePercentage, locale)}%`}
+          />
+        )}
+        {receipt.allowedSalePercentage !== undefined && (
+          <SummaryRow
+            label={t("receipts.allowedSalePercentage")}
+            value={`${formatNumber(receipt.allowedSalePercentage, locale)}%`}
+          />
+        )}
         <div className="flex items-center justify-between gap-5 border-t border-border pt-3">
           <span className="text-base font-semibold">
             {receipt.totalLabel ?? t("receipts.total")}
           </span>
           <span dir="ltr" className="text-base font-bold">
-            {formatCurrency(receipt.totalAmount, locale)}
+            {receipt.totalAmount === undefined
+              ? unavailable
+              : formatCurrency(receipt.totalAmount, locale)}
           </span>
         </div>
       </section>
+
+      {receipt.comments && (
+        <section className="rounded-lg border border-border p-4">
+          <h2 className="text-sm font-semibold">{t("receipts.comments")}</h2>
+          <p className="mt-2 break-words text-sm">{receipt.comments}</p>
+        </section>
+      )}
 
       {paymentMethodControl}
     </div>

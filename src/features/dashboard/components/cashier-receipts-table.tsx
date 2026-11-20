@@ -1,25 +1,48 @@
 "use client";
 
-import { Eye, ReceiptText } from "lucide-react";
+import { Eye, Printer, ReceiptText } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatCurrency, formatDate } from "@/lib/format";
 import type { Locale } from "@/i18n/routing";
 import type { CashierReceipt } from "../types/cashier-dashboard";
+import {
+  getReceiptPaymentTranslationKey,
+  getReceiptStatusTranslationKey,
+} from "../utils/receipt-labels";
 
 type CashierReceiptsTableProps = {
   receipts: CashierReceipt[];
+  total: number;
+  page: number;
+  totalPages: number;
+  loadState: "loading" | "ready" | "error";
+  error: string;
+  printingReceiptId: string | null;
   locale: Locale;
   onView: (receipt: CashierReceipt) => void;
+  onPrint: (receipt: CashierReceipt) => void;
+  onRetry: () => void;
+  onPageChange: (page: number) => void;
 };
 
 export function CashierReceiptsTable({
   receipts,
+  total,
+  page,
+  totalPages,
+  loadState,
+  error,
+  printingReceiptId,
   locale,
   onView,
+  onPrint,
+  onRetry,
+  onPageChange,
 }: CashierReceiptsTableProps) {
   const t = useTranslations("cashierDashboard");
+  const unavailable = t("receipts.notAvailable");
 
   return (
     <Card className="gap-0 overflow-hidden p-0">
@@ -30,14 +53,30 @@ export function CashierReceiptsTable({
             <CardDescription>{t("receipts.description")}</CardDescription>
           </div>
           <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-            {t("receipts.count", { count: receipts.length })}
+            {t("receipts.count", { count: total })}
           </span>
         </div>
       </CardHeader>
 
-      {receipts.length > 0 ? (
+      {loadState === "loading" ? (
+        <div className="flex min-h-56 items-center justify-center px-6 py-10">
+          <p role="status" className="text-sm text-muted-foreground">
+            {t("receipts.loading")}
+          </p>
+        </div>
+      ) : loadState === "error" ? (
+        <div className="flex min-h-56 flex-col items-center justify-center gap-3 px-6 py-10 text-center">
+          <p role="alert" className="text-sm text-destructive">
+            {error}
+          </p>
+          <Button type="button" variant="outline" onClick={onRetry}>
+            {t("actions.retry")}
+          </Button>
+        </div>
+      ) : receipts.length > 0 ? (
         <CardContent className="p-0">
-          <table className="w-full table-fixed text-start text-sm">
+          <div className="overflow-x-auto">
+          <table className="min-w-[850px] w-full table-fixed text-start text-sm">
             <thead className="bg-muted/40">
               <tr className="border-b border-border">
                 <th scope="col" className="w-[18%] px-5 py-3.5 text-start font-medium">
@@ -56,9 +95,9 @@ export function CashierReceiptsTable({
                   {t("receipts.status")}
                 </th>
                 <th scope="col" className="w-[18%] px-5 py-3.5 text-start font-medium">
-                  {t("receipts.salesman")}
+                  {t("receipts.employee")}
                 </th>
-                <th scope="col" className="w-[8%] px-3 py-3.5 text-end font-medium">
+                <th scope="col" className="w-[12%] px-3 py-3.5 text-end font-medium">
                   {t("receipts.actions")}
                 </th>
               </tr>
@@ -82,7 +121,12 @@ export function CashierReceiptsTable({
                     {formatCurrency(receipt.totalAmount, locale)}
                   </td>
                   <td className="px-5 py-4">
-                    {t(`paymentMethods.${receipt.paymentMethod}`)}
+                    {(() => {
+                      const key = getReceiptPaymentTranslationKey(
+                        receipt.paymentMethod,
+                      );
+                      return key ? t(key) : receipt.paymentMethod;
+                    })()}
                   </td>
                   <td className="px-5 py-4">
                     <span
@@ -92,10 +136,17 @@ export function CashierReceiptsTable({
                           : "inline-flex rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground"
                       }
                     >
-                      {t(`statuses.${receipt.status}`)}
+                      {(() => {
+                        const key = getReceiptStatusTranslationKey(
+                          receipt.status,
+                        );
+                        return key ? t(key) : receipt.status;
+                      })()}
                     </span>
                   </td>
-                  <td className="px-5 py-4">{receipt.salesmanName}</td>
+                  <td className="px-5 py-4">
+                    {receipt.employeeId ?? receipt.salesmanName ?? unavailable}
+                  </td>
                   <td className="px-2 py-3">
                     <div className="flex justify-end">
                       <Button
@@ -110,12 +161,51 @@ export function CashierReceiptsTable({
                       >
                         <Eye aria-hidden="true" />
                       </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        aria-label={t("receipts.printNamed", {
+                          reference: receipt.referenceNumber,
+                        })}
+                        title={t("receipts.print")}
+                        disabled={printingReceiptId !== null}
+                        onClick={() => onPrint(receipt)}
+                      >
+                        <Printer aria-hidden="true" />
+                      </Button>
                     </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          </div>
+          <footer className="flex items-center justify-between border-t border-border px-5 py-3">
+            <span className="text-sm text-muted-foreground">
+              {t("receipts.page", { current: page, total: totalPages })}
+            </span>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={page <= 1}
+                onClick={() => onPageChange(page - 1)}
+              >
+                {t("receipts.previous")}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={page >= totalPages}
+                onClick={() => onPageChange(page + 1)}
+              >
+                {t("receipts.next")}
+              </Button>
+            </div>
+          </footer>
         </CardContent>
       ) : (
         <div className="flex min-h-56 flex-col items-center justify-center px-6 py-10 text-center">

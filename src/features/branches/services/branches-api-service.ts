@@ -1,5 +1,5 @@
 import { ApiClientError, apiClient } from "@/lib/api-client";
-import type { Branch } from "../types/branch";
+import type { Branch, BranchDetails, BranchSupply } from "../types/branch";
 
 type BranchApiItem = {
   _id: string;
@@ -18,6 +18,7 @@ type BranchPageApiResponse = {
 
 type BranchDetailApiResponse = {
   branch: BranchApiItem;
+  supply?: BranchSupply | null;
 };
 
 const branchPageSize = 100;
@@ -60,16 +61,19 @@ export async function listBranchesFromApi(token: string): Promise<Branch[]> {
   return branches.map((branch) => ({ _id: branch._id, name: branch.name }));
 }
 
-export async function getBranchFromApi(
+export async function getBranchDetailsFromApi(
   token: string,
   id: string,
-): Promise<Branch> {
+): Promise<BranchDetails> {
   const response = await apiClient.get<BranchDetailApiResponse>(`/branch/${id}`, {
     token,
   });
   return {
-    _id: response.branch._id,
-    name: response.branch.name,
+    branch: {
+      _id: response.branch._id,
+      name: response.branch.name,
+    },
+    supply: response.supply ?? null,
   };
 }
 

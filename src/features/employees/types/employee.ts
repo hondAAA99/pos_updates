@@ -19,6 +19,8 @@ export type EmployeeItem = {
   active: boolean;
 };
 
+export type BranchSalesman = Pick<EmployeeItem, "_id" | "name" | "email">;
+
 export type CreateEmployeeInput = {
   name: string;
   role: EmployeeRole;

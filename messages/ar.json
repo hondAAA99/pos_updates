@@ -271,8 +271,8 @@
       "averageReceipt": "متوسط الإيصال المكتمل"
     },
     "receipts": {
-      "title": "إيصالات اليوم",
-      "description": "أحدث الإيصالات في الفرع المعيّن لك.",
+      "title": "إيصالات الفرع",
+      "description": "نشاط الإيصالات في الفرع المعيّن لك.",
       "count": "{count, plural, zero {لا توجد إيصالات} one {إيصال واحد} two {إيصالان} few {# إيصالات} many {# إيصالًا} other {# إيصال}}",
       "reference": "رقم الإيصال",
       "time": "الوقت",
@@ -280,13 +280,19 @@
       "paymentMethod": "طريقة الدفع",
       "status": "حالة البيع",
       "salesman": "مندوب المبيعات",
+      "employee": "الموظف",
       "actions": "الإجراءات",
       "view": "عرض التفاصيل",
       "viewNamed": "عرض الإيصال {reference}",
+      "print": "طباعة الإيصال",
+      "printNamed": "طباعة الإيصال {reference}",
+      "printTitle": "إيصال بيع",
       "detailsDescription": "ملخص الإيصال",
       "itemsTitle": "المنتجات",
       "dateTime": "تاريخ ووقت البيع",
       "cashier": "أمين الصندوق",
+      "employeeId": "معرّف الموظف",
+      "clientId": "معرّف العميل",
       "branch": "الفرع",
       "product": "المنتج",
       "quantity": "الكمية",
@@ -294,10 +300,23 @@
       "lineTotal": "إجمالي البند",
       "subtotal": "المجموع الفرعي",
       "discount": "الخصم",
+      "salePercentage": "نسبة الخصم",
+      "allowedSalePercentage": "نسبة الخصم المسموح بها",
       "total": "الإجمالي النهائي",
+      "confirmation": "تأكيد الدفع",
+      "confirmed": "مؤكد",
+      "notConfirmed": "غير مؤكد",
+      "comments": "ملاحظات",
+      "notAvailable": "غير متاح",
       "itemsUnavailable": "تفاصيل بنود المنتجات غير متاحة لهذا الإيصال.",
-      "emptyTitle": "لا توجد إيصالات اليوم",
-      "emptyDescription": "ستظهر إيصالات فرعك هنا عند توفرها."
+      "emptyTitle": "لا توجد إيصالات",
+      "emptyDescription": "ستظهر إيصالات فرعك هنا عند توفرها.",
+      "loading": "جارٍ تحميل الإيصالات…",
+      "loadError": "تعذّر تحميل الإيصالات. حاول مرة أخرى.",
+      "printError": "تعذّر تحميل الإيصال الكامل للطباعة.",
+      "page": "الصفحة {current} من {total}",
+      "previous": "السابق",
+      "next": "التالي"
     },
     "paymentMethods": {
       "cash": "نقدًا",
@@ -317,7 +336,15 @@
       "branch": "الفرع",
       "completed": "المبيعات المكتملة",
       "completedCount": "{count, plural, zero {لا توجد مبيعات} one {عملية بيع واحدة} two {عمليتا بيع} few {# عمليات بيع} many {# عملية بيع} other {# عملية بيع}}",
-      "salesTotal": "إجمالي المبيعات"
+      "salesSection": "بيانات توريد الفرع",
+      "salesSum": "مجموع المبيعات",
+      "salesTotal": "إجمالي المبيعات",
+      "maintenanceSum": "مجموع الصيانة",
+      "maintenanceTotal": "إجمالي الصيانة",
+      "loading": "جارٍ تحميل بيانات توريد الفرع…",
+      "loadError": "تعذّر تحميل بيانات توريد الفرع.",
+      "supplyUnavailable": "بيانات التوريد غير متاحة لهذا الفرع.",
+      "unassigned": "لا يوجد فرع معيّن متاح."
     },
     "createSale": {
       "title": "إنشاء عملية بيع",
@@ -327,7 +354,7 @@
     },
     "states": {
       "loading": "جارٍ تحميل لوحة أمين الصندوق…",
-      "loadError": "تعذّر تحميل بيانات لوحة أمين الصندوق. تحقق من إعدادات أمين الصندوق والفرع التجريبية ثم أعد المحاولة."
+      "loadError": "تعذّر تحميل بيانات لوحة أمين الصندوق. تحقق من حسابك والفرع المعيّن لك ثم أعد المحاولة."
     }
   },
   "saleWorkflow": {
@@ -337,8 +364,18 @@
     "selectSalesman": "اختر الموظف المسؤول",
     "clientPhone": "رقم هاتف العميل",
     "clientName": "اسم العميل",
-    "productSerialNumber": "الرقم التسلسلي للمنتج",
-    "productSerialPlaceholder": "أدخل الرقم التسلسلي للمنتج",
+    "productSearch": "البحث عن المنتجات",
+    "productSearchPlaceholder": "ابحث باسم المنتج أو رقمه التسلسلي",
+    "productSelect": "المنتج",
+    "selectProduct": "اختر منتجًا",
+    "salesmenLoading": "جارٍ تحميل مندوبي المبيعات…",
+    "salesmenLoadError": "تعذّر تحميل مندوبي المبيعات.",
+    "salesmenEmpty": "لا يوجد مندوبو مبيعات متاحون لهذا الفرع.",
+    "productsLoading": "جارٍ تحميل المنتجات…",
+    "productsLoadError": "تعذّر تحميل المنتجات.",
+    "productsEmpty": "لا توجد منتجات متاحة.",
+    "productNoMatches": "لا توجد منتجات تطابق هذا البحث.",
+    "processOutcomeUncertain": "ربما أنشأ الطلب إيصالًا قيد الانتظار. لا تعالج عملية البيع مرة أخرى قبل التحقق من حالة الإيصال والمخزون.",
     "productQuantity": "الكمية",
     "addLineItem": "إضافة عنصر",
     "cartTitle": "عناصر البيع",
@@ -352,12 +389,15 @@
     "notAvailable": "غير متوفر",
     "operationError": "تعذّر إكمال طلب البيع. حاول مرة أخرى.",
     "sessionExpired": "انتهت صلاحية الجلسة أو ليست لديك صلاحية. سجّل الدخول مرة أخرى.",
+    "confirmOutcomeUncertain": "ربما اكتمل تأكيد الإيصال {receiptId}، لكن النتيجة غير معروفة. لا تعاود الإرسال. تحقّق من حالة الإيصال والمخزون قبل اتخاذ أي إجراء آخر.",
+    "rejectUnavailable": "الرفض غير متاح حاليًا. يظل هذا الإيصال قيد الانتظار.",
     "steps": {
       "label": "خطوات عملية البيع",
       "process": "معالجة البيع",
       "confirm": "تأكيد البيع"
     },
     "actions": {
+      "retry": "إعادة المحاولة",
       "removeNamed": "إزالة {serialNumber}",
       "increaseNamed": "زيادة كمية {serialNumber}",
       "decreaseNamed": "تقليل كمية {serialNumber}",
@@ -376,14 +416,11 @@
     },
     "result": {
       "successTitle": "تم تأكيد الدفع بنجاح",
-      "successMessage": "تم تأكيد الدفع واكتملت عملية البيع.",
-      "rejectedTitle": "تم رفض البيع",
-      "rejectedMessage": "تم رفض عملية البيع في هذه الشاشة.",
-      "rejectedMockNote": "الرفض إجراء محلي في الواجهة فقط. لم تتغير حالة الإيصال في الخادم."
+      "successMessage": "تم تأكيد الدفع واكتملت عملية البيع."
     },
     "empty": {
       "cartTitle": "لا توجد منتجات في عملية البيع",
-      "cartDescription": "أدخل الرقم التسلسلي للمنتج ثم أضفه إلى عملية البيع."
+      "cartDescription": "ابحث عن منتج واختره ثم أضفه إلى عملية البيع."
     },
     "receipt": {
       "title": "معاينة الإيصال",
@@ -391,16 +428,17 @@
       "receiptPrice": "سعر الإيصال"
     },
     "validation": {
-      "employeeUnavailable": "تعذّر تحديد الموظف أو الفرع من بيانات المصادقة.",
+      "employeeUnavailable": "جلسة أمين الصندوق المصادق عليها غير متاحة.",
       "salesmanRequired": "اختر الموظف المسؤول عن البيع.",
-      "salesmanUnavailable": "الموظف المحدد غير متاح في جلسة أمين الصندوق هذه.",
+      "salesmanUnavailable": "مندوب المبيعات المحدد لم يعد متاحًا. أعد تحميل القائمة.",
       "clientPhoneRequired": "أدخل رقم هاتف العميل.",
       "clientNameRequired": "أدخل اسم العميل.",
-      "serialRequired": "أدخل الرقم التسلسلي للمنتج.",
+      "productRequired": "اختر منتجًا.",
       "itemsRequired": "أضف منتجًا واحدًا على الأقل.",
-      "duplicateProduct": "الرقم التسلسلي لهذا المنتج مضاف بالفعل.",
+      "duplicateProduct": "هذا المنتج مضاف بالفعل.",
       "quantityInvalid": "يجب أن تكون كل كمية عددًا صحيحًا موجبًا.",
       "discountInvalid": "أدخل نسبة خصم صالحة لا تقل عن صفر.",
+      "discountTooHigh": "يجب ألا يتجاوز الخصم النسبة المسموح بها لهذا الإيصال ({percentage}٪).",
       "paymentRequired": "اختر طريقة الدفع."
     },
     "feedback": {
@@ -1351,7 +1389,22 @@
     },
     "details": {
       "description": "معلومات الفرع",
-      "id": "معرّف الفرع"
+      "id": "معرّف الفرع",
+      "loadError": "تعذّر تحميل تفاصيل الفرع. حاول مرة أخرى.",
+      "supply": {
+        "title": "إحصاءات المبيعات والصيانة",
+        "description": "قيم التوريد المسجّلة لهذا الفرع.",
+        "sales": "المبيعات",
+        "maintenance": "الصيانة",
+        "salesSum": "مجموع المبيعات",
+        "salesTotal": "إجمالي المبيعات",
+        "maintenanceSum": "مجموع الصيانة",
+        "maintenanceTotal": "إجمالي الصيانة",
+        "timestamp": "وقت بيانات التوريد",
+        "loading": "جارٍ تحميل بيانات التوريد…",
+        "unavailable": "بيانات التوريد غير متاحة لهذا الفرع.",
+        "missingTimestamp": "الوقت غير متاح."
+      }
     },
     "delete": {
       "title": "حذف الفرع؟",

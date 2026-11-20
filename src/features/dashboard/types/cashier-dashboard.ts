@@ -1,11 +1,15 @@
-import type { Branch } from "@/features/branches/types/branch";
-
-export type ReceiptPaymentMethod = "cash" | "card" | "mobileWallet";
+export type ReceiptPaymentMethod =
+  | "cash"
+  | "card"
+  | "mobileWallet"
+  | "wallet"
+  | (string & {});
 export type ReceiptSaleStatus =
   | "completed"
   | "rejected"
   | "refunded"
-  | "voided";
+  | "voided"
+  | (string & {});
 
 export type CashierReceipt = {
   _id: string;
@@ -14,9 +18,16 @@ export type CashierReceipt = {
   totalAmount: number;
   paymentMethod: ReceiptPaymentMethod;
   status: ReceiptSaleStatus;
-  salesmanName: string;
+  salesmanName?: string;
+  employeeId?: string;
+  clientId?: string;
+  branchId?: string;
+  confirmed?: boolean;
+  comments?: string;
   subtotal?: number;
   discount?: number;
+  salePercentage?: number;
+  allowedSalePercentage?: number;
   items?: Array<{
     productId: string;
     productName: string;
@@ -29,7 +40,6 @@ export type CashierReceipt = {
 
 export type CashierDashboardData = {
   cashierName: string;
-  branch: Branch;
   receipts: CashierReceipt[];
   totalSales: number;
   receiptCount: number;

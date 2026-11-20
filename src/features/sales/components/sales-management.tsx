@@ -18,6 +18,10 @@ import { CashierReceiptDetailsSheet } from "@/features/dashboard/components/cash
 import type {
   ReceiptSaleStatus,
 } from "@/features/dashboard/types/cashier-dashboard";
+import {
+  getReceiptPaymentTranslationKey,
+  getReceiptStatusTranslationKey,
+} from "@/features/dashboard/utils/receipt-labels";
 import { listBranches } from "@/features/branches/services/branches-service";
 import { formatCurrency, formatDate, formatNumber } from "@/lib/format";
 import type { Locale } from "@/i18n/routing";
@@ -47,12 +51,12 @@ const initialFilters: SalesManagementFilters = {
   limit: 10,
 };
 
-const statuses: ReceiptSaleStatus[] = [
+const statuses = [
   "completed",
   "rejected",
   "refunded",
   "voided",
-];
+] as const satisfies readonly ReceiptSaleStatus[];
 
 export function SalesManagement({ locale }: SalesManagementProps) {
   const t = useTranslations("salesManagement");
@@ -372,7 +376,10 @@ function SalesRecordsCard({
               <option value="">{t("filters.allStatuses")}</option>
               {statuses.map((status) => (
                 <option key={status} value={status}>
-                  {cashier(`statuses.${status}`)}
+                  {(() => {
+                    const key = getReceiptStatusTranslationKey(status);
+                    return key ? cashier(key) : status;
+                  })()}
                 </option>
               ))}
             </select>
@@ -448,12 +455,23 @@ function SalesRecordsCard({
                     <td className="px-4 py-3">
                       {record.cashierName ?? t("table.unavailable")}
                     </td>
-                    <td className="px-4 py-3">{record.receipt.salesmanName}</td>
+                    <td className="px-4 py-3">
+                      {record.receipt.salesmanName ??
+                        record.receipt.employeeId ??
+                        t("table.unavailable")}
+                    </td>
                     <td dir="ltr" className="px-4 py-3 text-end font-medium">
                       {formatCurrency(record.receipt.totalAmount, locale)}
                     </td>
                     <td className="px-4 py-3">
-                      {cashier(`paymentMethods.${record.receipt.paymentMethod}`)}
+                      {(() => {
+                        const key = getReceiptPaymentTranslationKey(
+                          record.receipt.paymentMethod,
+                        );
+                        return key
+                          ? cashier(key)
+                          : record.receipt.paymentMethod;
+                      })()}
                     </td>
                     <td className="px-4 py-3">
                       <StatusLabel status={record.receipt.status} t={cashier} />
@@ -529,16 +547,17 @@ function StatusLabel({
   status: ReceiptSaleStatus;
   t: ReturnType<typeof useTranslations<"cashierDashboard">>;
 }) {
-  const styles: Record<ReceiptSaleStatus, string> = {
+  const styles: Partial<Record<ReceiptSaleStatus, string>> = {
     completed: "bg-success/10 text-success",
     rejected: "bg-destructive/10 text-destructive",
     refunded: "bg-warning/15 text-warning",
     voided: "bg-muted text-muted-foreground",
   };
 
+  const key = getReceiptStatusTranslationKey(status);
   return (
-    <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${styles[status]}`}>
-      {t(`statuses.${status}`)}
+    <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${styles[status] ?? "bg-muted text-muted-foreground"}`}>
+      {key ? t(key) : status}
     </span>
   );
 }
