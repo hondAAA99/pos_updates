@@ -1,0 +1,161 @@
+.
+├── AGENTS.md
+├── API_CALLS_README.md
+├── components.json
+├── docs
+│   ├── AGENT_HANDOFF2.md
+│   ├── AGENT_HANDOFF.md
+│   ├── frontend
+│   │   ├── architecture.md
+│   │   ├── authentication-and-authorization.md
+│   │   ├── data-and-services.md
+│   │   ├── design-system.md
+│   │   ├── features
+│   │   │   ├── branch-inventory.md
+│   │   │   ├── branch-management.md
+│   │   │   ├── cashier-dashboard.md
+│   │   │   ├── dashboard.md
+│   │   │   ├── employee-management.md
+│   │   │   ├── expenses.md
+│   │   │   ├── inventory-transfers.md
+│   │   │   ├── product-catalogue.md
+│   │   │   ├── product-types.md
+│   │   │   ├── receipt-details-and-preview.md
+│   │   │   ├── sales-creation-and-payment.md
+│   │   │   ├── sales-management.md
+│   │   │   ├── stock-history.md
+│   │   │   ├── stock-management.md
+│   │   │   ├── supplier-management.md
+│   │   │   └── wallets.md
+│   │   ├── internationalization.md
+│   │   ├── README.md
+│   │   ├── routing-and-navigation.md
+│   │   └── testing-and-development.md
+│   ├── openapi.yaml
+│   └── RUNTIME_API_AUDIT.md
+├── eslint.config.mjs
+├── messages
+│   ├── ar.json
+│   └── en.json
+├── next.config.ts
+├── next-env.d.ts
+├── package.json
+├── package-lock.json
+├── project-structure.txt
+├── public
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
+├── README.md
+├── src
+│   ├── app
+│   │   ├── favicon.ico
+│   │   ├── globals.css
+│   │   └── [locale]
+│   │       ├── (app)
+│   │       ├── layout.tsx
+│   │       ├── login
+│   │       └── page.tsx
+│   ├── components
+│   │   ├── layout
+│   │   │   ├── app-header.tsx
+│   │   │   ├── app-shell.tsx
+│   │   │   ├── app-sidebar.tsx
+│   │   │   ├── breadcrumbs.tsx
+│   │   │   └── page-placeholder.tsx
+│   │   ├── providers
+│   │   │   └── theme-provider.tsx
+│   │   ├── theme
+│   │   │   ├── language-switcher.tsx
+│   │   │   └── theme-toggle.tsx
+│   │   └── ui
+│   │       ├── avatar.tsx
+│   │       ├── badge.tsx
+│   │       ├── button.tsx
+│   │       ├── card.tsx
+│   │       ├── dropdown-menu.tsx
+│   │       ├── input.tsx
+│   │       ├── scroll-area.tsx
+│   │       ├── separator.tsx
+│   │       ├── sheet.tsx
+│   │       ├── skeleton.tsx
+│   │       └── tooltip.tsx
+│   ├── config
+│   │   └── navigation.ts
+│   ├── features
+│   │   ├── auth
+│   │   │   ├── components
+│   │   │   ├── providers
+│   │   │   ├── services
+│   │   │   └── types
+│   │   ├── branches
+│   │   │   ├── components
+│   │   │   ├── data
+│   │   │   ├── services
+│   │   │   └── types
+│   │   ├── dashboard
+│   │   │   ├── components
+│   │   │   ├── data
+│   │   │   ├── services
+│   │   │   └── types
+│   │   ├── employees
+│   │   │   ├── components
+│   │   │   ├── data
+│   │   │   ├── services
+│   │   │   └── types
+│   │   ├── expenses
+│   │   │   ├── components
+│   │   │   ├── data
+│   │   │   ├── services
+│   │   │   └── types
+│   │   ├── inventory
+│   │   │   ├── components
+│   │   │   ├── data
+│   │   │   ├── services
+│   │   │   └── types
+│   │   ├── products
+│   │   │   ├── components
+│   │   │   ├── data
+│   │   │   ├── services
+│   │   │   └── types
+│   │   ├── product-types
+│   │   │   ├── components
+│   │   │   ├── data
+│   │   │   ├── services
+│   │   │   └── types
+│   │   ├── sales
+│   │   │   ├── components
+│   │   │   ├── data
+│   │   │   ├── services
+│   │   │   └── types
+│   │   ├── suppliers
+│   │   │   ├── components
+│   │   │   ├── data
+│   │   │   ├── services
+│   │   │   └── types
+│   │   ├── transfers
+│   │   │   ├── components
+│   │   │   ├── data
+│   │   │   ├── services
+│   │   │   └── types
+│   │   └── wallets
+│   │       ├── components
+│   │       ├── data
+│   │       ├── services
+│   │       └── types
+│   ├── i18n
+│   │   ├── navigation.ts
+│   │   ├── request.ts
+│   │   ├── routing.ts
+│   │   └── types.d.ts
+│   ├── lib
+│   │   ├── api-client.ts
+│   │   ├── format.ts
+│   │   └── utils.ts
+│   └── proxy.ts
+├── tsconfig.json
+└── tsconfig.tsbuildinfo
+
+80 directories, 79 files
