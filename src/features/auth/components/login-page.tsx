@@ -86,7 +86,7 @@ export function LoginPage() {
         />
       </div>
 
-      <div className="grid w-full max-w-5xl grid-cols-2 overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
+      <div className="grid w-full max-w-5xl grid-cols-1 overflow-hidden rounded-2xl border border-border bg-card shadow-xl md:grid-cols-2">
         <section className="flex flex-col justify-between bg-primary p-10 text-primary-foreground">
           <div>
             <div className="flex size-12 items-center justify-center rounded-xl bg-primary-foreground/15 text-lg font-bold">

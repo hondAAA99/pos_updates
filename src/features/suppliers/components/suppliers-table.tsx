@@ -127,10 +127,10 @@ export function SuppliersTable({
                   <th scope="col" className="px-6 py-3.5 text-start font-medium">
                     {t("table.name")}
                   </th>
-                  <th scope="col" className="px-6 py-3.5 text-start font-medium">
+                  <th scope="col" data-column-align="center" className="px-6 py-3.5 font-medium">
                     {t("table.phoneNumber")}
                   </th>
-                  <th scope="col" className="w-40 px-6 py-3.5 text-end font-medium">
+                  <th scope="col" data-column-align="actions" className="w-40 px-6 py-3.5 font-medium">
                     {t("table.actions")}
                   </th>
                 </tr>
@@ -144,10 +144,10 @@ export function SuppliersTable({
                     <th scope="row" className="px-6 py-4 text-start font-medium">
                       <span className="block break-words">{supplier.name}</span>
                     </th>
-                    <td dir="auto" className="px-6 py-4 text-muted-foreground">
+                    <td dir="auto" data-column-align="center" className="px-6 py-4 text-muted-foreground">
                       {supplier.phoneNumber}
                     </td>
-                    <td className="px-6 py-3">{actions(supplier)}</td>
+                    <td data-column-align="actions" className="px-6 py-3">{actions(supplier)}</td>
                   </tr>
                 ))}
               </tbody>

@@ -192,7 +192,7 @@
     "branchPerformance": {
       "title": "Branch performance",
       "description": "Sales contribution across your branches",
-      "receipts": "{count, plural, one {# receipt} other {# receipts}}",
+      "receipts": "{count, plural, one {{count, number, western} receipt} other {{count, number, western} receipts}}",
       "contribution": "Sales contribution for {branch}"
     },
     "branchNames": {
@@ -273,7 +273,7 @@
     "receipts": {
       "title": "Branch receipts",
       "description": "Receipt activity for your assigned branch.",
-      "count": "{count, plural, one {# receipt} other {# receipts}}",
+      "count": "{count, plural, one {{count, number, western} receipt} other {{count, number, western} receipts}}",
       "reference": "Receipt number",
       "time": "Time",
       "amount": "Total amount",
@@ -335,7 +335,7 @@
       "description": "Your dashboard is scoped to this branch.",
       "branch": "Branch",
       "completed": "Completed sales",
-      "completedCount": "{count, plural, one {# sale} other {# sales}}",
+      "completedCount": "{count, plural, one {{count, number, western} sale} other {{count, number, western} sales}}",
       "salesSection": "Branch supply",
       "salesSum": "Sales sum",
       "salesTotal": "Sales total",
@@ -379,7 +379,7 @@
     "productQuantity": "Quantity",
     "addLineItem": "Add item",
     "cartTitle": "Sale items",
-    "cartCount": "{count, plural, one {# item} other {# items}}",
+    "cartCount": "{count, plural, one {{count, number, western} item} other {{count, number, western} items}}",
     "quantityNamed": "Quantity for {serialNumber}",
     "allowedDiscount": "Allowed discount: {percentage}%",
     "desiredDiscount": "Desired discount percentage",
@@ -462,7 +462,7 @@
     "records": {
       "title": "Sales records",
       "description": "Search and review receipts processed across your branches.",
-      "count": "{count, plural, one {# receipt} other {# receipts}}",
+      "count": "{count, plural, one {{count, number, western} receipt} other {{count, number, western} receipts}}",
       "page": "Page {current} of {total}",
       "emptyTitle": "No sales found",
       "emptyDescription": "Try changing the search or filters."
@@ -542,7 +542,7 @@
     "filter": {
       "timestampLabel": "Filter by date"
     },
-    "resultsCount": "{count, plural, one {# expense} other {# expenses}}",
+    "resultsCount": "{count, plural, one {{count, number, western} expense} other {{count, number, western} expenses}}",
     "pagination": {
       "showing": "Showing {start}–{end} of {total}",
       "pageSize": "Rows per page",
@@ -647,7 +647,7 @@
       "balanceAsc": "Balance low to high",
       "balanceDesc": "Balance high to low"
     },
-    "resultsCount": "{count, plural, one {# result} other {# results}}",
+    "resultsCount": "{count, plural, one {{count, number, western} result} other {{count, number, western} results}}",
     "table": {
       "phone": "Phone number",
       "type": "Wallet type",
@@ -698,7 +698,11 @@
       "capacityLabel": "Maximum capacity",
       "dailyLimits": "Daily",
       "monthlyLimits": "Monthly",
-      "amountLabel": "Amount"
+      "amountLabel": "Amount",
+      "transferFees": "Transfer Fees",
+      "sameWalletFee": "Same Wallet Fee",
+      "differentWalletMinFee": "Different Wallet Minimum Fee",
+      "differentWalletMaxFee": "Different Wallet Maximum Fee"
     },
     "validation": {
       "typeRequired": "Select a wallet type.",
@@ -724,7 +728,7 @@
       "title": "Confirm deletion",
       "walletDescription": "Delete wallet “{name}”? Sample transaction history will remain unchanged.",
       "typeDescription": "Delete wallet type “{name}”?",
-      "typeInUse": "At least {count, plural, one {# wallet on this page uses} other {# wallets on this page use}} this type. Reassign or delete these wallets before deleting the type."
+      "typeInUse": "At least {count, plural, one {{count, number, western} wallet on this page uses} other {{count, number, western} wallets on this page use}} this type. Reassign or delete these wallets before deleting the type."
     },
     "errors": {
       "typeInUse": "This wallet type is still assigned to one or more wallets.",
@@ -777,7 +781,7 @@
     "operationFeedback": {
       "depositSuccess": "Deposit completed successfully.",
       "withdrawSuccess": "Withdrawal completed successfully.",
-      "transferSuccess": "Transfer completed successfully."
+      "transferSuccess": "Transfer completed successfully. Amount sent: {send}."
     },
     "transactions": {
       "apiDataNotice": "Transaction history is loaded from the backend. Transaction type is filtered on the server.",
@@ -818,7 +822,7 @@
       "label": "Search product types",
       "placeholder": "Search by name"
     },
-    "resultsCount": "{count, plural, one {# product type} other {# product types}}",
+    "resultsCount": "{count, plural, one {{count, number, western} product type} other {{count, number, western} product types}}",
     "table": {
       "name": "Name",
       "id": "ID",
@@ -881,7 +885,7 @@
       "label": "Product Type",
       "allTypes": "All types"
     },
-    "resultsCount": "{count, plural, one {# product} other {# products}}",
+    "resultsCount": "{count, plural, one {{count, number, western} product} other {{count, number, western} products}}",
     "table": {
       "productName": "Product Name",
       "serialNumber": "Serial Number",
@@ -965,7 +969,7 @@
       "product": "Product",
       "allProducts": "All products"
     },
-    "resultsCount": "{count, plural, one {# stock record} other {# stock records}}",
+    "resultsCount": "{count, plural, one {{count, number, western} stock record} other {{count, number, western} stock records}}",
     "table": {
       "product": "Product",
       "serialNumber": "Serial Number",
@@ -1066,7 +1070,7 @@
       "product": "Product",
       "allProducts": "All products"
     },
-    "resultsCount": "{count, plural, one {# history record} other {# history records}}",
+    "resultsCount": "{count, plural, one {{count, number, western} history record} other {{count, number, western} history records}}",
     "table": {
       "product": "Product",
       "supplier": "Supplier",
@@ -1132,7 +1136,7 @@
       "label": "Search supplier phone numbers",
       "placeholder": "Filter by phone number"
     },
-    "resultsCount": "{count, plural, one {# supplier} other {# suppliers}}",
+    "resultsCount": "{count, plural, one {{count, number, western} supplier} other {{count, number, western} suppliers}}",
     "table": {
       "name": "Supplier Name",
       "phoneNumber": "Phone Number",
@@ -1251,7 +1255,7 @@
       "dateInvalid": "Enter a valid deposit date.",
       "nextDepositRequired": "Select a scheduled deposit."
     },
-    "resultsCount": "{count, plural, one {# record} other {# records}}",
+    "resultsCount": "{count, plural, one {{count, number, western} record} other {{count, number, western} records}}",
     "pagination": {
       "showing": "Showing {start}–{end} of {total}",
       "pageSize": "Rows per page",
@@ -1306,7 +1310,7 @@
       "selectBranchPrompt": "Select a branch to view its inventory.",
       "noBranchesAvailable": "No branches are available."
     },
-    "resultsCount": "{count, plural, one {# product} other {# products}}",
+    "resultsCount": "{count, plural, one {{count, number, western} product} other {{count, number, western} products}}",
     "table": {
       "product": "Product",
       "quantity": "Branch quantity",
@@ -1368,7 +1372,7 @@
       "saveChanges": "Save changes",
       "retry": "Retry"
     },
-    "resultsCount": "{count, plural, one {# branch} other {# branches}}",
+    "resultsCount": "{count, plural, one {{count, number, western} branch} other {{count, number, western} branches}}",
     "table": {
       "name": "Branch Name",
       "actions": "Actions"
@@ -1465,7 +1469,7 @@
       "active": "Active",
       "inactive": "Inactive"
     },
-    "resultsCount": "{count, plural, one {# employee} other {# employees}}",
+    "resultsCount": "{count, plural, one {{count, number, western} employee} other {{count, number, western} employees}}",
     "table": {
       "name": "Name",
       "email": "Email",
@@ -1566,7 +1570,7 @@
       "product": "Product",
       "allProducts": "All products"
     },
-    "resultsCount": "{count, plural, one {# transfer} other {# transfers}}",
+    "resultsCount": "{count, plural, one {{count, number, western} transfer} other {{count, number, western} transfers}}",
     "table": {
       "branch": "Branch",
       "product": "Product",

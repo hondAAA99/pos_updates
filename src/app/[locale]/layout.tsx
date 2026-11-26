@@ -6,7 +6,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AuthProvider } from "@/features/auth/providers/auth-provider";
-import { isLocale, localeSettings, routing } from "@/i18n/routing";
+import { intlFormats, isLocale, localeSettings, routing } from "@/i18n/routing";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -67,7 +67,7 @@ export default async function LocaleLayout({
       suppressHydrationWarning
     >
       <body>
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={locale} formats={intlFormats} messages={messages}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

@@ -145,13 +145,13 @@ export function ExpensesTable({
                   <th scope="col" className="w-[34%] px-6 py-3.5 text-start font-medium">
                     {t("table.detail")}
                   </th>
-                  <th scope="col" className="w-[16%] px-6 py-3.5 text-end font-medium">
+                  <th scope="col" data-column-align="center" className="w-[16%] px-6 py-3.5 font-medium">
                     {t("table.price")}
                   </th>
                   <th scope="col" className="w-[20%] px-6 py-3.5 text-start font-medium">
                     {t("table.timestamp")}
                   </th>
-                  <th scope="col" className="w-36 px-6 py-3.5 text-end font-medium">
+                  <th scope="col" data-column-align="actions" className="w-36 px-6 py-3.5 font-medium">
                     {t("table.actions")}
                   </th>
                 </tr>
@@ -170,13 +170,13 @@ export function ExpensesTable({
                         {expense.expenseDetail}
                       </span>
                     </td>
-                    <td dir="ltr" className="px-6 py-4 text-end tabular-nums">
+                    <td dir="ltr" data-column-align="center" className="px-6 py-4 tabular-nums">
                       {formatCurrency(expense.price, locale)}
                     </td>
                     <td className="px-6 py-4 text-muted-foreground">
                       {displayTimestamp(expense.timestamp, locale)}
                     </td>
-                    <td className="px-6 py-3">{actions(expense)}</td>
+                    <td data-column-align="actions" className="px-6 py-3">{actions(expense)}</td>
                   </tr>
                 ))}
               </tbody>

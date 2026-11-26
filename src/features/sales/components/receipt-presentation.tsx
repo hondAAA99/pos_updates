@@ -151,13 +151,13 @@ export function ReceiptPresentation({
                   <th className="px-4 py-3 text-start font-medium">
                     {t("receipts.product")}
                   </th>
-                  <th className="w-24 px-3 py-3 text-end font-medium">
+                  <th data-column-align="center" className="w-24 px-3 py-3 font-medium">
                     {t("receipts.quantity")}
                   </th>
-                  <th className="w-36 px-3 py-3 text-end font-medium">
+                  <th data-column-align="center" className="w-36 px-3 py-3 font-medium">
                     {t("receipts.unitPrice")}
                   </th>
-                  <th className="w-36 px-4 py-3 text-end font-medium">
+                  <th data-column-align="center" className="w-36 px-4 py-3 font-medium">
                     {t("receipts.lineTotal")}
                   </th>
                 </tr>
@@ -178,15 +178,15 @@ export function ReceiptPresentation({
                         </span>
                       )}
                     </th>
-                    <td className="px-3 py-3 text-end">
+                    <td data-column-align="center" className="px-3 py-3">
                       {item.quantity ?? unavailable}
                     </td>
-                    <td dir="ltr" className="px-3 py-3 text-end">
+                    <td dir="ltr" data-column-align="center" className="px-3 py-3">
                       {item.unitPrice === undefined
                         ? unavailable
                         : formatCurrency(item.unitPrice, locale)}
                     </td>
-                    <td dir="ltr" className="px-4 py-3 text-end font-medium">
+                    <td dir="ltr" data-column-align="center" className="px-4 py-3 font-medium">
                       {item.lineTotal === undefined
                         ? unavailable
                         : formatCurrency(item.lineTotal, locale)}

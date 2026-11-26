@@ -41,7 +41,7 @@ export function BranchesTable({
                 <th scope="col" className="px-6 py-3.5 text-start font-medium">
                   {t("table.name")}
                 </th>
-                <th scope="col" className="w-40 px-6 py-3.5 text-end font-medium">
+                <th scope="col" data-column-align="actions" className="w-40 px-6 py-3.5 font-medium">
                   {t("table.actions")}
                 </th>
               </tr>
@@ -58,7 +58,7 @@ export function BranchesTable({
                   >
                     {branch.name}
                   </th>
-                  <td className="px-6 py-3">
+                  <td data-column-align="actions" className="px-6 py-3">
                     <div className="flex justify-end gap-1">
                       <Button
                         type="button"

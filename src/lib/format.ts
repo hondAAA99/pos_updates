@@ -1,9 +1,11 @@
 import { localeSettings, type Locale } from "@/i18n/routing";
 
 export function formatCurrency(amount: number, locale: Locale = "en"): string {
-  return new Intl.NumberFormat(localeSettings[locale].currencyLocale, {
+  const settings = localeSettings[locale];
+  return new Intl.NumberFormat(settings.currencyLocale, {
     style: "currency",
     currency: "EGP",
+    numberingSystem: "latn",
   }).format(amount);
 }
 
@@ -14,7 +16,7 @@ export function formatNumber(
 ): string {
   return new Intl.NumberFormat(
     localeSettings[locale].currencyLocale,
-    options,
+    { ...options, numberingSystem: "latn" },
   ).format(value);
 }
 
@@ -32,8 +34,8 @@ export function formatDate(
   options?: Intl.DateTimeFormatOptions,
 ): string {
   return new Intl.DateTimeFormat(
-    localeSettings[locale].currencyLocale,
-    { timeZone: "Africa/Cairo", ...options },
+    localeSettings[locale].formatLocale,
+    { timeZone: "Africa/Cairo", ...options, numberingSystem: "latn" },
   ).format(typeof value === "string" ? new Date(value) : value);
 }
 

@@ -5,6 +5,15 @@ export type WalletType = {
   capacity: number;
   daily: number;
   monthly: number;
+  transfer_fee?: WalletTransferFee;
+};
+
+export type WalletTransferFee = {
+  sameWallet: number;
+  differentWallet: {
+    min: number;
+    max: number;
+  };
 };
 
 export type RemainingLimits = {
@@ -39,7 +48,9 @@ export type WalletTransaction = {
 
 // Wallet types
 
-export type WalletTypeInput = Omit<WalletType, "id">;
+export type WalletTypeInput = Omit<WalletType, "id" | "transfer_fee"> & {
+  transfer_fee: WalletTransferFee;
+};
 
 export type WalletTypeUpdateInput = Partial<WalletTypeInput>;
 
@@ -62,6 +73,10 @@ export type WalletOperationInput = {
 
 export type WalletTransferInput = WalletOperationInput & {
   phoneNumber: string;
+};
+
+export type WalletTransferResponse = {
+  send: number;
 };
 
 // Pagination

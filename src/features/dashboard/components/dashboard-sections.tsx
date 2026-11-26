@@ -105,9 +105,9 @@ export function TopProducts({ products, locale }: TopProductsProps) {
           <thead>
             <tr className="border-b border-border text-xs text-muted-foreground">
               <th className="px-6 pb-3 font-medium">{t("topProducts.product")}</th>
-              <th className="px-4 pb-3 text-end font-medium">{t("topProducts.sku")}</th>
-              <th className="px-4 pb-3 text-end font-medium">{t("topProducts.quantity")}</th>
-              <th className="px-6 pb-3 text-end font-medium">{t("topProducts.sales")}</th>
+              <th data-column-align="center" className="px-4 pb-3 font-medium">{t("topProducts.sku")}</th>
+              <th data-column-align="center" className="px-4 pb-3 font-medium">{t("topProducts.quantity")}</th>
+              <th data-column-align="center" className="px-6 pb-3 font-medium">{t("topProducts.sales")}</th>
             </tr>
           </thead>
           <tbody>
@@ -116,13 +116,13 @@ export function TopProducts({ products, locale }: TopProductsProps) {
                 <th scope="row" className="px-6 py-3.5 text-start font-medium">
                   {t(`productNames.${product.id}`)}
                 </th>
-                <td className="px-4 py-3.5 text-end font-mono text-xs text-muted-foreground">
+                <td data-column-align="center" className="px-4 py-3.5 font-mono text-xs text-muted-foreground">
                   {product.sku}
                 </td>
-                <td className="px-4 py-3.5 text-end tabular-nums">
+                <td data-column-align="center" className="px-4 py-3.5 tabular-nums">
                   {formatNumber(product.quantity, locale)}
                 </td>
-                <td className="px-6 py-3.5 text-end font-medium tabular-nums">
+                <td data-column-align="center" className="px-6 py-3.5 font-medium tabular-nums">
                   {formatCurrency(product.sales, locale)}
                 </td>
               </tr>

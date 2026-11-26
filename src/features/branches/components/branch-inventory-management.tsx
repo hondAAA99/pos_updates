@@ -383,10 +383,10 @@ export function BranchInventoryManagement() {
                       <th className='px-5 py-3.5 text-start font-medium'>
                         {t('table.product')}
                       </th>
-                      <th className='px-5 py-3.5 text-end font-medium'>
+                      <th data-column-align='center' className='px-5 py-3.5 font-medium'>
                         {t('table.quantity')}
                       </th>
-                      <th className='px-5 py-3.5 text-end font-medium'>
+                      <th data-column-align='actions' className='px-5 py-3.5 font-medium'>
                         {t('table.actions')}
                       </th>
                     </tr>
@@ -400,11 +400,12 @@ export function BranchInventoryManagement() {
                         </th>
                         <td
                           dir='ltr'
-                          className='px-5 py-4 text-end tabular-nums'
+                          data-column-align='center'
+                          className='px-5 py-4 tabular-nums'
                         >
                           {formatNumber(record.branchQuantity, locale)}
                         </td>
-                        <td className='px-5 py-3'>
+                        <td data-column-align='actions' className='px-5 py-3'>
                           <RecordActions
                             record={record}
                             canManage={canManage}

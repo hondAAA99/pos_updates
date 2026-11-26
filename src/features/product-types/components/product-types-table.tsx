@@ -96,7 +96,7 @@ export function ProductTypesTable({
                     <SortIndicator active={sortKey === "name"} direction={sortDirection} />
                   </button>
                 </th>
-                <th scope="col" className="px-5 py-3.5 text-start font-medium">
+                <th scope="col" data-column-align="center" className="px-5 py-3.5 font-medium">
                   {t("table.id")}
                 </th>
                 <th scope="col" aria-sort={sortKey === "createdAt" ? sortDirection : "none"} className="px-5 py-3.5 text-start font-medium">
@@ -110,7 +110,7 @@ export function ProductTypesTable({
                   </button>
                 </th>
                 {canManage && (
-                  <th scope="col" className="px-5 py-3.5 text-end font-medium">
+                  <th scope="col" data-column-align="actions" className="px-5 py-3.5 font-medium">
                     {t("table.actions")}
                   </th>
                 )}
@@ -122,7 +122,7 @@ export function ProductTypesTable({
                   <th scope="row" className="px-5 py-4 text-start font-medium text-foreground">
                     {productType.name}
                   </th>
-                  <td className="px-5 py-4 font-mono text-xs text-muted-foreground">
+                  <td data-column-align="center" className="px-5 py-4 font-mono text-xs text-muted-foreground">
                     {productType._id}
                   </td>
                   <td className="px-5 py-4 text-muted-foreground">
@@ -133,7 +133,7 @@ export function ProductTypesTable({
                       : "—"}
                   </td>
                   {canManage && (
-                    <td className="px-5 py-4">
+                    <td data-column-align="actions" className="px-5 py-4">
                       <div className="flex justify-end gap-1">
                         {canManage && (
                           <>

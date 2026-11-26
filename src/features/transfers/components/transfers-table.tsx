@@ -215,10 +215,10 @@ export function TransfersTable({
                   <th scope="col" className="w-[19%] px-4 py-3.5 text-start font-medium">
                     {t("table.timestamp")}
                   </th>
-                  <th scope="col" className="w-[12%] px-4 py-3.5 text-end font-medium">
+                  <th scope="col" data-column-align="center" className="w-[12%] px-4 py-3.5 font-medium">
                     {t("table.quantity")}
                   </th>
-                  <th scope="col" className="w-[20%] px-4 py-3.5 text-end font-medium">
+                  <th scope="col" data-column-align="actions" className="w-[20%] px-4 py-3.5 font-medium">
                     {t("table.actions")}
                   </th>
                 </tr>
@@ -242,10 +242,10 @@ export function TransfersTable({
                     <td className="px-4 py-4 text-muted-foreground">
                       {getTimestamp(transfer)}
                     </td>
-                    <td dir="ltr" className="px-4 py-4 text-end tabular-nums">
+                    <td dir="ltr" data-column-align="center" className="px-4 py-4 tabular-nums">
                       {formatNumber(transfer.quantity, locale)}
                     </td>
-                    <td className="px-2 py-3">{actions(transfer)}</td>
+                    <td data-column-align="actions" className="px-2 py-3">{actions(transfer)}</td>
                   </tr>
                 ))}
               </tbody>

@@ -192,7 +192,7 @@
     "branchPerformance": {
       "title": "أداء الفروع",
       "description": "مساهمة الفروع في إجمالي المبيعات",
-      "receipts": "{count, plural, zero {لا توجد إيصالات} one {إيصال واحد} two {إيصالان} few {# إيصالات} many {# إيصالًا} other {# إيصال}}",
+      "receipts": "{count, plural, zero {لا توجد إيصالات} one {إيصال واحد} two {إيصالان} few {{count, number, western} إيصالات} many {{count, number, western} إيصالًا} other {{count, number, western} إيصال}}",
       "contribution": "مساهمة فرع {branch} في المبيعات"
     },
     "branchNames": {
@@ -273,7 +273,7 @@
     "receipts": {
       "title": "إيصالات الفرع",
       "description": "نشاط الإيصالات في الفرع المعيّن لك.",
-      "count": "{count, plural, zero {لا توجد إيصالات} one {إيصال واحد} two {إيصالان} few {# إيصالات} many {# إيصالًا} other {# إيصال}}",
+      "count": "{count, plural, zero {لا توجد إيصالات} one {إيصال واحد} two {إيصالان} few {{count, number, western} إيصالات} many {{count, number, western} إيصالًا} other {{count, number, western} إيصال}}",
       "reference": "رقم الإيصال",
       "time": "الوقت",
       "amount": "الإجمالي",
@@ -335,7 +335,7 @@
       "description": "تعرض هذه اللوحة بيانات هذا الفرع فقط.",
       "branch": "الفرع",
       "completed": "المبيعات المكتملة",
-      "completedCount": "{count, plural, zero {لا توجد مبيعات} one {عملية بيع واحدة} two {عمليتا بيع} few {# عمليات بيع} many {# عملية بيع} other {# عملية بيع}}",
+      "completedCount": "{count, plural, zero {لا توجد مبيعات} one {عملية بيع واحدة} two {عمليتا بيع} few {{count, number, western} عمليات بيع} many {{count, number, western} عملية بيع} other {{count, number, western} عملية بيع}}",
       "salesSection": "بيانات توريد الفرع",
       "salesSum": "مجموع المبيعات",
       "salesTotal": "إجمالي المبيعات",
@@ -379,7 +379,7 @@
     "productQuantity": "الكمية",
     "addLineItem": "إضافة عنصر",
     "cartTitle": "عناصر البيع",
-    "cartCount": "{count, plural, zero {لا توجد عناصر} one {عنصر واحد} two {عنصران} few {# عناصر} many {# عنصرًا} other {# عنصر}}",
+    "cartCount": "{count, plural, zero {لا توجد عناصر} one {عنصر واحد} two {عنصران} few {{count, number, western} عناصر} many {{count, number, western} عنصرًا} other {{count, number, western} عنصر}}",
     "quantityNamed": "كمية {serialNumber}",
     "allowedDiscount": "الخصم المسموح: {percentage}٪",
     "desiredDiscount": "نسبة الخصم المطلوبة",
@@ -462,7 +462,7 @@
     "records": {
       "title": "سجلات المبيعات",
       "description": "ابحث وراجع الإيصالات المسجلة في جميع فروعك.",
-      "count": "{count, plural, zero {لا توجد إيصالات} one {إيصال واحد} two {إيصالان} few {# إيصالات} many {# إيصالًا} other {# إيصال}}",
+      "count": "{count, plural, zero {لا توجد إيصالات} one {إيصال واحد} two {إيصالان} few {{count, number, western} إيصالات} many {{count, number, western} إيصالًا} other {{count, number, western} إيصال}}",
       "page": "الصفحة {current} من {total}",
       "emptyTitle": "لم يتم العثور على مبيعات",
       "emptyDescription": "جرّب تغيير البحث أو عوامل التصفية."
@@ -542,7 +542,7 @@
     "filter": {
       "timestampLabel": "تصفية حسب التاريخ"
     },
-    "resultsCount": "{count, plural, zero {لا توجد مصروفات} one {مصروف واحد} two {مصروفان} few {# مصروفات} many {# مصروفًا} other {# مصروف}}",
+    "resultsCount": "{count, plural, zero {لا توجد مصروفات} one {مصروف واحد} two {مصروفان} few {{count, number, western} مصروفات} many {{count, number, western} مصروفًا} other {{count, number, western} مصروف}}",
     "pagination": {
       "showing": "عرض {start}–{end} من {total}",
       "pageSize": "عدد الصفوف في الصفحة",
@@ -647,7 +647,7 @@
       "balanceAsc": "الرصيد من الأقل للأعلى",
       "balanceDesc": "الرصيد من الأعلى للأقل"
     },
-    "resultsCount": "{count, plural, zero {لا توجد نتائج} one {نتيجة واحدة} two {نتيجتان} few {# نتائج} many {# نتيجة} other {# نتيجة}}",
+    "resultsCount": "{count, plural, zero {لا توجد نتائج} one {نتيجة واحدة} two {نتيجتان} few {{count, number, western} نتائج} many {{count, number, western} نتيجة} other {{count, number, western} نتيجة}}",
     "table": {
       "phone": "رقم الهاتف",
       "type": "نوع المحفظة",
@@ -698,7 +698,11 @@
       "capacityLabel": "السعة القصوى",
       "dailyLimits": "اليومي",
       "monthlyLimits": "الشهري",
-      "amountLabel": "المبلغ"
+      "amountLabel": "المبلغ",
+      "transferFees": "رسوم التحويل",
+      "sameWalletFee": "رسوم التحويل إلى المحفظة نفسها",
+      "differentWalletMinFee": "الحد الأدنى لرسوم التحويل إلى محفظة أخرى",
+      "differentWalletMaxFee": "الحد الأقصى لرسوم التحويل إلى محفظة أخرى"
     },
     "validation": {
       "typeRequired": "اختر نوع المحفظة.",
@@ -724,7 +728,7 @@
       "title": "تأكيد الحذف",
       "walletDescription": "هل تريد حذف المحفظة «{name}»؟ سيبقى سجل المعاملات التجريبي دون تغيير.",
       "typeDescription": "هل تريد حذف نوع المحفظة «{name}»؟",
-      "typeInUse": "هناك {count, plural, zero {لا توجد محافظ} one {محفظة واحدة على الأقل في هذه الصفحة تستخدم} two {محفظتان على الأقل في هذه الصفحة تستخدمان} few {# محافظ على الأقل في هذه الصفحة تستخدم} many {# محفظة على الأقل في هذه الصفحة تستخدم} other {# محفظة على الأقل في هذه الصفحة تستخدم}} هذا النوع. أعد تعيين هذه المحافظ أو احذفها قبل حذف النوع."
+      "typeInUse": "هناك {count, plural, zero {لا توجد محافظ} one {محفظة واحدة على الأقل في هذه الصفحة تستخدم} two {محفظتان على الأقل في هذه الصفحة تستخدمان} few {{count, number, western} محافظ على الأقل في هذه الصفحة تستخدم} many {{count, number, western} محفظة على الأقل في هذه الصفحة تستخدم} other {{count, number, western} محفظة على الأقل في هذه الصفحة تستخدم}} هذا النوع. أعد تعيين هذه المحافظ أو احذفها قبل حذف النوع."
     },
     "errors": {
       "typeInUse": "لا يزال نوع المحفظة مرتبطًا بمحفظة واحدة أو أكثر.",
@@ -777,7 +781,7 @@
     "operationFeedback": {
       "depositSuccess": "تم الإيداع بنجاح.",
       "withdrawSuccess": "تم السحب بنجاح.",
-      "transferSuccess": "تم التحويل بنجاح."
+      "transferSuccess": "تم التحويل بنجاح. المبلغ المُرسل: {send}."
     },
     "transactions": {
       "apiDataNotice": "يتم تحميل سجل المعاملات من الواجهة الخلفية، ويُطبّق التصفية حسب نوع المعاملة على الخادم.",
@@ -818,7 +822,7 @@
       "label": "البحث في أنواع المنتجات",
       "placeholder": "ابحث بالاسم"
     },
-    "resultsCount": "{count, plural, zero {لا توجد أنواع منتجات} one {نوع منتج واحد} two {نوعا منتج} few {# أنواع منتجات} many {# نوع منتج} other {# نوع منتج}}",
+    "resultsCount": "{count, plural, zero {لا توجد أنواع منتجات} one {نوع منتج واحد} two {نوعا منتج} few {{count, number, western} أنواع منتجات} many {{count, number, western} نوع منتج} other {{count, number, western} نوع منتج}}",
     "table": {
       "name": "الاسم",
       "id": "المعرّف",
@@ -881,7 +885,7 @@
       "label": "نوع المنتج",
       "allTypes": "جميع الأنواع"
     },
-    "resultsCount": "{count, plural, zero {لا توجد منتجات} one {منتج واحد} two {منتجان} few {# منتجات} many {# منتجًا} other {# منتج}}",
+    "resultsCount": "{count, plural, zero {لا توجد منتجات} one {منتج واحد} two {منتجان} few {{count, number, western} منتجات} many {{count, number, western} منتجًا} other {{count, number, western} منتج}}",
     "table": {
       "productName": "اسم المنتج",
       "serialNumber": "الرقم التسلسلي",
@@ -965,7 +969,7 @@
       "product": "المنتج",
       "allProducts": "جميع المنتجات"
     },
-    "resultsCount": "{count, plural, zero {لا توجد سجلات مخزون} one {سجل مخزون واحد} two {سجلا مخزون} few {# سجلات مخزون} many {# سجل مخزون} other {# سجل مخزون}}",
+    "resultsCount": "{count, plural, zero {لا توجد سجلات مخزون} one {سجل مخزون واحد} two {سجلا مخزون} few {{count, number, western} سجلات مخزون} many {{count, number, western} سجل مخزون} other {{count, number, western} سجل مخزون}}",
     "table": {
       "product": "المنتج",
       "serialNumber": "الرقم التسلسلي",
@@ -1066,7 +1070,7 @@
       "product": "المنتج",
       "allProducts": "جميع المنتجات"
     },
-    "resultsCount": "{count, plural, zero {لا توجد سجلات} one {سجل واحد} two {سجلان} few {# سجلات} many {# سجلًا} other {# سجل}}",
+    "resultsCount": "{count, plural, zero {لا توجد سجلات} one {سجل واحد} two {سجلان} few {{count, number, western} سجلات} many {{count, number, western} سجلًا} other {{count, number, western} سجل}}",
     "table": {
       "product": "المنتج",
       "supplier": "المورد",
@@ -1132,7 +1136,7 @@
       "label": "البحث بأرقام هواتف الموردين",
       "placeholder": "تصفية حسب رقم الهاتف"
     },
-    "resultsCount": "{count, plural, zero {لا يوجد موردون} one {مورد واحد} two {موردان} few {# موردين} many {# موردًا} other {# مورد}}",
+    "resultsCount": "{count, plural, zero {لا يوجد موردون} one {مورد واحد} two {موردان} few {{count, number, western} موردين} many {{count, number, western} موردًا} other {{count, number, western} مورد}}",
     "table": {
       "name": "اسم المورد",
       "phoneNumber": "رقم الهاتف",
@@ -1251,7 +1255,7 @@
       "dateInvalid": "أدخل تاريخ إيداع صالحًا.",
       "nextDepositRequired": "اختر إيداعًا مجدولًا."
     },
-    "resultsCount": "{count, plural, zero {لا توجد سجلات} one {سجل واحد} two {سجلان} few {# سجلات} many {# سجلًا} other {# سجل}}",
+    "resultsCount": "{count, plural, zero {لا توجد سجلات} one {سجل واحد} two {سجلان} few {{count, number, western} سجلات} many {{count, number, western} سجلًا} other {{count, number, western} سجل}}",
     "pagination": {
       "showing": "عرض {start}–{end} من {total}",
       "pageSize": "عدد الصفوف في الصفحة",
@@ -1306,7 +1310,7 @@
       "selectBranchPrompt": "اختر فرعًا لعرض مخزونه.",
       "noBranchesAvailable": "لا توجد فروع متاحة."
     },
-    "resultsCount": "{count, plural, zero {لا توجد منتجات} one {منتج واحد} two {منتجان} few {# منتجات} many {# منتجًا} other {# منتج}}",
+    "resultsCount": "{count, plural, zero {لا توجد منتجات} one {منتج واحد} two {منتجان} few {{count, number, western} منتجات} many {{count, number, western} منتجًا} other {{count, number, western} منتج}}",
     "table": {
       "product": "المنتج",
       "quantity": "كمية الفرع",
@@ -1368,7 +1372,7 @@
       "saveChanges": "حفظ التغييرات",
       "retry": "إعادة المحاولة"
     },
-    "resultsCount": "{count, plural, zero {لا توجد فروع} one {فرع واحد} two {فرعان} few {# فروع} many {# فرعًا} other {# فرع}}",
+    "resultsCount": "{count, plural, zero {لا توجد فروع} one {فرع واحد} two {فرعان} few {{count, number, western} فروع} many {{count, number, western} فرعًا} other {{count, number, western} فرع}}",
     "table": {
       "name": "اسم الفرع",
       "actions": "الإجراءات"
@@ -1465,7 +1469,7 @@
       "active": "نشط",
       "inactive": "غير نشط"
     },
-    "resultsCount": "{count, plural, zero {لا يوجد موظفون} one {موظف واحد} two {موظفان} few {# موظفين} many {# موظفًا} other {# موظف}}",
+    "resultsCount": "{count, plural, zero {لا يوجد موظفون} one {موظف واحد} two {موظفان} few {{count, number, western} موظفين} many {{count, number, western} موظفًا} other {{count, number, western} موظف}}",
     "table": {
       "name": "الاسم",
       "email": "البريد الإلكتروني",
@@ -1566,7 +1570,7 @@
       "product": "المنتج",
       "allProducts": "جميع المنتجات"
     },
-    "resultsCount": "{count, plural, zero {لا توجد تحويلات} one {تحويل واحد} two {تحويلان} few {# تحويلات} many {# تحويلًا} other {# تحويل}}",
+    "resultsCount": "{count, plural, zero {لا توجد تحويلات} one {تحويل واحد} two {تحويلان} few {{count, number, western} تحويلات} many {{count, number, western} تحويلًا} other {{count, number, western} تحويل}}",
     "table": {
       "branch": "الفرع",
       "product": "المنتج",

@@ -7,8 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/features/auth/providers/auth-provider";
 import { useRouter } from "@/i18n/navigation";
+import type { Locale } from "@/i18n/routing";
 import { ApiClientError } from "@/lib/api-client";
-import { formatCurrency } from "@/lib/format";
+import {
+  formatCurrency,
+  formatDate as formatLocalizedDate,
+} from "@/lib/format";
 import {
   deleteSupplierDeposit,
   deleteSupplierTransaction,
@@ -118,14 +122,14 @@ function mapTransaction(
   };
 }
 
-function formatDate(value: string, locale: string, fallback: string) {
+function formatDate(value: string, locale: Locale, fallback: string) {
   if (typeof value !== "string" || !value.trim()) return fallback;
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return fallback;
-  return new Intl.DateTimeFormat(locale, {
+  return formatLocalizedDate(date, locale, {
     dateStyle: "medium",
     timeStyle: "short",
-  }).format(date);
+  });
 }
 
 export function SupplierFinancialRecordsManagement({
@@ -526,7 +530,7 @@ export function SupplierFinancialRecordsManagement({
                       <th className="px-5 py-3.5 text-start font-medium">
                         {t("fields.supplier")}
                       </th>
-                      <th className="px-5 py-3.5 text-end font-medium">
+                      <th data-column-align="center" className="px-5 py-3.5 font-medium">
                         {t(kind === "deposits" ? "fields.depositAmount" : "fields.transferredAmount")}
                       </th>
                       <th className="px-5 py-3.5 text-start font-medium">
@@ -537,7 +541,7 @@ export function SupplierFinancialRecordsManagement({
                           {t("fields.comments")}
                         </th>
                       )}
-                      <th className="w-36 px-3 py-3.5 text-end font-medium">
+                      <th data-column-align="actions" className="w-36 px-3 py-3.5 font-medium">
                         {t("fields.actions")}
                       </th>
                     </tr>
@@ -553,7 +557,7 @@ export function SupplierFinancialRecordsManagement({
                             {record.supplierId?.phoneNumber ?? t("details.notAvailable")}
                           </span>
                         </th>
-                        <td dir="ltr" className="px-5 py-4 text-end tabular-nums">
+                        <td dir="ltr" data-column-align="center" className="px-5 py-4 tabular-nums">
                           {formatCurrency(record.amount, locale)}
                         </td>
                         <td className="px-5 py-4 text-muted-foreground">
@@ -568,7 +572,7 @@ export function SupplierFinancialRecordsManagement({
                             <span className="block truncate">{record.comments || "—"}</span>
                           </td>
                         )}
-                        <td className="px-2 py-3">
+                        <td data-column-align="actions" className="px-2 py-3">
                           <RecordActions
                             record={record}
                             canManage={canManage}

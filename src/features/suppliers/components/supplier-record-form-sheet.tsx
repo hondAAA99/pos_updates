@@ -5,6 +5,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import type { Locale } from "@/i18n/routing";
+import { formatDate } from "@/lib/format";
 import {
   Sheet,
   SheetContent,
@@ -46,10 +48,10 @@ function toLocalDateTime(value?: string) {
   return local.toISOString().slice(0, 16);
 }
 
-function formatDepositDate(value: string, locale: string, fallback: string) {
+function formatDepositDate(value: string, locale: Locale, fallback: string) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return fallback;
-  return new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(date);
+  return formatDate(date, locale, { dateStyle: "medium" });
 }
 
 export function SupplierRecordFormSheet({
@@ -63,7 +65,7 @@ export function SupplierRecordFormSheet({
   onSubmit,
 }: SupplierRecordFormSheetProps) {
   const t = useTranslations("supplierRecords");
-  const locale = useLocale();
+  const locale = useLocale() === "ar" ? "ar" : "en";
   const [supplierId, setSupplierId] = useState(record?.supplierId?._id ?? "");
   const [amount, setAmount] = useState(
     record ? String(record.amount) : "",

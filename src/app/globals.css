@@ -43,6 +43,19 @@
   --font-sans: var(--font-geist-sans), "Segoe UI", Tahoma, Arial, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-heading: var(--font-sans);
+  --text-xs: calc(0.75rem + 5px);
+  --text-sm: calc(0.875rem + 5px);
+  --text-base: calc(1rem + 5px);
+  --text-lg: calc(1.125rem + 5px);
+  --text-xl: calc(1.25rem + 5px);
+  --text-2xl: calc(1.5rem + 5px);
+  --text-3xl: calc(1.875rem + 5px);
+  --text-4xl: calc(2.25rem + 5px);
+  --text-5xl: calc(3rem + 5px);
+  --text-6xl: calc(3.75rem + 5px);
+  --text-7xl: calc(4.5rem + 5px);
+  --text-8xl: calc(6rem + 5px);
+  --text-9xl: calc(8rem + 5px);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -142,6 +155,31 @@
 
   body {
     @apply min-h-screen bg-background text-foreground antialiased;
+    font-size: calc(1rem + 5px);
+  }
+
+  select {
+    color-scheme: light;
+  }
+
+  .dark select {
+    color-scheme: dark;
+  }
+
+  select option {
+    color: var(--popover-foreground);
+    background-color: var(--popover);
+  }
+
+  select option:checked,
+  select option:hover,
+  select option:focus {
+    color: var(--accent-foreground);
+    background-color: var(--accent);
+  }
+
+  select option:disabled {
+    color: var(--muted-foreground);
   }
 }
 
@@ -175,7 +213,23 @@
   }
 }
 
+table [data-column-align="center"],
+table [data-column-align="actions"] {
+  text-align: center;
+}
+
+table td[data-column-align="actions"] > div {
+  justify-content: center;
+}
+
 @media print {
+  html,
+  body {
+    min-height: 0 !important;
+    margin: 0 !important;
+    background: #fff !important;
+  }
+
   body * {
     visibility: hidden !important;
   }
@@ -186,23 +240,121 @@
   }
 
   .receipt-print-root {
-    position: absolute;
+    position: fixed;
     inset: 0 auto auto 0;
     display: block !important;
-    width: 100%;
+    box-sizing: border-box;
+    width: 80mm;
+    max-width: 100%;
     padding: 0;
-    color: #111;
+    color: #000;
     background: #fff;
+    font-family: Tahoma, Arial, "Segoe UI", sans-serif;
+    font-size: 9pt;
+    line-height: 1.35;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .receipt-print-root * {
-    color: #111 !important;
+    color: #000 !important;
     background-color: transparent !important;
-    border-color: #d1d5db !important;
+    border-color: #000 !important;
     box-shadow: none !important;
   }
 
+  .receipt-print-root [dir="ltr"] {
+    unicode-bidi: isolate;
+  }
+
+  .receipt-print-header {
+    margin-bottom: 3mm;
+    padding-bottom: 2mm;
+    border-bottom: 1px solid #000;
+    text-align: center;
+  }
+
+  .receipt-print-header h1 {
+    margin: 0;
+    font-size: 13pt;
+    font-weight: 700;
+  }
+
+  .receipt-print-header p {
+    margin: 1mm 0 0;
+  }
+
+  .receipt-print-meta,
+  .receipt-print-items,
+  .receipt-print-total,
+  .receipt-print-comments {
+    margin-top: 3mm;
+  }
+
+  .receipt-print-field,
+  .receipt-print-item-main {
+    display: flex;
+    justify-content: space-between;
+    gap: 2mm;
+    padding: 1mm 0;
+  }
+
+  .receipt-print-field > :last-child,
+  .receipt-print-item-main > :last-child {
+    min-width: 0;
+    text-align: end;
+    overflow-wrap: anywhere;
+  }
+
+  .receipt-print-item-main > :first-child {
+    min-width: 0;
+  }
+
+  .receipt-print-items h2,
+  .receipt-print-comments h2 {
+    margin: 0 0 1mm;
+    padding-bottom: 1mm;
+    border-bottom: 1px solid #000;
+    font-size: 9pt;
+    font-weight: 700;
+  }
+
+  .receipt-print-item {
+    padding: 1.5mm 0;
+    border-bottom: 1px dashed #000;
+    break-inside: avoid;
+  }
+
+  .receipt-print-product,
+  .receipt-print-comments p {
+    overflow-wrap: anywhere;
+  }
+
+  .receipt-print-item-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1mm 2mm;
+    font-size: 8pt;
+  }
+
+  .receipt-print-total {
+    padding-top: 2mm;
+    border-top: 1px solid #000;
+    font-weight: 700;
+  }
+
+  .receipt-print-comments p {
+    margin: 0;
+  }
+
   @page {
-    margin: 14mm;
+    margin: 3mm;
+  }
+
+  @media (max-width: 62mm) {
+    .receipt-print-root {
+      width: 58mm;
+    }
   }
 }

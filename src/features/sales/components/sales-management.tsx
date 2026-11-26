@@ -201,10 +201,10 @@ export function SalesManagement({ locale }: SalesManagementProps) {
                         <th className="py-2 text-start font-medium">
                           {t("table.branch")}
                         </th>
-                        <th className="py-2 text-end font-medium">
+                        <th data-column-align="center" className="py-2 font-medium">
                           {t("analysis.receipts")}
                         </th>
-                        <th className="py-2 text-end font-medium">
+                        <th data-column-align="center" className="py-2 font-medium">
                           {t("summary.totalSales")}
                         </th>
                       </tr>
@@ -215,10 +215,10 @@ export function SalesManagement({ locale }: SalesManagementProps) {
                           <th className="py-3 text-start font-medium">
                             {branchLabel(item.branch._id)}
                           </th>
-                          <td className="py-3 text-end">
+                          <td data-column-align="center" className="py-3">
                             {formatNumber(item.receiptCount, locale)}
                           </td>
-                          <td dir="ltr" className="py-3 text-end font-medium">
+                          <td dir="ltr" data-column-align="center" className="py-3 font-medium">
                             {formatCurrency(item.salesAmount, locale)}
                           </td>
                         </tr>
@@ -244,10 +244,10 @@ export function SalesManagement({ locale }: SalesManagementProps) {
                         <th className="py-2 text-start font-medium">
                           {t("analysis.product")}
                         </th>
-                        <th className="py-2 text-end font-medium">
+                        <th data-column-align="center" className="py-2 font-medium">
                           {t("analysis.quantity")}
                         </th>
-                        <th className="py-2 text-end font-medium">
+                        <th data-column-align="center" className="py-2 font-medium">
                           {t("analysis.revenue")}
                         </th>
                       </tr>
@@ -258,10 +258,10 @@ export function SalesManagement({ locale }: SalesManagementProps) {
                           <th className="py-3 text-start font-medium">
                             {product.productName}
                           </th>
-                          <td className="py-3 text-end">
+                          <td data-column-align="center" className="py-3">
                             {formatNumber(product.quantity, locale)}
                           </td>
-                          <td dir="ltr" className="py-3 text-end font-medium">
+                          <td dir="ltr" data-column-align="center" className="py-3 font-medium">
                             {formatCurrency(product.revenue, locale)}
                           </td>
                         </tr>
@@ -428,24 +428,24 @@ function SalesRecordsCard({
             <table className="min-w-[1350px] w-full table-fixed text-start text-sm">
               <thead className="bg-muted/40">
                 <tr className="border-b border-border">
-                  <th className="w-48 px-4 py-3 text-start font-medium">{t("table.reference")}</th>
-                  <th className="w-44 px-4 py-3 text-start font-medium">{t("table.dateTime")}</th>
+                  <th data-column-align="center" className="w-48 px-4 py-3 font-medium">{t("table.reference")}</th>
+                  <th data-column-align="center" className="w-44 px-4 py-3 font-medium">{t("table.dateTime")}</th>
                   <th className="w-32 px-4 py-3 text-start font-medium">{t("table.branch")}</th>
                   <th className="w-36 px-4 py-3 text-start font-medium">{t("table.cashier")}</th>
                   <th className="w-36 px-4 py-3 text-start font-medium">{t("table.salesman")}</th>
-                  <th className="w-36 px-4 py-3 text-end font-medium">{t("table.amount")}</th>
+                  <th data-column-align="center" className="w-36 px-4 py-3 font-medium">{t("table.amount")}</th>
                   <th className="w-32 px-4 py-3 text-start font-medium">{t("table.paymentMethod")}</th>
                   <th className="w-36 px-4 py-3 text-start font-medium">{t("table.status")}</th>
-                  <th className="w-16 px-3 py-3 text-end font-medium">{t("table.actions")}</th>
+                  <th data-column-align="actions" className="w-16 px-3 py-3 font-medium">{t("table.actions")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 {records.map((record) => (
                   <tr key={record.receipt._id} className="hover:bg-muted/30">
-                    <th dir="ltr" className="px-4 py-3 text-start font-medium">
+                    <th dir="ltr" data-column-align="center" className="px-4 py-3 font-medium">
                       {record.receipt.referenceNumber}
                     </th>
-                    <td dir="ltr" className="px-4 py-3 text-muted-foreground">
+                    <td dir="ltr" data-column-align="center" className="px-4 py-3 text-muted-foreground">
                       {formatDate(record.receipt.timestamp, locale, {
                         dateStyle: "medium",
                         timeStyle: "short",
@@ -460,7 +460,7 @@ function SalesRecordsCard({
                         record.receipt.employeeId ??
                         t("table.unavailable")}
                     </td>
-                    <td dir="ltr" className="px-4 py-3 text-end font-medium">
+                    <td dir="ltr" data-column-align="center" className="px-4 py-3 font-medium">
                       {formatCurrency(record.receipt.totalAmount, locale)}
                     </td>
                     <td className="px-4 py-3">
@@ -476,7 +476,7 @@ function SalesRecordsCard({
                     <td className="px-4 py-3">
                       <StatusLabel status={record.receipt.status} t={cashier} />
                     </td>
-                    <td className="px-2 py-2">
+                    <td data-column-align="actions" className="px-2 py-2">
                       <div className="flex justify-end">
                         <Button
                           type="button"

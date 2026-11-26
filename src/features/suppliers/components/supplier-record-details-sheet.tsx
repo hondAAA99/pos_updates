@@ -11,7 +11,11 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { formatCurrency } from "@/lib/format";
+import {
+  formatCurrency,
+  formatDate as formatLocalizedDate,
+} from "@/lib/format";
+import type { Locale } from "@/i18n/routing";
 import type { SupplierFinancialRecord } from "../types/supplier-financial-record";
 
 type SupplierRecordDetailsSheetProps = {
@@ -23,14 +27,14 @@ type SupplierRecordDetailsSheetProps = {
   onDelete: (record: SupplierFinancialRecord) => void;
 };
 
-function formatDate(value: string, locale: string, fallback: string) {
+function formatDate(value: string, locale: Locale, fallback: string) {
   if (typeof value !== "string" || !value.trim()) return fallback;
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return fallback;
-  return new Intl.DateTimeFormat(locale, {
+  return formatLocalizedDate(date, locale, {
     dateStyle: "medium",
     timeStyle: "short",
-  }).format(date);
+  });
 }
 
 export function SupplierRecordDetailsSheet({

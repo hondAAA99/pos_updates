@@ -6,6 +6,7 @@ import {
   LoaderCircle,
   Minus,
   Plus,
+  Printer,
   Trash2,
   X,
 } from "lucide-react";
@@ -33,6 +34,7 @@ import {
   type SalePaymentChoice,
 } from "../services/sales-api-service";
 import { ReceiptPresentation } from "./receipt-presentation";
+import { ReceiptPrintDocument } from "./receipt-print-document";
 
 type CreateSaleSheetProps = {
   open: boolean;
@@ -1265,7 +1267,16 @@ export function CreateSaleSheet({
         </form>
         {isResultStep && (
           <footer className="shrink-0 border-t border-border bg-popover p-4 sm:p-5">
-            <div className="flex justify-end">
+            <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => window.print()}
+                className="border-primary text-primary hover:bg-primary/10 hover:text-primary"
+              >
+                <Printer aria-hidden="true" />
+                {cashier("receipts.print")}
+              </Button>
               <Button
                 type="button"
                 onClick={handleDone}
@@ -1316,6 +1327,28 @@ export function CreateSaleSheet({
           </div>
         )}
         </Dialog.Popup>
+        {isResultStep && processedSale && (
+          <ReceiptPrintDocument
+            locale={locale}
+            receipt={{
+              referenceNumber: processedSale.receiptId,
+              salesmanName: selectedSalesman?.name,
+              clientName: clientName.trim() || processedSale.clientData.name,
+              clientPhoneNumber:
+                clientPhoneNumber.trim() || processedSale.clientData.phoneNumber,
+              paymentMethod: paymentMethod || undefined,
+              comments: comments.trim() || undefined,
+              subtotal: processedSale.receiptPrice,
+              items: processedSale.items.map((item) => ({
+                productName: item.productName,
+                serialNumber: item.productSerialNumber,
+                quantity: item.productQuantity,
+                unitPrice: item.productPrice,
+                lineTotal: item.total,
+              })),
+            }}
+          />
+        )}
       </Dialog.Portal>
     </Dialog.Root>
   );

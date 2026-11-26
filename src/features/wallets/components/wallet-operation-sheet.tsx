@@ -19,6 +19,7 @@ import type {
   Wallet,
   WalletOperationInput,
   WalletTransferInput,
+  WalletTransferResponse,
 } from "../types/wallet";
 
 export type WalletOperationKind = "deposit" | "withdraw" | "transfer";
@@ -39,7 +40,9 @@ type WalletOperationSheetProps = {
   isSubmitting: boolean;
   submissionError: string;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (submission: WalletOperationSubmission) => Promise<void>;
+  onSubmit: (
+    submission: WalletOperationSubmission,
+  ) => Promise<WalletTransferResponse | void>;
 };
 
 export function WalletOperationSheet({
@@ -55,26 +58,30 @@ export function WalletOperationSheet({
   const [amount, setAmount] = useState("");
   const [transactionFee, setTransactionFee] = useState("0");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [transferSentAmount, setTransferSentAmount] = useState<number | null>(null);
   const [errors, setErrors] = useState({
     amount: false,
     transactionFee: false,
     phoneNumber: false,
   });
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setTransferSentAmount(null);
 
     const parsedAmount = Number(amount);
-    const parsedTransactionFee = Number(transactionFee);
+    const showTransactionFee = operation === "withdraw";
+    const parsedTransactionFee = showTransactionFee ? Number(transactionFee) : 0;
     const nextErrors = {
       amount:
         amount.trim() === "" ||
         !Number.isFinite(parsedAmount) ||
         parsedAmount <= 0,
-      transactionFee:
+      transactionFee: showTransactionFee && (
         transactionFee.trim() === "" ||
         !Number.isFinite(parsedTransactionFee) ||
-        parsedTransactionFee < 0,
+        parsedTransactionFee < 0
+      ),
       phoneNumber: operation === "transfer" && !phoneNumber.trim(),
     };
     setErrors(nextErrors);
@@ -86,10 +93,13 @@ export function WalletOperationSheet({
     };
 
     if (operation === "transfer") {
-      void onSubmit({
+      const response = await onSubmit({
         operation,
         input: { ...input, phoneNumber: phoneNumber.trim() },
       });
+      if (response) {
+        setTransferSentAmount(response.send);
+      }
       return;
     }
 
@@ -149,6 +159,13 @@ export function WalletOperationSheet({
                 {submissionError}
               </p>
             )}
+            {transferSentAmount !== null && (
+              <p role="status" className="rounded-md border border-border bg-muted/30 px-4 py-3 text-sm">
+                {t("operationFeedback.transferSuccess", {
+                  send: formatCurrency(transferSentAmount, locale as Locale),
+                })}
+              </p>
+            )}
 
             {operation === "transfer" && (
               <div className="space-y-2">
@@ -204,31 +221,33 @@ export function WalletOperationSheet({
               )}
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="wallet-operation-fee" className="text-sm font-medium">
-                {t("operationForm.transactionFeeLabel")}
-              </label>
-              <Input
-                id="wallet-operation-fee"
-                type="number"
-                min="0"
-                step="0.01"
-                inputMode="decimal"
-                value={transactionFee}
-                disabled={isSubmitting}
-                onChange={(event) => {
-                  setTransactionFee(event.currentTarget.value);
-                  setErrors((current) => ({ ...current, transactionFee: false }));
-                }}
-                aria-invalid={errors.transactionFee}
-                aria-required="true"
-              />
-              {errors.transactionFee && (
-                <p role="alert" className="text-sm text-destructive">
-                  {t("operationForm.transactionFeeInvalid")}
-                </p>
-              )}
-            </div>
+            {operation === "withdraw" && (
+              <div className="space-y-2">
+                <label htmlFor="wallet-operation-fee" className="text-sm font-medium">
+                  {t("operationForm.transactionFeeLabel")}
+                </label>
+                <Input
+                  id="wallet-operation-fee"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  inputMode="decimal"
+                  value={transactionFee}
+                  disabled={isSubmitting}
+                  onChange={(event) => {
+                    setTransactionFee(event.currentTarget.value);
+                    setErrors((current) => ({ ...current, transactionFee: false }));
+                  }}
+                  aria-invalid={errors.transactionFee}
+                  aria-required="true"
+                />
+                {errors.transactionFee && (
+                  <p role="alert" className="text-sm text-destructive">
+                    {t("operationForm.transactionFeeInvalid")}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
           <SheetFooter className="mt-auto flex-row justify-end border-t border-border p-6">

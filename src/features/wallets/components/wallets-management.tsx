@@ -43,6 +43,7 @@ import type {
   WalletTransaction,
   WalletType,
   WalletTypeInput,
+  WalletTransferResponse,
 } from "../types/wallet";
 import { WalletFormSheet } from "./wallet-form-sheet";
 import {
@@ -521,7 +522,9 @@ export function WalletsManagement() {
     setOperationType(operation);
   }
 
-  async function handleWalletOperation(submission: WalletOperationSubmission) {
+  async function handleWalletOperation(
+    submission: WalletOperationSubmission,
+  ): Promise<WalletTransferResponse | void> {
     if (isSubmitting) return;
     if (!token || !selectedOperationWallet) {
       setFeedback({
@@ -534,6 +537,7 @@ export function WalletsManagement() {
     setIsSubmitting(true);
     setFeedback(null);
     try {
+      let transferResponse: WalletTransferResponse | undefined;
       switch (submission.operation) {
         case "deposit":
           await depositWallet(token, selectedOperationWallet.id, submission.input);
@@ -542,15 +546,21 @@ export function WalletsManagement() {
           await withdrawWallet(token, selectedOperationWallet.id, submission.input);
           break;
         case "transfer":
-          await transferWallet(token, selectedOperationWallet.id, submission.input);
+          transferResponse = await transferWallet(
+            token,
+            selectedOperationWallet.id,
+            submission.input,
+          );
           break;
       }
 
-      setOperationType(null);
-      setFeedback({
-        kind: "success",
-        message: t(`operationFeedback.${submission.operation}Success`),
-      });
+      if (submission.operation !== "transfer") {
+        setOperationType(null);
+        setFeedback({
+          kind: "success",
+          message: t(`operationFeedback.${submission.operation}Success`),
+        });
+      }
       void refreshWalletList();
       if (details.wallet?.id === selectedOperationWallet.id) {
         setDetailsLoading(true);
@@ -560,8 +570,10 @@ export function WalletsManagement() {
       if (section === "transactions") {
         setTransactionsReloadCounter((current) => current + 1);
       }
+      return transferResponse;
     } catch (error) {
       setFeedback({ kind: "error", message: getWalletOperationError(error) });
+      return;
     } finally {
       setIsSubmitting(false);
     }
@@ -1074,19 +1086,19 @@ export function WalletsManagement() {
                   <table className="w-full text-start text-sm">
                     <thead className="bg-muted/40">
                       <tr className="border-b border-border">
-                        <th scope="col" className="px-5 py-3.5 text-start font-medium">{t("table.phone")}</th>
+                        <th scope="col" data-column-align="center" className="px-5 py-3.5 font-medium">{t("table.phone")}</th>
                         <th scope="col" className="px-5 py-3.5 text-start font-medium">{t("table.type")}</th>
-                        <th scope="col" className="px-5 py-3.5 text-end font-medium">{t("table.balance")}</th>
-                        <th scope="col" className="px-4 py-3.5 text-end font-medium">{t("table.actions")}</th>
+                        <th scope="col" data-column-align="center" className="px-5 py-3.5 font-medium">{t("table.balance")}</th>
+                        <th scope="col" data-column-align="actions" className="px-4 py-3.5 font-medium">{t("table.actions")}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
                       {walletPage.map((wallet) => (
                         <tr key={wallet.id} className="transition-colors hover:bg-muted/30">
-                          <th scope="row" dir="auto" className="px-5 py-4 text-start font-medium">{wallet.phoneNumber}</th>
+                          <th scope="row" dir="auto" data-column-align="center" className="px-5 py-4 font-medium">{wallet.phoneNumber}</th>
                           <td className="px-5 py-4 text-muted-foreground">{typeNames.get(wallet.typeId) ?? wallet.type?.name ?? t("unknownType")}</td>
-                          <td className="px-5 py-4 text-end tabular-nums">{formatCurrency(wallet.money_amount, locale)}</td>
-                          <td className="px-4 py-3">{walletActions(wallet)}</td>
+                          <td data-column-align="center" className="px-5 py-4 tabular-nums">{formatCurrency(wallet.money_amount, locale)}</td>
+                          <td data-column-align="actions" className="px-4 py-3">{walletActions(wallet)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -1187,22 +1199,22 @@ export function WalletsManagement() {
                     <thead className="bg-muted/40">
                       <tr className="border-b border-border">
                         <th scope="col" className="px-5 py-3.5 text-start font-medium">{t("typeTable.name")}</th>
-                        <th scope="col" className="px-5 py-3.5 text-end font-medium">{t("typeTable.capacity")}</th>
-                        <th scope="col" className="px-5 py-3.5 text-end font-medium">{t("typeTable.daily")}</th>
-                        <th scope="col" className="px-5 py-3.5 text-end font-medium">{t("typeTable.monthly")}</th>
-                        <th scope="col" className="px-5 py-3.5 text-end font-medium">{t("typeTable.walletCount")}</th>
-                        <th scope="col" className="px-4 py-3.5 text-end font-medium">{t("table.actions")}</th>
+                        <th scope="col" data-column-align="center" className="px-5 py-3.5 font-medium">{t("typeTable.capacity")}</th>
+                        <th scope="col" data-column-align="center" className="px-5 py-3.5 font-medium">{t("typeTable.daily")}</th>
+                        <th scope="col" data-column-align="center" className="px-5 py-3.5 font-medium">{t("typeTable.monthly")}</th>
+                        <th scope="col" data-column-align="center" className="px-5 py-3.5 font-medium">{t("typeTable.walletCount")}</th>
+                        <th scope="col" data-column-align="actions" className="px-4 py-3.5 font-medium">{t("table.actions")}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
                       {typePage.map((type) => (
                         <tr key={type.id} className="transition-colors hover:bg-muted/30">
                           <th scope="row" className="px-5 py-4 text-start font-medium">{type.name}</th>
-                          <td className="px-5 py-4 text-end">{formatCurrency(type.capacity, locale)}</td>
-                          <td className="px-5 py-4 text-end">{formatCurrency(type.daily, locale)}</td>
-                          <td className="px-5 py-4 text-end">{formatCurrency(type.monthly, locale)}</td>
-                          <td className="px-5 py-4 text-end">{formatNumber(wallets.filter((wallet) => wallet.typeId === type.id).length, locale)}</td>
-                          <td className="px-4 py-3">{walletTypeActions(type)}</td>
+                          <td data-column-align="center" className="px-5 py-4">{formatCurrency(type.capacity, locale)}</td>
+                          <td data-column-align="center" className="px-5 py-4">{formatCurrency(type.daily, locale)}</td>
+                          <td data-column-align="center" className="px-5 py-4">{formatCurrency(type.monthly, locale)}</td>
+                          <td data-column-align="center" className="px-5 py-4">{formatNumber(wallets.filter((wallet) => wallet.typeId === type.id).length, locale)}</td>
+                          <td data-column-align="actions" className="px-4 py-3">{walletTypeActions(type)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -1276,10 +1288,10 @@ export function WalletsManagement() {
                         <th scope="col" className="px-5 py-3.5 text-start font-medium">{t("transactions.date")}</th>
                         <th scope="col" className="px-5 py-3.5 text-start font-medium">{t("transactions.wallet")}</th>
                         <th scope="col" className="px-5 py-3.5 text-start font-medium">{t("transactions.type")}</th>
-                        <th scope="col" className="px-5 py-3.5 text-start font-medium">{t("transactions.phone")}</th>
-                        <th scope="col" className="px-5 py-3.5 text-end font-medium">{t("transactions.amount")}</th>
-                        <th scope="col" className="px-5 py-3.5 text-end font-medium">{t("transactions.fee")}</th>
-                        <th scope="col" className="px-4 py-3.5 text-end font-medium">{t("table.actions")}</th>
+                        <th scope="col" data-column-align="center" className="px-5 py-3.5 font-medium">{t("transactions.phone")}</th>
+                        <th scope="col" data-column-align="center" className="px-5 py-3.5 font-medium">{t("transactions.amount")}</th>
+                        <th scope="col" data-column-align="center" className="px-5 py-3.5 font-medium">{t("transactions.fee")}</th>
+                        <th scope="col" data-column-align="actions" className="px-4 py-3.5 font-medium">{t("table.actions")}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
@@ -1288,10 +1300,10 @@ export function WalletsManagement() {
                           <td className="px-5 py-4 text-muted-foreground">{formatDate(transaction.timestamp, locale, { dateStyle: "medium", timeStyle: "short" })}</td>
                           <td className="px-5 py-4">{transaction.walletId || t("details.notAvailable")}</td>
                           <td className="px-5 py-4">{transaction.transactionType}</td>
-                          <td dir="auto" className="px-5 py-4">{transaction.phoneNumber || t("details.notAvailable")}</td>
-                          <td className="px-5 py-4 text-end">{formatCurrency(transaction.moneyAmount, locale)}</td>
-                          <td className="px-5 py-4 text-end">{formatCurrency(transaction.transaction_fee, locale)}</td>
-                          <td className="px-4 py-3">{transactionActions(transaction)}</td>
+                          <td dir="auto" data-column-align="center" className="px-5 py-4">{transaction.phoneNumber || t("details.notAvailable")}</td>
+                          <td data-column-align="center" className="px-5 py-4">{formatCurrency(transaction.moneyAmount, locale)}</td>
+                          <td data-column-align="center" className="px-5 py-4">{formatCurrency(transaction.transaction_fee, locale)}</td>
+                          <td data-column-align="actions" className="px-4 py-3">{transactionActions(transaction)}</td>
                         </tr>
                       ))}
                     </tbody>

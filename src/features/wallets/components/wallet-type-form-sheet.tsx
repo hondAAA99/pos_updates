@@ -38,6 +38,15 @@ export function WalletTypeFormSheet({
   const [capacity, setCapacity] = useState(String(walletType?.capacity ?? 0));
   const [daily, setDaily] = useState(String(walletType?.daily ?? 0));
   const [monthly, setMonthly] = useState(String(walletType?.monthly ?? 0));
+  const [sameWalletFee, setSameWalletFee] = useState(
+    String(walletType?.transfer_fee?.sameWallet ?? 0),
+  );
+  const [differentWalletMinFee, setDifferentWalletMinFee] = useState(
+    String(walletType?.transfer_fee?.differentWallet.min ?? 0),
+  );
+  const [differentWalletMaxFee, setDifferentWalletMaxFee] = useState(
+    String(walletType?.transfer_fee?.differentWallet.max ?? 0),
+  );
   const [errors, setErrors] = useState({ name: false, amounts: false });
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -60,6 +69,13 @@ export function WalletTypeFormSheet({
       capacity: values[0],
       daily: values[1],
       monthly: values[2],
+      transfer_fee: {
+        sameWallet: Number(sameWalletFee),
+        differentWallet: {
+          min: Number(differentWalletMinFee),
+          max: Number(differentWalletMaxFee),
+        },
+      },
     });
   }
 
@@ -68,23 +84,26 @@ export function WalletTypeFormSheet({
     label: string,
     value: string,
     setValue: (value: string) => void,
+    validate = true,
   ) => (
     <div className="space-y-2">
       <label htmlFor={id} className="text-sm font-medium">{label}</label>
       <Input
         id={id}
         type="number"
-        min="0"
-        step="0.01"
+        min={validate ? "0" : undefined}
+        step={validate ? "0.01" : "any"}
         inputMode="decimal"
         value={value}
         disabled={isSubmitting}
         onChange={(event) => {
           setValue(event.currentTarget.value);
-          setErrors((current) => ({ ...current, amounts: false }));
+          if (validate) {
+            setErrors((current) => ({ ...current, amounts: false }));
+          }
         }}
-        aria-invalid={errors.amounts}
-        aria-required="true"
+        aria-invalid={validate ? errors.amounts : undefined}
+        aria-required={validate || undefined}
       />
     </div>
   );
@@ -145,6 +164,32 @@ export function WalletTypeFormSheet({
             <fieldset className="space-y-3 rounded-lg border border-border p-4">
               <legend className="px-1 text-sm font-medium">{t("typeForm.monthlyLimits")}</legend>
               {numberField("wallet-type-monthly", t("typeForm.amountLabel"), monthly, setMonthly)}
+            </fieldset>
+            <fieldset className="space-y-3 rounded-lg border border-border p-4">
+              <legend className="px-1 text-sm font-medium">
+                {t("typeForm.transferFees")}
+              </legend>
+              {numberField(
+                "wallet-type-same-wallet-fee",
+                t("typeForm.sameWalletFee"),
+                sameWalletFee,
+                setSameWalletFee,
+                false,
+              )}
+              {numberField(
+                "wallet-type-different-wallet-min-fee",
+                t("typeForm.differentWalletMinFee"),
+                differentWalletMinFee,
+                setDifferentWalletMinFee,
+                false,
+              )}
+              {numberField(
+                "wallet-type-different-wallet-max-fee",
+                t("typeForm.differentWalletMaxFee"),
+                differentWalletMaxFee,
+                setDifferentWalletMaxFee,
+                false,
+              )}
             </fieldset>
             {errors.amounts && <p role="alert" className="text-sm text-destructive">{t("validation.amountInvalid")}</p>}
           </div>

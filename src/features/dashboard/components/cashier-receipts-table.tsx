@@ -79,13 +79,13 @@ export function CashierReceiptsTable({
           <table className="min-w-[850px] w-full table-fixed text-start text-sm">
             <thead className="bg-muted/40">
               <tr className="border-b border-border">
-                <th scope="col" className="w-[18%] px-5 py-3.5 text-start font-medium">
+                <th scope="col" data-column-align="center" className="w-[18%] px-5 py-3.5 font-medium">
                   {t("receipts.reference")}
                 </th>
-                <th scope="col" className="w-[12%] px-5 py-3.5 text-start font-medium">
+                <th scope="col" data-column-align="center" className="w-[12%] px-5 py-3.5 font-medium">
                   {t("receipts.time")}
                 </th>
-                <th scope="col" className="w-[16%] px-5 py-3.5 text-start font-medium">
+                <th scope="col" data-column-align="center" className="w-[16%] px-5 py-3.5 font-medium">
                   {t("receipts.amount")}
                 </th>
                 <th scope="col" className="w-[14%] px-5 py-3.5 text-start font-medium">
@@ -97,7 +97,7 @@ export function CashierReceiptsTable({
                 <th scope="col" className="w-[18%] px-5 py-3.5 text-start font-medium">
                   {t("receipts.employee")}
                 </th>
-                <th scope="col" className="w-[12%] px-3 py-3.5 text-end font-medium">
+                <th scope="col" data-column-align="actions" className="w-[12%] px-3 py-3.5 font-medium">
                   {t("receipts.actions")}
                 </th>
               </tr>
@@ -108,16 +108,16 @@ export function CashierReceiptsTable({
                   key={receipt._id}
                   className="transition-colors hover:bg-muted/30"
                 >
-                  <th scope="row" dir="ltr" className="px-5 py-4 text-start font-medium">
+                  <th scope="row" dir="ltr" data-column-align="center" className="px-5 py-4 font-medium">
                     {receipt.referenceNumber}
                   </th>
-                  <td dir="ltr" className="px-5 py-4 text-muted-foreground">
+                  <td dir="ltr" data-column-align="center" className="px-5 py-4 text-muted-foreground">
                     {formatDate(receipt.timestamp, locale, {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
                   </td>
-                  <td dir="ltr" className="px-5 py-4 font-medium">
+                  <td dir="ltr" data-column-align="center" className="px-5 py-4 font-medium">
                     {formatCurrency(receipt.totalAmount, locale)}
                   </td>
                   <td className="px-5 py-4">
@@ -147,7 +147,7 @@ export function CashierReceiptsTable({
                   <td className="px-5 py-4">
                     {receipt.employeeId ?? receipt.salesmanName ?? unavailable}
                   </td>
-                  <td className="px-2 py-3">
+                  <td data-column-align="actions" className="px-2 py-3">
                     <div className="flex justify-end">
                       <Button
                         type="button"

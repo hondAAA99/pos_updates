@@ -152,13 +152,13 @@ export function ProductsTable({
                   <th scope="col" className="px-5 py-3.5 text-start font-medium">
                     {t("table.productName")}
                   </th>
-                  <th scope="col" className="px-5 py-3.5 text-start font-medium">
+                  <th scope="col" data-column-align="center" className="px-5 py-3.5 font-medium">
                     {t("table.serialNumber")}
                   </th>
                   <th scope="col" className="px-5 py-3.5 text-start font-medium">
                     {t("table.productType")}
                   </th>
-                  <th scope="col" className="px-5 py-3.5 text-end font-medium">
+                  <th scope="col" data-column-align="actions" className="px-5 py-3.5 font-medium">
                     {t("table.actions")}
                   </th>
                 </tr>
@@ -175,13 +175,13 @@ export function ProductsTable({
                     >
                       <span className="block truncate">{product.productName}</span>
                     </th>
-                    <td dir="auto" className="px-5 py-4 font-mono text-xs text-muted-foreground">
+                    <td dir="auto" data-column-align="center" className="px-5 py-4 font-mono text-xs text-muted-foreground">
                       {product.serialNumber}
                     </td>
                     <td className="px-5 py-4 text-muted-foreground">
                       {product.productType?.name ?? t("unknownProductType")}
                     </td>
-                    <td className="px-4 py-3">{actions(product)}</td>
+                    <td data-column-align="actions" className="px-4 py-3">{actions(product)}</td>
                   </tr>
                 ))}
               </tbody>

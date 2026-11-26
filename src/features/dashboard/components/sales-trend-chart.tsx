@@ -119,7 +119,7 @@ export function SalesTrendChart({ data, locale }: SalesTrendChartProps) {
             tickLine={false}
             axisLine={false}
             minTickGap={24}
-            tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
+            tick={{ fill: "var(--muted-foreground)", fontSize: 16 }}
             reversed={locale === "ar"}
           />
           <YAxis
@@ -135,7 +135,7 @@ export function SalesTrendChart({ data, locale }: SalesTrendChartProps) {
             tickLine={false}
             axisLine={false}
             width={72}
-            tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
+            tick={{ fill: "var(--muted-foreground)", fontSize: 16 }}
           />
           <Tooltip
             content={

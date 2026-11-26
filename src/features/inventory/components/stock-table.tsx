@@ -172,22 +172,22 @@ export function StockTable({
                   <th scope="col" className="w-[21%] px-3 py-3.5 text-start font-medium">
                     {t("table.product")}
                   </th>
-                  <th scope="col" className="w-[13%] px-2 py-3.5 text-start font-medium">
+                  <th scope="col" data-column-align="center" className="w-[13%] px-2 py-3.5 font-medium">
                     {t("table.serialNumber")}
                   </th>
-                  <th scope="col" className="w-[9%] px-2 py-3.5 text-end font-medium">
+                  <th scope="col" data-column-align="center" className="w-[9%] px-2 py-3.5 font-medium">
                     {t("table.quantity")}
                   </th>
-                  <th scope="col" className="w-[14%] px-2 py-3.5 text-end font-medium">
+                  <th scope="col" data-column-align="center" className="w-[14%] px-2 py-3.5 font-medium">
                     {t("table.sellingPrice")}
                   </th>
-                  <th scope="col" className="w-[14%] px-2 py-3.5 text-end font-medium">
+                  <th scope="col" data-column-align="center" className="w-[14%] px-2 py-3.5 font-medium">
                     {t("table.wholesalePrice")}
                   </th>
-                  <th scope="col" className="w-[14%] px-2 py-3.5 text-end font-medium">
+                  <th scope="col" data-column-align="center" className="w-[14%] px-2 py-3.5 font-medium">
                     {t("table.purchasePrice")}
                   </th>
-                  <th scope="col" className="w-[15%] px-2 py-3.5 text-end font-medium">
+                  <th scope="col" data-column-align="actions" className="w-[15%] px-2 py-3.5 font-medium">
                     {t("table.actions")}
                   </th>
                 </tr>
@@ -205,11 +205,12 @@ export function StockTable({
                     </th>
                     <td
                       dir="auto"
-                      className="break-all px-2 py-4 font-mono text-[0.7rem] text-muted-foreground"
+                      data-column-align="center"
+                      className="break-all px-2 py-4 font-mono text-[1rem] text-muted-foreground"
                     >
                       {stock.product_id?.serialNumber ?? t("details.notAvailable")}
                     </td>
-                    <td dir="ltr" className="px-2 py-4 text-end tabular-nums">
+                    <td dir="ltr" data-column-align="center" className="px-2 py-4 tabular-nums">
                       {formatNumber(stock.total_quantity, locale)}
                     </td>
                     <MoneyCell
@@ -224,7 +225,7 @@ export function StockTable({
                       value={stock.current_purchase_price_per_piece}
                       locale={locale}
                     />
-                    <td className="px-2 py-3">{actions(stock)}</td>
+                    <td data-column-align="actions" className="px-2 py-3">{actions(stock)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -368,7 +369,7 @@ export function StockTable({
 
 function MoneyCell({ value, locale }: { value: number; locale: Locale }) {
   return (
-    <td dir="ltr" className="break-words px-2 py-4 text-end tabular-nums">
+    <td dir="ltr" data-column-align="center" className="break-words px-2 py-4 tabular-nums">
       {formatCurrency(value, locale)}
     </td>
   );

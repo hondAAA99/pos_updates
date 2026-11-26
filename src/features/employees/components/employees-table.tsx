@@ -227,7 +227,7 @@ export function EmployeesTable({
                   <th scope="col" className="w-[20%] px-5 py-3.5 text-start font-medium">
                     {t("table.name")}
                   </th>
-                  <th scope="col" className="w-[23%] px-5 py-3.5 text-start font-medium">
+                  <th scope="col" data-column-align="center" className="w-[23%] px-5 py-3.5 font-medium">
                     {t("table.email")}
                   </th>
                   <th scope="col" className="w-[16%] px-5 py-3.5 text-start font-medium">
@@ -239,7 +239,7 @@ export function EmployeesTable({
                   <th scope="col" className="w-[10%] px-5 py-3.5 text-start font-medium">
                     {t("table.status")}
                   </th>
-                  <th scope="col" className="w-[15%] px-4 py-3.5 text-end font-medium">
+                  <th scope="col" data-column-align="actions" className="w-[15%] px-4 py-3.5 font-medium">
                     {t("table.actions")}
                   </th>
                 </tr>
@@ -253,7 +253,7 @@ export function EmployeesTable({
                     <th scope="row" className="px-5 py-4 text-start font-medium">
                       <span className="block break-words">{employee.name}</span>
                     </th>
-                    <td dir="ltr" className="break-all px-5 py-4 text-muted-foreground">
+                    <td dir="ltr" data-column-align="center" className="break-all px-5 py-4 text-muted-foreground">
                       {employee.email}
                     </td>
                     <td className="px-5 py-4">{t(`roles.${employee.role}`)}</td>
@@ -271,7 +271,7 @@ export function EmployeesTable({
                         {t(employee.active ? "status.active" : "status.inactive")}
                       </span>
                     </td>
-                    <td className="px-2 py-3">{actions(employee)}</td>
+                    <td data-column-align="actions" className="px-2 py-3">{actions(employee)}</td>
                   </tr>
                 ))}
               </tbody>

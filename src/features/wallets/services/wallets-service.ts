@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { apiClient } from "@/lib/api-client";
-import type { Wallet, WalletInput, WalletTransaction } from "../types/wallet";
+import type {
+  Wallet,
+  WalletInput,
+  WalletTransaction,
+  WalletTypeInput as WalletTypeInputPayload,
+  WalletTransferFee,
+  WalletTransferResponse,
+} from "../types/wallet";
 
 // API types: daily and monthly are numeric values in the backend.
 export type WalletTypeRecord = {
@@ -10,9 +17,10 @@ export type WalletTypeRecord = {
   capacity: number;
   daily: number;
   monthly: number;
+  transfer_fee?: WalletTransferFee;
 };
 
-export type WalletTypeInput = Omit<WalletTypeRecord, "id">;
+export type WalletTypeInput = WalletTypeInputPayload;
 
 export type WalletTransactionInput = {
   moneyAmount: number;
@@ -285,6 +293,10 @@ export async function transferWallet(
   token: string,
   walletId: string,
   input: WalletTransferInput,
-): Promise<unknown> {
-  return apiClient.post(`/wallets/${walletId}/transfer`, input, { token });
+): Promise<WalletTransferResponse> {
+  return apiClient.post<WalletTransferResponse>(
+    `/wallets/${walletId}/transfer`,
+    input,
+    { token },
+  );
 }
