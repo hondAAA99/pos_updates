@@ -15,6 +15,8 @@ export function getReceiptPaymentTranslationKey(
       return "paymentMethods.mobileWallet";
     case "wallet":
       return "paymentMethods.wallet";
+    case "e-payment":
+      return "paymentMethods.ePayment";
     default:
       return undefined;
   }
@@ -22,6 +24,12 @@ export function getReceiptPaymentTranslationKey(
 
 export function getReceiptStatusTranslationKey(status: ReceiptSaleStatus) {
   switch (status) {
+    case "pending":
+      return "statuses.pending";
+    case "paid":
+      return "statuses.paid";
+    case "canceled":
+      return "statuses.canceled";
     case "completed":
       return "statuses.completed";
     case "rejected":

@@ -26,6 +26,9 @@ type TransferFormSheetProps = {
   transfer: TransferItem | null;
   branches: TransferBranchReference[];
   products: TransferProductReference[];
+  inventoryQuantities: Record<string, number>;
+  isInventoryLoading: boolean;
+  inventoryLoadError: boolean;
   isSubmitting: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (values: TransferFormValues) => Promise<void>;
@@ -36,6 +39,9 @@ export function TransferFormSheet({
   transfer,
   branches,
   products,
+  inventoryQuantities,
+  isInventoryLoading,
+  inventoryLoadError,
   isSubmitting,
   onOpenChange,
   onSubmit,
@@ -166,6 +172,31 @@ export function TransferFormSheet({
                 ))}
               </select>
             </div>
+            {!transfer && selectedProduct && (
+              <section
+                aria-live="polite"
+                className="rounded-lg border border-primary/30 bg-primary/5 p-4 text-sm"
+              >
+                {isInventoryLoading ? (
+                  <p role="status" className="text-muted-foreground">
+                    {t("form.loadingAvailableQuantity")}
+                  </p>
+                ) : inventoryLoadError ? (
+                  <p role="alert" className="text-destructive">
+                    {t("form.availableQuantityError")}
+                  </p>
+                ) : (
+                  <p>
+                    {t("form.availableQuantity", {
+                      quantity: formatNumber(
+                        inventoryQuantities[selectedProduct._id] ?? 0,
+                        locale,
+                      ),
+                    })}
+                  </p>
+                )}
+              </section>
+            )}
             <div className="space-y-2">
               <label htmlFor="transfer-quantity" className="text-sm font-medium">
                 {t("form.quantity")}

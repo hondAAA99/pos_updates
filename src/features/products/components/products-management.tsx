@@ -173,6 +173,7 @@ export function ProductsManagement() {
         const response = await createProduct(token, {
           productName: values.productName,
           productType: values.productType,
+          serialNumber: values.serialNumber,
         });
         setFeedback(t("feedback.createdSerial", { serialNumber: response.serialNumber }));
       }

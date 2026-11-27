@@ -1,6 +1,6 @@
 'use client'
 
-import { Eye, Pencil, Trash2, X } from 'lucide-react'
+import { Eye, Pencil, Search, Trash2, X } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -23,12 +23,15 @@ import {
   deleteBranchInventoryItem,
   getBranchInventoryItem,
   listBranchInventory,
+  searchBranchInventoryBySerialNumber,
   updateBranchInventoryItem,
 } from '../services/branch-inventory-service'
 import type { Branch } from '../types/branch'
-import type {
-  BranchInventoryPage,
-  BranchInventoryRecord,
+import {
+  branchStockStatusValues,
+  type BranchInventoryPage,
+  type BranchInventoryRecord,
+  type BranchStockStatus,
 } from '../types/branch-inventory'
 const pageSizes = [5, 10, 20] as const
 
@@ -42,6 +45,11 @@ export function BranchInventoryManagement() {
   const canManage = Boolean(isAdmin)
   const [branches, setBranches] = useState<Branch[]>([])
   const [selectedBranchId, setSelectedBranchId] = useState('')
+  const [status, setStatus] = useState<BranchStockStatus | 'all'>('all')
+  const [query, setQuery] = useState('')
+  const [searchResult, setSearchResult] =
+    useState<BranchInventoryRecord | null>(null)
+  const [isSearching, setIsSearching] = useState(false)
   const [inventory, setInventory] = useState<BranchInventoryPage>({
     items: [],
     page: 1,
@@ -118,6 +126,7 @@ export function BranchInventoryManagement() {
       nextPage = page,
       nextPageSize = pageSize,
       nextBranchId = selectedBranchId,
+      nextStatus = status,
     ) => {
       if (!token) {
         setInventory({
@@ -154,6 +163,7 @@ export function BranchInventoryManagement() {
           page: nextPage,
           limit: nextPageSize,
           branchId: requestedBranchId,
+          ...(nextStatus !== 'all' ? { status: nextStatus } : {}),
         })
         setInventory(result)
         const lastPage = Math.max(1, result.totalPages)
@@ -171,6 +181,7 @@ export function BranchInventoryManagement() {
       page,
       pageSize,
       selectedBranchId,
+      status,
       t,
       token,
       user?.branchId,
@@ -184,8 +195,46 @@ export function BranchInventoryManagement() {
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    void loadInventory(page, pageSize, selectedBranchId)
-  }, [loadInventory, page, pageSize, selectedBranchId])
+    void loadInventory(page, pageSize, selectedBranchId, status)
+  }, [loadInventory, page, pageSize, selectedBranchId, status])
+
+  useEffect(() => {
+    const serialNumber = query.trim()
+    if (!serialNumber || !token) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSearchResult(null)
+      setIsSearching(false)
+      return
+    }
+
+    let active = true
+    setSearchResult(null)
+    const timeout = window.setTimeout(() => {
+      setIsSearching(true)
+      void searchBranchInventoryBySerialNumber(token, serialNumber)
+        .then(result => {
+          if (!active) return
+          if (!result) {
+            setSearchResult(null)
+            return
+          }
+          setSearchResult(result)
+        })
+        .catch(caught => {
+          if (active) {
+            handleApiError(caught, t('feedback.searchError'))
+          }
+        })
+        .finally(() => {
+          if (active) setIsSearching(false)
+        })
+    }, 300)
+
+    return () => {
+      active = false
+      window.clearTimeout(timeout)
+    }
+  }, [handleApiError, isAdmin, query, selectedBranchId, t, token, user?.branchId])
 
   function loadInventoryDetail(record: BranchInventoryRecord) {
     const branchId = isAdmin ? selectedBranchId : user?.branchId
@@ -257,6 +306,15 @@ export function BranchInventoryManagement() {
       handleApiError(caught, t('feedback.deleteError'))
     }
   }
+
+  const visibleInventory = query.trim()
+    ? searchResult
+      ? [searchResult]
+      : []
+    : inventory.items
+  const filteredInventory = visibleInventory.filter(
+    record => status === 'all' || record.status === status,
+  )
 
   const start =
     inventory.totalItems === 0
@@ -355,9 +413,62 @@ export function BranchInventoryManagement() {
         </Button>
       ) : (
         <Card className='gap-0 overflow-hidden p-0'>
-          <div className='border-b border-border p-4 sm:p-5'>
+          <div className='flex flex-col gap-3 border-b border-border p-4 sm:p-5'>
+            <div className='flex flex-col gap-3 md:flex-row md:items-center'>
+              <label className='relative block w-full md:max-w-sm md:flex-1'>
+                <span className='sr-only'>{t('search.label')}</span>
+                <Search
+                  aria-hidden='true'
+                  className='pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground'
+                />
+                <Input
+                  type='search'
+                  value={query}
+                  onChange={event => {
+                    setQuery(event.currentTarget.value)
+                    setPage(1)
+                  }}
+                  placeholder={t('search.placeholder')}
+                  className='ps-9'
+                />
+              </label>
+              <label className='flex min-h-10 w-full items-center gap-2 rounded-lg border border-input bg-background px-3 md:w-auto md:min-w-56'>
+                <span className='shrink-0 text-sm text-muted-foreground'>
+                  {t('filter.status')}
+                </span>
+                <select
+                  value={status}
+                  onChange={event => {
+                    setStatus(
+                      event.currentTarget.value === 'all'
+                        ? 'all'
+                        : (event.currentTarget.value as BranchStockStatus),
+                    )
+                    setPage(1)
+                  }}
+                  aria-label={t('filter.status')}
+                  className='min-w-0 flex-1 bg-transparent py-2 text-sm font-medium text-foreground outline-none'
+                >
+                  <option value='all'>{t('filter.allStatuses')}</option>
+                  {branchStockStatusValues.map(stockStatus => (
+                    <option key={stockStatus} value={stockStatus}>
+                      {t(`status.${stockStatus}`)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            {isSearching && (
+              <p role='status' className='text-sm text-muted-foreground'>
+                {t('feedback.searching')}
+              </p>
+            )}
             <p className='text-sm text-muted-foreground' aria-live='polite'>
-              {t('resultsCount', { count: inventory.totalItems })}
+              {t('resultsCount', {
+                count: query.trim()
+                  ? filteredInventory.length
+                  : inventory.totalItems,
+              })}
             </p>
           </div>
           {isAdmin && branches.length === 0 ? (
@@ -374,7 +485,7 @@ export function BranchInventoryManagement() {
             >
               {t('filter.selectBranchPrompt')}
             </p>
-          ) : inventory.items.length ? (
+          ) : filteredInventory.length ? (
             <>
               <CardContent className='hidden p-0 sm:block'>
                 <table className='w-full text-start text-sm'>
@@ -384,7 +495,16 @@ export function BranchInventoryManagement() {
                         {t('table.product')}
                       </th>
                       <th data-column-align='center' className='px-5 py-3.5 font-medium'>
+                        {t('table.serialNumber')}
+                      </th>
+                      <th data-column-align='center' className='px-5 py-3.5 font-medium'>
                         {t('table.quantity')}
+                      </th>
+                      <th data-column-align='center' className='px-5 py-3.5 font-medium'>
+                        {t('table.status')}
+                      </th>
+                      <th data-column-align='center' className='px-5 py-3.5 font-medium'>
+                        {t('table.view')}
                       </th>
                       <th data-column-align='actions' className='px-5 py-3.5 font-medium'>
                         {t('table.actions')}
@@ -392,12 +512,15 @@ export function BranchInventoryManagement() {
                     </tr>
                   </thead>
                   <tbody className='divide-y divide-border'>
-                    {inventory.items.map(record => (
+                    {filteredInventory.map(record => (
                       <tr key={record._id} className='hover:bg-muted/30'>
                         <th className='px-5 py-4 text-start font-medium'>
                           {record.productId?.productName ??
                             t('details.notAvailable')}
                         </th>
+                        <td dir='auto' data-column-align='center' className='px-5 py-4 font-mono'>
+                          {record.productId?.serialNumber ?? t('details.notAvailable')}
+                        </td>
                         <td
                           dir='ltr'
                           data-column-align='center'
@@ -405,11 +528,19 @@ export function BranchInventoryManagement() {
                         >
                           {formatNumber(record.branchQuantity, locale)}
                         </td>
+                        <td data-column-align='center' className='px-5 py-4'>
+                          <BranchStatusBadge record={record} />
+                        </td>
+                        <td data-column-align='center' className='px-5 py-3'>
+                          <RecordViewAction
+                            record={record}
+                            onView={handleView}
+                          />
+                        </td>
                         <td data-column-align='actions' className='px-5 py-3'>
                           <RecordActions
                             record={record}
                             canManage={canManage}
-                            onView={handleView}
                             onEdit={openEdit}
                             onDelete={setDeletingRecord}
                           />
@@ -420,7 +551,7 @@ export function BranchInventoryManagement() {
                 </table>
               </CardContent>
               <div className='grid gap-3 p-4 sm:hidden'>
-                {inventory.items.map(record => (
+                {filteredInventory.map(record => (
                   <article
                     key={record._id}
                     className='rounded-lg border border-border p-4'
@@ -433,15 +564,27 @@ export function BranchInventoryManagement() {
                       <RecordActions
                         record={record}
                         canManage={canManage}
-                        onView={handleView}
                         onEdit={openEdit}
                         onDelete={setDeletingRecord}
                       />
                     </div>
-                    <p className='mt-3 text-sm text-muted-foreground'>
-                      {t('table.quantity')}:{' '}
-                      {formatNumber(record.branchQuantity, locale)}
-                    </p>
+                    <dl className='mt-3 grid gap-2 text-sm'>
+                      <MobileDetail
+                        label={t('table.serialNumber')}
+                        value={record.productId?.serialNumber ?? t('details.notAvailable')}
+                      />
+                      <MobileDetail
+                        label={t('table.quantity')}
+                        value={formatNumber(record.branchQuantity, locale)}
+                      />
+                      <div className='flex justify-between gap-3'>
+                        <dt className='text-muted-foreground'>{t('table.status')}</dt>
+                        <dd><BranchStatusBadge record={record} /></dd>
+                      </div>
+                    </dl>
+                    <div className='mt-4 flex justify-end'>
+                      <RecordViewAction record={record} onView={handleView} />
+                    </div>
                   </article>
                 ))}
               </div>
@@ -634,16 +777,84 @@ export function BranchInventoryManagement() {
   )
 }
 
+function BranchStatusBadge({
+  record,
+}: {
+  record: BranchInventoryRecord
+}) {
+  const t = useTranslations('branchInventory')
+  const statusClassName: Record<BranchStockStatus, string> = {
+    'in-stock':
+      'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300',
+    'out-of-stock':
+      'border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300',
+    concluding:
+      'border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300',
+  }
+
+  if (!record.status) {
+    return (
+      <span className='text-muted-foreground'>
+        {t('details.notAvailable')}
+      </span>
+    )
+  }
+
+  return (
+    <span
+      className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${statusClassName[record.status]}`}
+    >
+      {t(`status.${record.status}`)}
+    </span>
+  )
+}
+
+function RecordViewAction({
+  record,
+  onView,
+}: {
+  record: BranchInventoryRecord
+  onView: (record: BranchInventoryRecord) => void
+}) {
+  const t = useTranslations('branchInventory')
+  const productName = record.productId?.productName ?? t('details.notAvailable')
+  return (
+    <Button
+      type='button'
+      variant='outline'
+      size='sm'
+      aria-label={t('actions.viewNamed', { name: productName })}
+      onClick={() => onView(record)}
+    >
+      <Eye aria-hidden='true' />
+      {t('actions.view')}
+    </Button>
+  )
+}
+
+function MobileDetail({
+  label,
+  value,
+}: {
+  label: string
+  value: string
+}) {
+  return (
+    <div className='flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1'>
+      <dt className='text-muted-foreground'>{label}</dt>
+      <dd dir='auto' className='break-words text-end tabular-nums'>{value}</dd>
+    </div>
+  )
+}
+
 function RecordActions({
   record,
   canManage,
-  onView,
   onEdit,
   onDelete,
 }: {
   record: BranchInventoryRecord
   canManage: boolean
-  onView: (record: BranchInventoryRecord) => void
   onEdit: (record: BranchInventoryRecord) => void
   onDelete: (record: BranchInventoryRecord) => void
 }) {
@@ -652,15 +863,6 @@ function RecordActions({
 
   return (
     <div className='flex shrink-0 justify-end gap-1'>
-      <Button
-        type='button'
-        variant='ghost'
-        size='icon'
-        aria-label={t('actions.viewNamed', { name: productName })}
-        onClick={() => onView(record)}
-      >
-        <Eye aria-hidden='true' />
-      </Button>
       {canManage && (
         <>
           <Button
@@ -752,6 +954,12 @@ function BranchInventoryDetailsSheet({
                 label={t('table.quantity')}
                 value={formatNumber(record.branchQuantity, locale)}
               />
+              <div className='space-y-1'>
+                <dt className='text-sm font-medium text-muted-foreground'>
+                  {t('table.status')}
+                </dt>
+                <dd><BranchStatusBadge record={record} /></dd>
+              </div>
             </dl>
             {canManage && (
               <SheetFooter className='mt-auto flex-row justify-end border-t border-border p-6'>

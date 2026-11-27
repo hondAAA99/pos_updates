@@ -52,15 +52,28 @@ export type ConfirmSaleResponse = {
   message: string;
 };
 
+export type ReceiptRelationship =
+  | string
+  | {
+      _id: string;
+      name?: string;
+      role?: string;
+      phone_number?: string;
+    }
+  | null;
+
 export type ReceiptApiDocument = {
   id?: string;
-  _id?: string;
-  employeeId?: string;
-  clientId?: string;
-  branchId?: string;
+  _id: string;
+  receiptNumber: string;
+  employeeId?: ReceiptRelationship;
+  cashierId?: ReceiptRelationship;
+  clientId?: ReceiptRelationship;
+  branchId?: ReceiptRelationship;
   receiptPrice?: number;
   sale_perc?: number;
   allowed_sale_perc?: number;
+  discountAmount?: number;
   price_after_sale?: number;
   payment_method?: string;
   confirm?: boolean;
@@ -77,14 +90,38 @@ export type ReceiptPage = {
   data: ReceiptApiDocument[];
 };
 
-export type ReceiptLineItemApi = Partial<ProcessSaleItem> & {
-  productId?: string;
+export type ReceiptDocumentPage = {
+  meta: {
+    totalDoc: number;
+    currentPage: number;
+    totalPages: number;
+    limit: number;
+  };
+  data: ReceiptApiDocument[];
+};
+
+export type ReceiptLineItemApi = {
+  _id: string;
+  productId: ReceiptRelationship;
+  productName?: string;
+  serialNumber?: string;
+  quantity: number;
+  unitPriceAtSale: number;
+  lineTotal: number;
 };
 
 export type ReceiptDetailsApiResponse = {
   receipt: ReceiptApiDocument;
-  lineItem?: ReceiptLineItemApi[];
-  lineItems?: ReceiptLineItemApi[];
+  lineItems: ReceiptLineItemApi[];
+};
+
+export type ReceiptDocumentListParams = {
+  branchId?: string;
+  status?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  page: number;
+  limit: number;
 };
 
 export type ReceiptListParams =
@@ -95,38 +132,24 @@ export type ReceiptListParams =
     }
   | {
       role: "admin";
-      branchId: string;
+      branchId?: string;
       page?: number;
       limit?: number;
     };
 
-type ReceiptPageApiResponse =
-  | ReceiptPage
-  | {
-      meta: {
-        totalDoc: number;
-        currentPage: number;
-        totalPages: number;
-        limit: number;
-      };
-      data: ReceiptApiDocument[];
-    };
-
-export type ReceiptUpdateRequest = Partial<
-  Record<
-    | "employeeId"
-    | "clientId"
-    | "receiptPrice"
-    | "sale_perc"
-    | "allowed_sale_perc"
-    | "price_after_sale"
-    | "payment_method"
-    | "confirm"
-    | "comments"
-    | "timestamp",
-    unknown
-  >
->;
+export type ReceiptUpdateRequest = {
+  branchId: string;
+  employeeId?: string;
+  clientId?: string;
+  receiptPrice?: number;
+  sale_perc?: number;
+  allowed_sale_perc?: number;
+  price_after_sale?: number;
+  payment_method?: BackendPaymentMethod;
+  confirm?: boolean;
+  comments?: string;
+  timestamp?: string;
+};
 
 export async function processSale(
   token: string,
@@ -165,45 +188,75 @@ export async function listReceipts(
   token: string,
   params: ReceiptListParams,
 ): Promise<ReceiptPage> {
-  if (params.role === "admin" && !params.branchId.trim()) {
-    throw new Error("Admin receipt requests require a selected branch.");
-  }
+  const response = await listReceiptDocuments(token, {
+    page: params.page ?? 1,
+    limit: params.limit ?? 10,
+    ...(params.role === "admin" && params.branchId?.trim()
+      ? { branchId: params.branchId.trim() }
+      : {}),
+  });
 
-  const response = await apiClient.get<ReceiptPageApiResponse>("/sales/receipts", {
+  return {
+    total: response.meta.totalDoc,
+    page: response.meta.currentPage,
+    limit: response.meta.limit,
+    totalPages: response.meta.totalPages,
+    data: response.data,
+  };
+}
+
+export async function listReceiptDocuments(
+  token: string,
+  params: ReceiptDocumentListParams,
+): Promise<ReceiptDocumentPage> {
+  const response = await apiClient.get<ReceiptDocumentPage>("/sales/receipts", {
     token,
+    cache: "no-store",
     params: {
-      page: params.page ?? 1,
-      limit: params.limit ?? 10,
-      ...(params.role === "admin"
+      page: String(params.page),
+      limit: String(params.limit),
+      ...(params.branchId?.trim()
         ? { branchId: params.branchId.trim() }
         : {}),
+      ...(params.status ? { status: params.status } : {}),
+      ...(params.dateFrom ? { dateFrom: params.dateFrom } : {}),
+      ...(params.dateTo ? { dateTo: params.dateTo } : {}),
     },
   });
 
-  if ("meta" in response) {
-    return validateReceiptPage({
-      data: response.data,
-      total: response.meta.totalDoc,
-      page: response.meta.currentPage,
-      limit: response.meta.limit,
-      totalPages: response.meta.totalPages,
-    });
-  }
-
-  return validateReceiptPage(response);
+  return validateReceiptDocumentPage(response);
 }
 
-function validateReceiptPage(page: ReceiptPage): ReceiptPage {
+export async function searchReceipt(
+  token: string,
+  receiptNumber: string,
+): Promise<ReceiptApiDocument> {
+  const normalizedReceiptNumber = receiptNumber.trim();
+  if (!normalizedReceiptNumber) {
+    throw new Error("Receipt number is required.");
+  }
+
+  return apiClient.get<ReceiptApiDocument>("/sales/receipts/search", {
+    token,
+    cache: "no-store",
+    params: { receiptNumber: normalizedReceiptNumber },
+  });
+}
+
+function validateReceiptDocumentPage(
+  page: ReceiptDocumentPage,
+): ReceiptDocumentPage {
   if (
+    !page.meta ||
     !Array.isArray(page.data) ||
-    !Number.isInteger(page.total) ||
-    page.total < 0 ||
-    !Number.isInteger(page.page) ||
-    page.page < 1 ||
-    !Number.isInteger(page.limit) ||
-    page.limit < 1 ||
-    !Number.isInteger(page.totalPages) ||
-    page.totalPages < 0
+    !Number.isInteger(page.meta.totalDoc) ||
+    page.meta.totalDoc < 0 ||
+    !Number.isInteger(page.meta.currentPage) ||
+    page.meta.currentPage < 1 ||
+    !Number.isInteger(page.meta.limit) ||
+    page.meta.limit < 1 ||
+    !Number.isInteger(page.meta.totalPages) ||
+    page.meta.totalPages < 0
   ) {
     throw new Error("Receipt API returned invalid pagination information.");
   }
@@ -215,7 +268,7 @@ export async function getReceiptDetails(
   id: string,
 ): Promise<ReceiptDetailsApiResponse> {
   return apiClient.get<ReceiptDetailsApiResponse>(
-    `/sales/receipt/${encodeURIComponent(id)}`,
+    `/sales/receipts/${encodeURIComponent(id)}`,
     { token },
   );
 }

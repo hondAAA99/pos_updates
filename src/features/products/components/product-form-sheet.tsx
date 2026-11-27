@@ -35,6 +35,7 @@ export function ProductFormSheet({
   const locale = useLocale();
   const [productName, setProductName] = useState(product?.productName ?? "");
   const [productType, setProductType] = useState(product?.productType?._id ?? "");
+  const [serialNumber, setSerialNumber] = useState(product?.serialNumber ?? "");
   const [error, setError] = useState("");
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -43,6 +44,12 @@ export function ProductFormSheet({
 
     if (!normalizedName) {
       setError(t("form.validation.nameRequired"));
+      return;
+    }
+
+    const normalizedSerialNumber = serialNumber.trim();
+    if (!normalizedSerialNumber) {
+      setError(t("form.validation.serialNumberRequired"));
       return;
     }
 
@@ -64,6 +71,7 @@ export function ProductFormSheet({
     onSubmit({
       productName: normalizedName,
       productType,
+      serialNumber: normalizedSerialNumber,
     });
   }
 
@@ -139,25 +147,24 @@ export function ProductFormSheet({
                 ))}
               </select>
             </div>
-            {product && (
-              <div className="space-y-2">
-                <label htmlFor="product-serial-number" className="text-sm font-medium">
-                  {t("form.serialNumberLabel")}
-                </label>
-                <Input
-                  id="product-serial-number"
-                  name="serialNumber"
-                  value={product.serialNumber}
-                  readOnly
-                  placeholder={t("form.serialNumberPlaceholder")}
-                />
-              </div>
-            )}
-            {!product && (
-              <p className="text-xs leading-5 text-muted-foreground">
-                {t("form.mockSerialNote")}
-              </p>
-            )}
+            <div className="space-y-2">
+              <label htmlFor="product-serial-number" className="text-sm font-medium">
+                {t("form.serialNumberLabel")}
+              </label>
+              <Input
+                id="product-serial-number"
+                name="serialNumber"
+                value={serialNumber}
+                onChange={(event) => {
+                  setSerialNumber(event.currentTarget.value);
+                  if (error) setError("");
+                }}
+                readOnly={Boolean(product)}
+                aria-invalid={Boolean(error)}
+                aria-required="true"
+                placeholder={t("form.serialNumberPlaceholder")}
+              />
+            </div>
             {error && (
               <p role="alert" className="text-sm text-destructive">
                 {error}

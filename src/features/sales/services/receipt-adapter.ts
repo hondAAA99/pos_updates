@@ -6,11 +6,15 @@ import type {
 import type {
   ReceiptApiDocument,
   ReceiptDetailsApiResponse,
+  ReceiptRelationship,
 } from "./sales-api-service";
 
 export type ReceiptPrintData = {
   referenceNumber: string;
   timestamp?: string;
+  salesmanName?: string;
+  cashierName?: string;
+  branchName?: string;
   employeeId?: string;
   clientId?: string;
   branchId?: string;
@@ -19,6 +23,7 @@ export type ReceiptPrintData = {
   confirmed?: boolean;
   comments?: string;
   subtotal?: number;
+  discount?: number;
   salePercentage?: number;
   allowedSalePercentage?: number;
   totalAmount?: number;
@@ -47,6 +52,22 @@ function optionalText(value: unknown): string | undefined {
   return typeof value === "string" && value.trim() ? value : undefined;
 }
 
+export function getReceiptRelationshipId(
+  value: ReceiptRelationship | undefined,
+): string | undefined {
+  if (typeof value === "string") return optionalText(value);
+  return value && typeof value._id === "string"
+    ? optionalText(value._id)
+    : undefined;
+}
+
+export function getReceiptRelationshipName(
+  value: ReceiptRelationship | undefined,
+): string | undefined {
+  if (typeof value !== "object" || value === null) return undefined;
+  return optionalText(value.name);
+}
+
 function optionalTimestamp(value: unknown): string | undefined {
   const timestamp = optionalText(value);
   return timestamp && !Number.isNaN(new Date(timestamp).getTime())
@@ -57,7 +78,8 @@ function optionalTimestamp(value: unknown): string | undefined {
 function normalizePaymentMethod(value: string): ReceiptPaymentMethod {
   const normalized = value.trim().toLocaleLowerCase();
   if (normalized === "cash") return "cash";
-  if (normalized === "e-payment" || normalized === "wallet") return "wallet";
+  if (normalized === "e-payment") return "e-payment";
+  if (normalized === "wallet") return "wallet";
   if (normalized === "card") return "card";
   if (normalized === "mobilewallet" || normalized === "mobile_wallet") {
     return "mobileWallet";
@@ -107,19 +129,23 @@ export function mapReceiptApiRecord(
 
   return {
     _id: id,
-    referenceNumber: id,
+    referenceNumber: requireText(receipt.receiptNumber, "receipt number"),
     timestamp: requireText(receipt.timestamp, "timestamp"),
-    totalAmount: requireNumber(receipt.price_after_sale, "final amount"),
+    totalAmount: requireNumber(
+      receipt.price_after_sale ?? receipt.receiptPrice,
+      "final amount",
+    ),
     paymentMethod: normalizePaymentMethod(
       requireText(receipt.payment_method, "payment method"),
     ),
     status: normalizeStatus(requireText(receipt.status, "status")),
-    employeeId: optionalText(receipt.employeeId),
-    clientId: optionalText(receipt.clientId),
-    branchId: optionalText(receipt.branchId),
+    employeeId: getReceiptRelationshipId(receipt.employeeId),
+    clientId: getReceiptRelationshipId(receipt.clientId),
+    branchId: getReceiptRelationshipId(receipt.branchId),
     confirmed: typeof receipt.confirm === "boolean" ? receipt.confirm : undefined,
     comments: optionalText(receipt.comments),
     subtotal: optionalNumber(receipt.receiptPrice),
+    discount: optionalNumber(receipt.discountAmount),
     salePercentage: optionalNumber(receipt.sale_perc),
     allowedSalePercentage: optionalNumber(receipt.allowed_sale_perc),
   };
@@ -130,20 +156,22 @@ export function mapReceiptDetails(
   requestedId: string,
 ): ReceiptPrintData {
   const receipt = details.receipt;
-  const referenceNumber = getReceiptId(receipt) ?? requestedId;
-  const lineItems = details.lineItem ?? details.lineItems;
-  if (!lineItems) {
-    throw new Error("Receipt details response is missing its line items.");
+  if (getReceiptId(receipt) !== requestedId) {
+    throw new Error("Receipt details response did not match the requested ID.");
   }
+  const referenceNumber = requireText(receipt.receiptNumber, "receipt number");
   const paymentMethod = optionalText(receipt.payment_method);
   const status = optionalText(receipt.status);
 
   return {
     referenceNumber,
     timestamp: optionalTimestamp(receipt.timestamp),
-    employeeId: optionalText(receipt.employeeId),
-    clientId: optionalText(receipt.clientId),
-    branchId: optionalText(receipt.branchId),
+    salesmanName: getReceiptRelationshipName(receipt.employeeId),
+    cashierName: getReceiptRelationshipName(receipt.cashierId),
+    branchName: getReceiptRelationshipName(receipt.branchId),
+    employeeId: getReceiptRelationshipId(receipt.employeeId),
+    clientId: getReceiptRelationshipId(receipt.clientId),
+    branchId: getReceiptRelationshipId(receipt.branchId),
     paymentMethod: paymentMethod
       ? normalizePaymentMethod(paymentMethod)
       : undefined,
@@ -152,16 +180,17 @@ export function mapReceiptDetails(
       typeof receipt.confirm === "boolean" ? receipt.confirm : undefined,
     comments: optionalText(receipt.comments),
     subtotal: optionalNumber(receipt.receiptPrice),
+    discount: optionalNumber(receipt.discountAmount),
     salePercentage: optionalNumber(receipt.sale_perc),
     allowedSalePercentage: optionalNumber(receipt.allowed_sale_perc),
     totalAmount: optionalNumber(receipt.price_after_sale),
-    items: lineItems.map((item) => ({
-      productId: item.productId,
+    items: details.lineItems.map((item) => ({
+      productId: getReceiptRelationshipId(item.productId),
       productName: item.productName,
-      serialNumber: item.productSerialNumber,
-      quantity: item.productQuantity,
-      unitPrice: item.productPrice,
-      lineTotal: item.total,
+      serialNumber: item.serialNumber,
+      quantity: item.quantity,
+      unitPrice: item.unitPriceAtSale,
+      lineTotal: item.lineTotal,
     })),
   };
 }

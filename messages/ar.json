@@ -322,9 +322,13 @@
       "cash": "نقدًا",
       "card": "بطاقة",
       "mobileWallet": "محفظة إلكترونية",
-      "wallet": "المحفظة"
+      "wallet": "المحفظة",
+      "ePayment": "دفع إلكتروني"
     },
     "statuses": {
+      "pending": "قيد الانتظار",
+      "paid": "مدفوع",
+      "canceled": "ملغي",
       "completed": "مكتملة",
       "rejected": "الدفع مرفوض",
       "refunded": "مستردة",
@@ -451,7 +455,7 @@
   },
   "salesManagement": {
     "title": "إدارة المبيعات",
-    "description": "راجع سجلات المبيعات والأداء عبر جميع الفروع.",
+    "description": "راجع الإيصالات وأدِرها عبر الفروع.",
     "summary": {
       "title": "ملخص المبيعات",
       "totalSales": "إجمالي قيمة المبيعات",
@@ -461,7 +465,7 @@
     },
     "records": {
       "title": "سجلات المبيعات",
-      "description": "ابحث وراجع الإيصالات المسجلة في جميع فروعك.",
+      "description": "راجع الإيصالات المسجلة في جميع فروعك.",
       "count": "{count, plural, zero {لا توجد إيصالات} one {إيصال واحد} two {إيصالان} few {{count, number, western} إيصالات} many {{count, number, western} إيصالًا} other {{count, number, western} إيصال}}",
       "page": "الصفحة {current} من {total}",
       "emptyTitle": "لم يتم العثور على مبيعات",
@@ -470,6 +474,8 @@
     "filters": {
       "search": "البحث برقم الإيصال",
       "searchPlaceholder": "ابحث برقم الإيصال",
+      "searchExact": "يبحث هذا الحقل عن رقم الإيصال كاملًا وبمطابقة تامة.",
+      "searchAdminOnly": "البحث برقم الإيصال متاح للمسؤولين فقط.",
       "branch": "الفرع",
       "allBranches": "جميع الفروع",
       "status": "الحالة",
@@ -490,7 +496,50 @@
       "actions": "الإجراءات",
       "view": "عرض الإيصال",
       "viewNamed": "عرض الإيصال {reference}",
+      "edit": "تعديل الإيصال",
+      "editNamed": "تعديل الإيصال {reference}",
+      "delete": "حذف الإيصال",
+      "deleteNamed": "حذف الإيصال {reference}",
       "unavailable": "غير متاح"
+    },
+    "edit": {
+      "title": "تعديل الإيصال",
+      "description": "حدّث حقول الإيصال. لا يمكن تعديل عناصر الإيصال.",
+      "branch": "الفرع",
+      "employeeId": "معرّف الموظف",
+      "clientId": "معرّف العميل",
+      "receiptPrice": "المجموع الفرعي",
+      "salePercentage": "نسبة الخصم",
+      "allowedSalePercentage": "نسبة الخصم القصوى",
+      "finalPrice": "الإجمالي النهائي",
+      "paymentMethod": "طريقة الدفع",
+      "cash": "نقدًا",
+      "ePayment": "دفع إلكتروني",
+      "confirmed": "مؤكد",
+      "yes": "نعم",
+      "no": "لا",
+      "comments": "التعليقات",
+      "timestamp": "تاريخ ووقت الإيصال",
+      "save": "حفظ التغييرات",
+      "cancel": "إلغاء",
+      "validation": {
+        "branchRequired": "اختر فرعًا صالحًا.",
+        "invalidId": "أدخل معرّف سجل صالحًا مكوّنًا من 24 حرفًا.",
+        "invalidNumber": "أدخل رقمًا أكبر من أو يساوي صفرًا.",
+        "invalidPaymentMethod": "اختر طريقة دفع مدعومة.",
+        "invalidTimestamp": "أدخل تاريخًا ووقتًا صالحين.",
+        "noChanges": "غيّر حقلًا واحدًا على الأقل قبل الحفظ."
+      }
+    },
+    "deleteDialog": {
+      "title": "هل تريد حذف الإيصال؟",
+      "description": "سيؤدي ذلك إلى حذف الإيصال {reference} وعناصره نهائيًا. لا يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حذف الإيصال",
+      "cancel": "إلغاء"
+    },
+    "feedback": {
+      "updated": "تم تحديث الإيصال بنجاح.",
+      "deleted": "تم حذف الإيصال بنجاح."
     },
     "analysis": {
       "branchesTitle": "المبيعات حسب الفرع",
@@ -507,11 +556,21 @@
     "actions": {
       "retry": "إعادة المحاولة",
       "previous": "السابق",
-      "next": "التالي"
+      "next": "التالي",
+      "save": "حفظ التغييرات",
+      "cancel": "إلغاء",
+      "delete": "حذف"
     },
     "states": {
       "loading": "جارٍ تحميل سجلات المبيعات…",
-      "error": "تعذّر تحميل سجلات المبيعات. حاول مرة أخرى."
+      "error": "تعذّر تحميل سجلات المبيعات. حاول مرة أخرى.",
+      "unauthorized": "انتهت صلاحية جلستك. سجّل الدخول مجددًا.",
+      "detailsLoading": "جارٍ تحميل تفاصيل الإيصال…",
+      "detailsError": "تعذّر تحميل تفاصيل الإيصال. حاول مرة أخرى.",
+      "saving": "جارٍ الحفظ…",
+      "updateError": "تعذّر تحديث الإيصال.",
+      "deleteError": "تعذّر حذف الإيصال.",
+      "branchesError": "تعذّر تحميل الفروع."
     }
   },
   "expenses": {
@@ -909,17 +968,17 @@
     "form": {
       "addTitle": "إضافة منتج",
       "editTitle": "تعديل المنتج",
-      "createDescription": "أدخل تفاصيل المنتج. ستُنشئ الخدمة الوهمية رقمًا تسلسليًا.",
-      "editDescription": "حدّث اسم المنتج أو نوعه أو رقمه التسلسلي.",
+      "createDescription": "أدخل تفاصيل المنتج ورقمه التسلسلي أو الرمز الشريطي.",
+      "editDescription": "حدّث اسم المنتج ونوعه. لا يمكن تغيير الرقم التسلسلي أو الرمز الشريطي هنا.",
       "nameLabel": "اسم المنتج",
       "namePlaceholder": "مثال: محول طاقة USB-C بقدرة 65 واط",
       "typeLabel": "نوع المنتج",
       "typePlaceholder": "اختر نوع المنتج",
-      "serialNumberLabel": "الرقم التسلسلي",
-      "serialNumberPlaceholder": "أدخل الرقم التسلسلي",
-      "mockSerialNote": "سيُعيّن رقم تسلسلي وهمي ثابت بعد الإنشاء. هذا ليس تنسيقًا معتمدًا للأرقام التسلسلية في الواجهة الخلفية.",
+      "serialNumberLabel": "الرقم التسلسلي / الرمز الشريطي",
+      "serialNumberPlaceholder": "امسح أو أدخل الرقم التسلسلي أو الرمز الشريطي",
       "validation": {
         "nameRequired": "أدخل اسم المنتج.",
+        "serialNumberRequired": "أدخل أو امسح الرقم التسلسلي أو الرمز الشريطي.",
         "typeRequired": "اختر نوع المنتج.",
         "noChanges": "غيّر اسم المنتج أو نوعه قبل الحفظ."
       }
@@ -948,6 +1007,7 @@
     "description": "أدِر كميات مخزون المنتجات وأسعارها الحالية.",
     "actions": {
       "add": "إضافة مخزون",
+      "view": "عرض",
       "viewNamed": "عرض مخزون {name}",
       "editNamed": "تعديل مخزون {name}",
       "deleteNamed": "حذف مخزون {name}",
@@ -962,21 +1022,31 @@
     },
     "search": {
       "label": "البحث في المخزون",
-      "placeholder": "ابحث باسم المنتج أو رقمه التسلسلي",
-      "localNote": "يقتصر البحث على السجلات المعروضة في الصفحة المحمّلة حاليًا."
+      "placeholder": "ابحث بالرقم التسلسلي الكامل للمنتج",
+      "localNote": "يستخدم البحث بالرقم التسلسلي نقطة البحث عن المخزون.",
+      "statusFilterNote": "لا تعيد نقطة البحث حالة المخزون؛ لذلك يُطبّق مرشح الحالة على قائمة المخزون فقط."
     },
     "filter": {
       "product": "المنتج",
-      "allProducts": "جميع المنتجات"
+      "allProducts": "جميع المنتجات",
+      "status": "الحالة",
+      "allStatuses": "جميع الحالات"
+    },
+    "status": {
+      "in-stock": "متوفر",
+      "out-of-stock": "غير متوفر",
+      "concluding": "مخزون منخفض"
     },
     "resultsCount": "{count, plural, zero {لا توجد سجلات مخزون} one {سجل مخزون واحد} two {سجلا مخزون} few {{count, number, western} سجلات مخزون} many {{count, number, western} سجل مخزون} other {{count, number, western} سجل مخزون}}",
     "table": {
       "product": "المنتج",
       "serialNumber": "الرقم التسلسلي",
       "quantity": "الكمية",
+      "status": "الحالة",
       "sellingPrice": "سعر البيع",
       "wholesalePrice": "سعر الجملة",
       "purchasePrice": "سعر الشراء",
+      "view": "عرض",
       "actions": "الإجراءات"
     },
     "pagination": {
@@ -1036,12 +1106,14 @@
     },
     "feedback": {
       "loading": "جارٍ تحميل المخزون…",
+      "searching": "جارٍ البحث بالرقم التسلسلي…",
       "loadingLookups": "جارٍ تحميل المنتجات والموردين…",
       "loadingDetails": "جارٍ تحميل تفاصيل المخزون…",
       "created": "تمت إضافة سجل المخزون.",
       "updated": "تم تحديث سجل المخزون.",
       "deleted": "تم حذف سجل المخزون.",
       "loadError": "تعذّر تحميل المخزون.",
+      "searchError": "تعذّر البحث عن المخزون.",
       "productsLoadError": "تعذّر تحميل المنتجات.",
       "suppliersLoadError": "تعذّر تحميل الموردين.",
       "detailsError": "تعذّر تحميل تفاصيل المخزون.",
@@ -1294,6 +1366,7 @@
     "description": "راجع كميات المخزون الموجودة في كل فرع.",
     "actions": {
       "retry": "إعادة المحاولة",
+      "view": "عرض",
       "viewNamed": "عرض {name}",
       "edit": "تعديل",
       "editNamed": "تعديل {name}",
@@ -1303,17 +1376,31 @@
       "save": "حفظ",
       "delete": "حذف"
     },
+    "search": {
+      "label": "البحث في مخزون الفرع",
+      "placeholder": "ابحث بالرقم التسلسلي الكامل للمنتج"
+    },
     "filter": {
       "branch": "الفرع",
+      "status": "الحالة",
+      "allStatuses": "جميع الحالات",
       "allBranches": "جميع الفروع",
       "selectBranch": "اختر فرعًا",
       "selectBranchPrompt": "اختر فرعًا لعرض مخزونه.",
       "noBranchesAvailable": "لا توجد فروع متاحة."
     },
     "resultsCount": "{count, plural, zero {لا توجد منتجات} one {منتج واحد} two {منتجان} few {{count, number, western} منتجات} many {{count, number, western} منتجًا} other {{count, number, western} منتج}}",
+    "status": {
+      "in-stock": "متوفر",
+      "out-of-stock": "غير متوفر",
+      "concluding": "مخزون منخفض"
+    },
     "table": {
       "product": "المنتج",
+      "serialNumber": "الرقم التسلسلي",
       "quantity": "كمية الفرع",
+      "status": "الحالة",
+      "view": "عرض",
       "actions": "الإجراءات"
     },
     "pagination": {
@@ -1344,6 +1431,8 @@
     },
     "feedback": {
       "loading": "جارٍ تحميل مخزون الفروع…",
+      "searching": "جارٍ البحث في مخزون الفرع…",
+      "searchError": "تعذّر البحث في مخزون الفرع.",
       "loadingDetails": "جارٍ تحميل تفاصيل المخزون…",
       "loadError": "تعذّر تحميل مخزون الفروع.",
       "branchesError": "تعذّر تحميل الفروع.",
@@ -1600,6 +1689,9 @@
       "selectBranch": "اختر فرعًا",
       "product": "المنتج",
       "selectProduct": "اختر منتجًا",
+      "availableQuantity": "الكمية المتاحة للتحويل: {quantity}",
+      "loadingAvailableQuantity": "جارٍ تحميل الكمية المتاحة…",
+      "availableQuantityError": "تعذّر تحميل الكمية المتاحة.",
       "quantity": "الكمية",
       "quantityPlaceholder": "أدخل عددًا صحيحًا أكبر من صفر",
       "summaryTitle": "ملخص التحويل",

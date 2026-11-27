@@ -3,6 +3,7 @@ import type {
   BranchInventoryProduct,
   BranchInventoryPage,
   BranchInventoryRecord,
+  BranchStockStatus,
 } from '../types/branch-inventory'
 
 type BranchInventoryApiProduct = NonNullable<BranchInventoryProduct>
@@ -10,7 +11,9 @@ type BranchInventoryApiProduct = NonNullable<BranchInventoryProduct>
 type BranchInventoryApiRecord = {
   _id: string
   productId: BranchInventoryApiProduct | null
+  branchId?: string | { _id?: string; name?: string } | null
   branchQuantity: number
+  status?: BranchStockStatus
 }
 
 type BranchInventoryListApiItem =
@@ -41,6 +44,7 @@ function mapRecord(record: BranchInventoryApiRecord): BranchInventoryRecord {
     _id: record._id,
     productId: record.productId,
     branchQuantity: record.branchQuantity,
+    ...(record.status ? { status: record.status } : {}),
   }
 }
 
@@ -70,7 +74,12 @@ function mapDetail(
 
 export async function listBranchInventory(
   token: string,
-  params: { page: number; limit: number; branchId: string },
+  params: {
+    page: number
+    limit: number
+    branchId: string
+    status?: BranchStockStatus
+  },
 ): Promise<BranchInventoryPage> {
   const branchId = params.branchId.trim()
   if (!branchId || branchId === 'admin') {
@@ -85,6 +94,7 @@ export async function listBranchInventory(
         page: params.page,
         limit: params.limit,
         branchId,
+        ...(params.status ? { status: params.status } : {}),
       },
     },
   )
@@ -96,6 +106,27 @@ export async function listBranchInventory(
     totalItems: response.meta.totalDoc,
     totalPages: response.meta.totalPages,
   }
+}
+
+export async function searchBranchInventoryBySerialNumber(
+  token: string,
+  serialNumber: string,
+): Promise<BranchInventoryRecord | null> {
+  const response = await apiClient.get<
+    | BranchInventoryApiRecord
+    | BranchInventorySwaggerDetailApiItem
+    | { branchInventory?: BranchInventoryApiRecord }
+  >('/branch/inventory/search', {
+    token,
+    params: { serialNumber },
+  })
+
+  if ('branchInventory' in response && response.branchInventory) {
+    return mapRecord(response.branchInventory)
+  }
+  if ('product' in response) return mapDetail(response)
+  if ('_id' in response) return mapRecord(response)
+  return null
 }
 
 export async function getBranchInventoryItem(

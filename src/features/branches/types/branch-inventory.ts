@@ -8,10 +8,19 @@ export type BranchInventoryProduct = {
   } | null
 } | null
 
+export type BranchStockStatus = 'in-stock' | 'out-of-stock' | 'concluding'
+
+export const branchStockStatusValues: readonly BranchStockStatus[] = [
+  'in-stock',
+  'out-of-stock',
+  'concluding',
+]
+
 export type BranchInventoryRecord = {
   _id: string
   productId: BranchInventoryProduct
   branchQuantity: number
+  status?: BranchStockStatus
 }
 
 export type BranchInventoryPage = {

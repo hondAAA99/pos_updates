@@ -3,8 +3,12 @@ export type ReceiptPaymentMethod =
   | "card"
   | "mobileWallet"
   | "wallet"
+  | "e-payment"
   | (string & {});
 export type ReceiptSaleStatus =
+  | "pending"
+  | "paid"
+  | "canceled"
   | "completed"
   | "rejected"
   | "refunded"

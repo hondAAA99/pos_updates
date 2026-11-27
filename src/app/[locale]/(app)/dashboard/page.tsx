@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
-import { AdminDashboard } from "@/features/dashboard/components/admin-dashboard";
+import { SalesManagement } from "@/features/sales/components/sales-management";
 import { isLocale, type Locale } from "@/i18n/routing";
 
 type DashboardPageProps = {
@@ -17,5 +17,5 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   const locale: Locale = routeLocale;
   setRequestLocale(locale);
 
-  return <AdminDashboard locale={locale} />;
+  return <SalesManagement locale={locale} />;
 }

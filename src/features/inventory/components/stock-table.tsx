@@ -9,19 +9,26 @@ import { formatCurrency, formatNumber } from "@/lib/format";
 import type { Locale } from "@/i18n/routing";
 import type { ProductDetail } from "@/features/products/types/product";
 import { withStockProductDetails } from "../services/stock-service";
-import type { StockPage, StockRecord } from "../types/stock";
+import {
+  stockStatusValues,
+  type StockPage,
+  type StockRecord,
+  type StockStatus,
+} from "../types/stock";
 
 type StockTableProps = {
   stocks: StockPage;
   products: ProductDetail[];
   query: string;
-  productId: string;
+  status: StockStatus | "all";
+  isSearching: boolean;
+  hasSearchError: boolean;
   hasStock: boolean;
   canCreate: boolean;
   canEdit: boolean;
   canDelete: boolean;
   onQueryChange: (query: string) => void;
-  onProductChange: (id: string) => void;
+  onStatusChange: (status: StockStatus | "all") => void;
   onClearFilters: () => void;
   onPageChange: (page: number) => void;
   onPageSizeChange: (pageSize: number) => void;
@@ -35,13 +42,15 @@ export function StockTable({
   stocks,
   products,
   query,
-  productId,
+  status,
+  isSearching,
+  hasSearchError,
   hasStock,
   canCreate,
   canEdit,
   canDelete,
   onQueryChange,
-  onProductChange,
+  onStatusChange,
   onClearFilters,
   onPageChange,
   onPageSizeChange,
@@ -55,7 +64,7 @@ export function StockTable({
   const start =
     stocks.totalItems === 0 ? 0 : (stocks.page - 1) * stocks.pageSize + 1;
   const end = Math.min(stocks.page * stocks.pageSize, stocks.totalItems);
-  const hasActiveFilters = Boolean(query.trim()) || productId !== "all";
+  const hasActiveFilters = Boolean(query.trim()) || status !== "all";
   const displayStocks = stocks.items.map((stock) =>
     withStockProductDetails(stock, products),
   );
@@ -64,17 +73,6 @@ export function StockTable({
     const productName = stock.product_id?.productName ?? t("details.notAvailable");
     return (
       <div className="flex items-center justify-end gap-1">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          aria-label={t("actions.viewNamed", {
-            name: productName,
-          })}
-          onClick={() => onView(stock)}
-        >
-          <Eye aria-hidden="true" />
-        </Button>
         {canEdit && (
           <Button
             type="button"
@@ -106,6 +104,44 @@ export function StockTable({
     );
   }
 
+  function viewAction(stock: StockRecord) {
+    const productName =
+      stock.product_id?.productName ?? t("details.notAvailable");
+    return (
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        aria-label={t("actions.viewNamed", { name: productName })}
+        onClick={() => onView(stock)}
+      >
+        <Eye aria-hidden="true" />
+        {t("actions.view")}
+      </Button>
+    );
+  }
+
+  function statusBadge(stock: StockRecord) {
+    const statusClassName: Record<StockStatus, string> = {
+      "in-stock":
+        "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+      "out-of-stock":
+        "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300",
+      concluding:
+        "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300",
+    };
+
+    return stock.status ? (
+      <span
+        className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${statusClassName[stock.status]}`}
+      >
+        {t(`status.${stock.status}`)}
+      </span>
+    ) : (
+      <span className="text-muted-foreground">{t("details.notAvailable")}</span>
+    );
+  }
+
   return (
     <Card className="gap-0 overflow-hidden p-0">
       <div className="flex flex-col gap-3 border-b border-border p-4 sm:p-5">
@@ -124,20 +160,28 @@ export function StockTable({
               className="ps-9"
             />
           </label>
-          <label className="flex min-h-10 w-full items-center gap-2 rounded-lg border border-input bg-background px-3 md:w-auto md:min-w-64">
+          <label className="flex min-h-10 w-full items-center gap-2 rounded-lg border border-input bg-background px-3 md:w-auto md:min-w-56">
             <span className="shrink-0 text-sm text-muted-foreground">
-              {t("filter.product")}
+              {t("filter.status")}
             </span>
             <select
-              value={productId}
-              onChange={(event) => onProductChange(event.currentTarget.value)}
-              aria-label={t("filter.product")}
+              value={status}
+              onChange={(event) => {
+                const value = event.currentTarget.value;
+                const selectedStatus = stockStatusValues.find(
+                  (stockStatus) => stockStatus === value,
+                );
+                onStatusChange(
+                  value === "all" ? "all" : selectedStatus ?? status,
+                );
+              }}
+              aria-label={t("filter.status")}
               className="min-w-0 flex-1 bg-transparent py-2 text-sm font-medium text-foreground outline-none"
             >
-              <option value="all">{t("filter.allProducts")}</option>
-              {products.map((product) => (
-                <option key={product._id} value={product._id}>
-                  {product.productName}
+              <option value="all">{t("filter.allStatuses")}</option>
+              {stockStatusValues.map((stockStatus) => (
+                <option key={stockStatus} value={stockStatus}>
+                  {t(`status.${stockStatus}`)}
                 </option>
               ))}
             </select>
@@ -156,6 +200,21 @@ export function StockTable({
         <p className="text-xs text-muted-foreground">
           {t("search.localNote")}
         </p>
+        {query.trim() && status !== "all" && (
+          <p className="text-xs text-muted-foreground">
+            {t("search.statusFilterNote")}
+          </p>
+        )}
+        {isSearching && (
+          <p role="status" className="text-sm text-muted-foreground">
+            {t("feedback.searching")}
+          </p>
+        )}
+        {hasSearchError && (
+          <p role="alert" className="text-sm text-destructive">
+            {t("feedback.searchError")}
+          </p>
+        )}
         <p className="text-sm text-muted-foreground" aria-live="polite">
           {t("resultsCount", {
             count: query.trim() ? stocks.items.length : stocks.totalItems,
@@ -169,25 +228,31 @@ export function StockTable({
             <table className="w-full table-fixed text-start text-xs">
               <thead className="bg-muted/40">
                 <tr className="border-b border-border">
-                  <th scope="col" className="w-[21%] px-3 py-3.5 text-start font-medium">
+                  <th scope="col" className="w-[18%] px-3 py-3.5 text-start font-medium">
                     {t("table.product")}
                   </th>
-                  <th scope="col" data-column-align="center" className="w-[13%] px-2 py-3.5 font-medium">
+                  <th scope="col" data-column-align="center" className="w-[12%] px-2 py-3.5 font-medium">
                     {t("table.serialNumber")}
                   </th>
-                  <th scope="col" data-column-align="center" className="w-[9%] px-2 py-3.5 font-medium">
+                  <th scope="col" data-column-align="center" className="w-[8%] px-2 py-3.5 font-medium">
                     {t("table.quantity")}
                   </th>
-                  <th scope="col" data-column-align="center" className="w-[14%] px-2 py-3.5 font-medium">
+                  <th scope="col" data-column-align="center" className="w-[10%] px-2 py-3.5 font-medium">
+                    {t("table.status")}
+                  </th>
+                  <th scope="col" data-column-align="center" className="w-[12%] px-2 py-3.5 font-medium">
                     {t("table.sellingPrice")}
                   </th>
-                  <th scope="col" data-column-align="center" className="w-[14%] px-2 py-3.5 font-medium">
+                  <th scope="col" data-column-align="center" className="w-[12%] px-2 py-3.5 font-medium">
                     {t("table.wholesalePrice")}
                   </th>
-                  <th scope="col" data-column-align="center" className="w-[14%] px-2 py-3.5 font-medium">
+                  <th scope="col" data-column-align="center" className="w-[12%] px-2 py-3.5 font-medium">
                     {t("table.purchasePrice")}
                   </th>
-                  <th scope="col" data-column-align="actions" className="w-[15%] px-2 py-3.5 font-medium">
+                  <th scope="col" data-column-align="center" className="w-[8%] px-2 py-3.5 font-medium">
+                    {t("table.view")}
+                  </th>
+                  <th scope="col" data-column-align="actions" className="w-[8%] px-2 py-3.5 font-medium">
                     {t("table.actions")}
                   </th>
                 </tr>
@@ -213,6 +278,9 @@ export function StockTable({
                     <td dir="ltr" data-column-align="center" className="px-2 py-4 tabular-nums">
                       {formatNumber(stock.total_quantity, locale)}
                     </td>
+                    <td data-column-align="center" className="px-2 py-4">
+                      {statusBadge(stock)}
+                    </td>
                     <MoneyCell
                       value={stock.current_selling_price_per_piece}
                       locale={locale}
@@ -225,6 +293,9 @@ export function StockTable({
                       value={stock.current_purchase_price_per_piece}
                       locale={locale}
                     />
+                    <td data-column-align="center" className="px-2 py-3">
+                      {viewAction(stock)}
+                    </td>
                     <td data-column-align="actions" className="px-2 py-3">{actions(stock)}</td>
                   </tr>
                 ))}
@@ -244,6 +315,10 @@ export function StockTable({
                   {actions(stock)}
                 </div>
                 <dl className="mt-3 grid gap-2 text-sm">
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                    <dt className="text-muted-foreground">{t("table.status")}</dt>
+                    <dd>{statusBadge(stock)}</dd>
+                  </div>
                   <MobileDetail
                     label={t("table.serialNumber")}
                     value={stock.product_id?.serialNumber ?? t("details.notAvailable")}
@@ -275,6 +350,7 @@ export function StockTable({
                     )}
                   />
                 </dl>
+                <div className="mt-4 flex justify-end">{viewAction(stock)}</div>
               </article>
             ))}
           </div>

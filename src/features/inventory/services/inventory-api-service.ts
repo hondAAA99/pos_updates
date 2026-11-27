@@ -3,6 +3,7 @@ import type {
   AddStockDto,
   StockPage,
   StockRecord,
+  StockStatus,
   UpdateStockDto,
 } from "../types/stock";
 
@@ -11,8 +12,11 @@ type StockApiItem = {
   product_id: {
     _id: string;
     productName?: string | null;
+    name?: string | null;
     serialNumber?: string | null;
+    productSerialNumber?: string | null;
   } | null;
+  status?: StockStatus;
   total_quantity: number;
   current_selling_price_per_piece: number;
   current_wholesale_price_per_piece: number;
@@ -35,14 +39,24 @@ function mapStock(item: StockApiItem): StockRecord {
     product_id: item.product_id
       ? {
           _id: item.product_id._id,
-          ...(item.product_id.productName
-            ? { productName: item.product_id.productName }
+          ...(item.product_id.productName || item.product_id.name
+            ? {
+                productName:
+                  item.product_id.productName ?? item.product_id.name ?? "",
+              }
             : {}),
-          ...(item.product_id.serialNumber
-            ? { serialNumber: item.product_id.serialNumber }
+          ...(item.product_id.serialNumber ||
+          item.product_id.productSerialNumber
+            ? {
+                serialNumber:
+                  item.product_id.serialNumber ??
+                  item.product_id.productSerialNumber ??
+                  "",
+              }
             : {}),
         }
       : null,
+    ...(item.status ? { status: item.status } : {}),
     total_quantity: item.total_quantity,
     current_selling_price_per_piece: item.current_selling_price_per_piece,
     current_wholesale_price_per_piece: item.current_wholesale_price_per_piece,
@@ -52,14 +66,14 @@ function mapStock(item: StockApiItem): StockRecord {
 
 export async function listInventory(
   token: string,
-  params: { page: number; limit: number; productId?: string },
+  params: { page: number; limit: number; status?: StockStatus },
 ): Promise<StockPage> {
   const response = await apiClient.get<StockListApiResponse>("/stock", {
     token,
     params: {
       page: params.page,
       limit: params.limit,
-      ...(params.productId ? { productId: params.productId } : {}),
+      ...(params.status ? { status: params.status } : {}),
     },
   });
 
@@ -70,6 +84,18 @@ export async function listInventory(
     totalItems: response.meta.totalDoc,
     totalPages: response.meta.totalPages,
   };
+}
+
+export async function searchInventoryBySerialNumber(
+  token: string,
+  serialNumber: string,
+): Promise<StockRecord> {
+  const response = await apiClient.get<StockApiItem>("/stock/search", {
+    token,
+    params: { serialNumber },
+  });
+
+  return mapStock(response);
 }
 
 export async function getInventoryItem(

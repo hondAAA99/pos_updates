@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { listBranchesFromApi } from "@/features/branches/services/branches-api-service";
 import type { Branch } from "@/features/branches/types/branch";
 import { useAuth } from "@/features/auth/providers/auth-provider";
+import { listInventory } from "@/features/inventory/services/inventory-api-service";
 import { listProductItems } from "@/features/products/services/products-service";
+import type { StockRecord } from "@/features/inventory/types/stock";
 import { useRouter } from "@/i18n/navigation";
 import { ApiClientError } from "@/lib/api-client";
 import type {
@@ -30,6 +32,24 @@ import { TransfersTable } from "./transfers-table";
 
 const pageSizes = [5, 10, 20] as const;
 const productLookupPageSize = 100;
+
+async function loadInventoryRecords(token: string): Promise<StockRecord[]> {
+  const firstPage = await listInventory(token, {
+    page: 1,
+    limit: productLookupPageSize,
+  });
+  const records = [...firstPage.items];
+
+  for (let page = 2; page <= firstPage.totalPages; page += 1) {
+    const result = await listInventory(token, {
+      page,
+      limit: productLookupPageSize,
+    });
+    records.push(...result.items);
+  }
+
+  return records;
+}
 
 async function loadProductOptions(
   token: string,
@@ -63,6 +83,11 @@ export function TransfersManagement() {
   const canManage = user?.role === "admin";
   const [branches, setBranches] = useState<Branch[]>([]);
   const [products, setProducts] = useState<TransferProductReference[]>([]);
+  const [inventoryQuantities, setInventoryQuantities] = useState<
+    Record<string, number>
+  >({});
+  const [isInventoryLoading, setIsInventoryLoading] = useState(true);
+  const [inventoryLoadError, setInventoryLoadError] = useState(false);
   const [transfers, setTransfers] = useState({
     items: [] as TransferItem[],
     page: 1,
@@ -110,21 +135,37 @@ export function TransfersManagement() {
     if (!token) {
       setBranches([]);
       setProducts([]);
+      setInventoryQuantities({});
       setLookupError(t("feedback.unauthorized"));
+      setIsInventoryLoading(false);
       setIsLookupsLoading(false);
       return;
     }
 
     try {
       setIsLookupsLoading(true);
+      setIsInventoryLoading(true);
       setLookupError("");
-      const [nextBranches, nextProducts] = await Promise.all([
+      setInventoryLoadError(false);
+      const [nextBranches, nextProducts, inventoryRecords] = await Promise.all([
         listBranchesFromApi(token),
         loadProductOptions(token),
+        loadInventoryRecords(token),
       ]);
       setBranches(nextBranches);
       setProducts(nextProducts);
+      setInventoryQuantities(
+        Object.fromEntries(
+          inventoryRecords.flatMap((record) =>
+            record.product_id
+              ? [[record.product_id._id, record.total_quantity] as const]
+              : [],
+          ),
+        ),
+      );
     } catch (caught) {
+      setInventoryQuantities({});
+      setInventoryLoadError(true);
       setLookupError(
         caught instanceof ApiClientError && caught.status === 401
           ? t("feedback.unauthorized")
@@ -132,6 +173,7 @@ export function TransfersManagement() {
       );
       handleApiError(caught, t("feedback.optionsError"));
     } finally {
+      setIsInventoryLoading(false);
       setIsLookupsLoading(false);
     }
   }, [handleApiError, t, token]);
@@ -255,6 +297,21 @@ export function TransfersManagement() {
         setEditorOpen(false);
         setPage(1);
         await loadTransferPage(1, pageSize, branchId, productId);
+        try {
+          const inventoryRecords = await loadInventoryRecords(token);
+          setInventoryQuantities(
+            Object.fromEntries(
+              inventoryRecords.flatMap((record) =>
+                record.product_id
+                  ? [[record.product_id._id, record.total_quantity] as const]
+                  : [],
+              ),
+            ),
+          );
+          setInventoryLoadError(false);
+        } catch {
+          setInventoryLoadError(true);
+        }
       }
     } catch (caught) {
       handleApiError(caught, t("feedback.saveError"));
@@ -440,6 +497,9 @@ export function TransfersManagement() {
         transfer={editingTransfer}
         branches={branches}
         products={products}
+        inventoryQuantities={inventoryQuantities}
+        isInventoryLoading={isInventoryLoading}
+        inventoryLoadError={inventoryLoadError}
         isSubmitting={isSubmitting}
         onOpenChange={closeEditor}
         onSubmit={handleSave}

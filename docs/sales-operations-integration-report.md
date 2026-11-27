@@ -27,17 +27,63 @@ sales route renders the separate sales-management screen:
 
 The operations form is not wired to the existing product or employee list
 services. In particular, `CreateSaleSheet` collects a product serial number
-directly instead of looking up a product record. Sales-management data and the
-cashier dashboard's receipts/KPIs are currently supplied by mock-backed
-services, not refreshed from the just-completed API operation.
+directly instead of looking up a product record. The cashier dashboard's
+receipts/KPIs remain mock-backed. The separate Sales Management screen now uses
+the receipt API for listing, details, edits, and deletes.
 
 There are also older domain structures in `src/features/sales/types/sale.ts`
 and mock workflow functions in `src/features/sales/services/sales-service.ts`.
 Those functions calculate local quotes, check mock stock, and create local
 receipt records; the current `CreateSaleSheet` does not call them. The
-sales-management screen does call that service for mock records. API wrappers
-for listing, retrieving, updating, and deleting receipts exist in the sales
-API service, but are not used by the current sales-management screen.
+sales-management screen no longer calls that service for receipt data.
+
+### Sales Records management — current implementation
+
+The Sales Management screen uses `listReceiptDocuments`, `searchReceipt`,
+`getReceiptDetails`, `updateReceipt`, and `deleteReceipt` from
+`src/features/sales/services/sales-api-service.ts`. The API client uses the
+configured base URL and sends the raw JWT in `Authorization`.
+
+- Listing is server-paginated and displays `receiptNumber`; `_id` is retained
+  only for detail, update, and delete requests.
+- Admins can list all branches or select one; branch names are resolved using
+  the existing branch API. Cashiers are scoped by the backend.
+- Status filtering uses only `pending`, `paid`, and `canceled`.
+- The `dateFrom` and `dateTo` controls send their date strings directly as
+  `dateFrom` and `dateTo`; the updated backend DTO accepts both keys.
+- Admin receipt-number search calls
+  `GET /sales/receipts/search?receiptNumber=...`. The backend performs exact,
+  case-sensitive matching and returns one receipt, so active branch, status,
+  and date filters are applied to that single result in the UI.
+- Receipt search is unavailable to cashiers because the new search endpoint
+  does not scope its lookup to the authenticated user's branch. This avoids
+  using an unscoped receipt lookup as a cashier.
+- Details are fetched only after View. The backend returns `lineItems` with
+  `quantity`, `unitPriceAtSale`, `lineTotal`, and `productName`; it removes the
+  saved serial-number snapshot, so the frontend cannot display a
+  `serialNumber` from this response.
+- Edit and delete controls are admin-only. The edit form sends changed fields,
+  plus the current `branchId` because the backend service requires it even
+  though the DTO marks that field optional.
+- The backend list does not populate `branchId`, so the screen resolves branch
+  names from the branch API. Employee and cashier names come from populated
+  list references.
+
+Known backend limitations affecting this screen:
+
+- Receipt-number search is exact and case-sensitive, not partial or
+  case-insensitive.
+- The search endpoint does not apply the authenticated user's branch scope;
+  frontend search is therefore admin-only until the backend scopes this lookup.
+- List date bounds are sent as date-only strings. Verify how the backend/MongoDB
+  interprets `dateTo` against timestamps; a date-only upper bound may exclude
+  receipts later on that day.
+- The details endpoint omits line-item serial-number snapshots.
+- Delete is scoped to the authenticated admin's branch, while admins can list
+  receipts from all branches. Deleting a receipt from another branch can
+  therefore fail.
+- The PATCH service requires a valid `branchId`, regardless of other changed
+  fields.
 
 ## B. Process Sale — Current Implementation
 
@@ -249,16 +295,13 @@ contract-compatible integration:
      insufficient. No change is required merely to send the `productId` once
      the UI has resolved it.
 
-If cashier dashboard and sales-management views are expected to immediately
-reflect completed receipts rather than remain mock-backed, also update:
+The cashier dashboard still uses mock receipt and KPI data and does not
+refresh from completed API receipts. That separate behavior can be integrated
+independently by updating:
 
 - `src/features/dashboard/services/cashier-dashboard-service.ts` and
   `src/features/dashboard/components/cashier-dashboard.tsx` to load live
   receipt/dashboard data or refresh after completion.
-- `src/features/sales/services/sales-service.ts` and
-  `src/features/sales/components/sales-management.tsx` to replace the current
-  mock data path with the existing receipt API or the backend's appropriate
-  management endpoints.
 
 These are adjacent visibility/integration changes, not prerequisites for
 making the two POST requests themselves.

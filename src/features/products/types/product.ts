@@ -15,6 +15,7 @@ export type ProductDetail = ProductListItem & {
 export type CreateProductRequest = {
   productName: string;
   productType: string;
+  serialNumber: string;
 };
 
 export type UpdateProductRequest = {
@@ -25,6 +26,7 @@ export type UpdateProductRequest = {
 export type ProductFormValues = {
   productName: string;
   productType: string;
+  serialNumber: string;
 };
 
 export type ProductPage = {

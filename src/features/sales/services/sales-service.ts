@@ -8,7 +8,6 @@ import {
   listEmployees,
   mockCurrentCashierId,
 } from "@/features/employees/services/employees-service";
-import { getBranchById, listBranches } from "@/features/branches/services/branches-service";
 import { mockCashierReceipts } from "@/features/dashboard/data/mock-cashier-receipts";
 import type {
   CashierReceipt,
@@ -23,39 +22,18 @@ import type {
   SaleResult,
   SaleValidationCode,
 } from "../types/sale";
-import type {
-  AdminSalesManagementData,
-  SalesManagementFilters,
-  SalesManagementRecord,
-} from "../types/sales-management";
 
 const products = getInitialProducts(getInitialProductTypes());
 let centralStock: ReturnType<typeof getInitialStockRecords> | undefined;
 const branchStock = initialBranchStock.map((record) => ({ ...record }));
-const salesRecords: SalesManagementRecord[] = mockCashierReceipts.map(
-  (receipt) => ({
-    receipt: {
-      _id: receipt._id,
-      referenceNumber: receipt.referenceNumber,
-      timestamp: receipt.timestamp,
-      totalAmount: receipt.totalAmount,
-      paymentMethod: receipt.paymentMethod,
-      status: receipt.status,
-      salesmanName: receipt.salesmanName,
-    },
-    branchId: receipt.branchId,
-  }),
-);
-
-function cloneSalesRecord(record: SalesManagementRecord): SalesManagementRecord {
-  return {
-    ...record,
-    receipt: {
-      ...record.receipt,
-      items: record.receipt.items?.map((item) => ({ ...item })),
-    },
-  };
-}
+const salesRecords: Array<{
+  receipt: CashierReceipt;
+  branchId: string;
+  cashierName?: string;
+}> = mockCashierReceipts.map((receipt) => ({
+  receipt: { ...receipt },
+  branchId: receipt.branchId ?? "",
+}));
 
 export class SaleWorkflowError extends Error {
   constructor(readonly code: SaleValidationCode) {
@@ -345,107 +323,4 @@ export function listCashierReceipts(
       items: receipt.items?.map((item) => ({ ...item })),
     }))
     .sort((left, right) => right.timestamp.localeCompare(left.timestamp));
-}
-
-export function getSalesManagementData(
-  filters: SalesManagementFilters,
-): AdminSalesManagementData {
-  const allRecords = salesRecords.map(cloneSalesRecord);
-  const filteredRecords = allRecords
-    .filter(({ receipt, branchId }) => {
-      if (
-        filters.search &&
-        !receipt.referenceNumber
-          .toLocaleLowerCase()
-          .includes(filters.search.trim().toLocaleLowerCase())
-      ) {
-        return false;
-      }
-      if (filters.branchId && branchId !== filters.branchId) return false;
-      if (filters.status && receipt.status !== filters.status) return false;
-      const dateKey = getCairoDateKey(receipt.timestamp);
-      if (filters.dateFrom && dateKey < filters.dateFrom) return false;
-      if (filters.dateTo && dateKey > filters.dateTo) return false;
-      return true;
-    })
-    .sort((left, right) =>
-      right.receipt.timestamp.localeCompare(left.receipt.timestamp),
-    );
-
-  const totalDoc = filteredRecords.length;
-  const totalPages = Math.ceil(totalDoc / filters.limit);
-  const currentPage =
-    totalPages === 0
-      ? 1
-      : Math.min(Math.max(1, filters.page), totalPages);
-  const offset = (currentPage - 1) * filters.limit;
-  const completedRecords = allRecords.filter(
-    ({ receipt }) => receipt.status === "completed",
-  );
-  const branches = listBranches();
-  const branchSales = branches.map((branch) => {
-    const records = completedRecords.filter(
-      (record) => record.branchId === branch._id,
-    );
-    return {
-      branch,
-      salesAmount: records.reduce(
-        (sum, record) => sum + record.receipt.totalAmount,
-        0,
-      ),
-      receiptCount: records.length,
-    };
-  });
-  const productsById = new Map<
-    string,
-    { productId: string; productName: string; quantity: number; revenue: number }
-  >();
-
-  for (const { receipt } of completedRecords) {
-    for (const item of receipt.items ?? []) {
-      const existing = productsById.get(item.productId);
-      if (existing) {
-        existing.quantity += item.quantity;
-        existing.revenue += item.lineTotal;
-      } else {
-        productsById.set(item.productId, {
-          productId: item.productId,
-          productName: item.productName,
-          quantity: item.quantity,
-          revenue: item.lineTotal,
-        });
-      }
-    }
-  }
-
-  return {
-    page: {
-      meta: { totalDoc, currentPage, totalPages, limit: filters.limit },
-      data: filteredRecords
-        .slice(offset, offset + filters.limit)
-        .map(cloneSalesRecord),
-    },
-    summary: {
-      totalSalesAmount: completedRecords.reduce(
-        (sum, record) => sum + record.receipt.totalAmount,
-        0,
-      ),
-      totalReceipts: allRecords.length,
-      completedSales: completedRecords.length,
-      rejectedSales: allRecords.filter(
-        ({ receipt }) => receipt.status === "rejected",
-      ).length,
-    },
-    salesByBranch: branchSales.sort(
-      (left, right) => right.salesAmount - left.salesAmount,
-    ),
-    salesByProduct: [...productsById.values()].sort(
-      (left, right) => right.quantity - left.quantity,
-    ),
-  };
-}
-
-export function getSalesManagementBranchName(branchId?: string): string | undefined {
-  if (!branchId) return undefined;
-  return getBranchById(listBranches(), branchId)?.name;
 }

@@ -322,9 +322,13 @@
       "cash": "Cash",
       "card": "Card",
       "mobileWallet": "Mobile wallet",
-      "wallet": "Wallet"
+      "wallet": "Wallet",
+      "ePayment": "Electronic payment"
     },
     "statuses": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "canceled": "Canceled",
       "completed": "Completed",
       "rejected": "Payment rejected",
       "refunded": "Refunded",
@@ -451,7 +455,7 @@
   },
   "salesManagement": {
     "title": "Sales Management",
-    "description": "Review sales records and performance across all branches.",
+    "description": "Review and manage receipts across branches.",
     "summary": {
       "title": "Sales summary",
       "totalSales": "Total sales amount",
@@ -461,7 +465,7 @@
     },
     "records": {
       "title": "Sales records",
-      "description": "Search and review receipts processed across your branches.",
+      "description": "Review receipts processed across your branches.",
       "count": "{count, plural, one {{count, number, western} receipt} other {{count, number, western} receipts}}",
       "page": "Page {current} of {total}",
       "emptyTitle": "No sales found",
@@ -470,6 +474,8 @@
     "filters": {
       "search": "Search by receipt number",
       "searchPlaceholder": "Search receipt number",
+      "searchExact": "Search matches the complete receipt number exactly.",
+      "searchAdminOnly": "Receipt-number search is available to administrators only.",
       "branch": "Branch",
       "allBranches": "All branches",
       "status": "Status",
@@ -490,7 +496,50 @@
       "actions": "Actions",
       "view": "View receipt",
       "viewNamed": "View receipt {reference}",
+      "edit": "Edit receipt",
+      "editNamed": "Edit receipt {reference}",
+      "delete": "Delete receipt",
+      "deleteNamed": "Delete receipt {reference}",
       "unavailable": "Not available"
+    },
+    "edit": {
+      "title": "Edit receipt",
+      "description": "Update receipt-level fields. Line items cannot be edited.",
+      "branch": "Branch",
+      "employeeId": "Employee ID",
+      "clientId": "Client ID",
+      "receiptPrice": "Subtotal",
+      "salePercentage": "Discount percentage",
+      "allowedSalePercentage": "Maximum discount percentage",
+      "finalPrice": "Final total",
+      "paymentMethod": "Payment method",
+      "cash": "Cash",
+      "ePayment": "Electronic payment",
+      "confirmed": "Confirmed",
+      "yes": "Yes",
+      "no": "No",
+      "comments": "Comments",
+      "timestamp": "Receipt date and time",
+      "save": "Save changes",
+      "cancel": "Cancel",
+      "validation": {
+        "branchRequired": "Select a valid branch.",
+        "invalidId": "Enter a valid 24-character record ID.",
+        "invalidNumber": "Enter a number greater than or equal to zero.",
+        "invalidPaymentMethod": "Select a supported payment method.",
+        "invalidTimestamp": "Enter a valid date and time.",
+        "noChanges": "Change at least one field before saving."
+      }
+    },
+    "deleteDialog": {
+      "title": "Delete receipt?",
+      "description": "This permanently deletes receipt {reference} and its line items. This action cannot be undone.",
+      "confirm": "Delete receipt",
+      "cancel": "Cancel"
+    },
+    "feedback": {
+      "updated": "Receipt updated successfully.",
+      "deleted": "Receipt deleted successfully."
     },
     "analysis": {
       "branchesTitle": "Sales by branch",
@@ -507,11 +556,21 @@
     "actions": {
       "retry": "Retry",
       "previous": "Previous",
-      "next": "Next"
+      "next": "Next",
+      "save": "Save changes",
+      "cancel": "Cancel",
+      "delete": "Delete"
     },
     "states": {
       "loading": "Loading sales records…",
-      "error": "Sales records could not be loaded. Try again."
+      "error": "Sales records could not be loaded. Try again.",
+      "unauthorized": "Your session has expired. Sign in again.",
+      "detailsLoading": "Loading receipt details…",
+      "detailsError": "Receipt details could not be loaded. Try again.",
+      "saving": "Saving…",
+      "updateError": "The receipt could not be updated.",
+      "deleteError": "The receipt could not be deleted.",
+      "branchesError": "Branches could not be loaded."
     }
   },
   "expenses": {
@@ -909,17 +968,17 @@
     "form": {
       "addTitle": "Add product",
       "editTitle": "Edit product",
-      "createDescription": "Enter the product details. A serial number will be assigned by the mock service.",
-      "editDescription": "Update the product name, type, or serial number.",
+      "createDescription": "Enter the product details and its serial number or barcode.",
+      "editDescription": "Update the product name and type. The serial number or barcode cannot be changed here.",
       "nameLabel": "Product Name",
       "namePlaceholder": "e.g. USB-C 65W Power Adapter",
       "typeLabel": "Product Type",
       "typePlaceholder": "Select a product type",
-      "serialNumberLabel": "Serial Number",
-      "serialNumberPlaceholder": "Enter a serial number",
-      "mockSerialNote": "A deterministic mock serial number will be assigned after creation. This is not a backend serial-number rule.",
+      "serialNumberLabel": "Serial Number / Barcode",
+      "serialNumberPlaceholder": "Scan or enter a serial number or barcode",
       "validation": {
         "nameRequired": "Enter a product name.",
+        "serialNumberRequired": "Enter or scan a serial number or barcode.",
         "typeRequired": "Select a product type.",
         "noChanges": "Change the product name or type before saving."
       }
@@ -948,6 +1007,7 @@
     "description": "Manage product stock quantities and current prices.",
     "actions": {
       "add": "Add Stock",
+      "view": "View",
       "viewNamed": "View stock for {name}",
       "editNamed": "Edit stock for {name}",
       "deleteNamed": "Delete stock for {name}",
@@ -962,21 +1022,31 @@
     },
     "search": {
       "label": "Search stock",
-      "placeholder": "Search by product name or serial number",
-      "localNote": "Search applies only to records on the currently loaded page."
+      "placeholder": "Search by exact product serial number",
+      "localNote": "Serial-number search uses the stock search endpoint.",
+      "statusFilterNote": "The stock search endpoint does not return a status, so status filtering applies to the inventory list only."
     },
     "filter": {
       "product": "Product",
-      "allProducts": "All products"
+      "allProducts": "All products",
+      "status": "Status",
+      "allStatuses": "All statuses"
+    },
+    "status": {
+      "in-stock": "In stock",
+      "out-of-stock": "Out of stock",
+      "concluding": "Low stock"
     },
     "resultsCount": "{count, plural, one {{count, number, western} stock record} other {{count, number, western} stock records}}",
     "table": {
       "product": "Product",
       "serialNumber": "Serial Number",
       "quantity": "Quantity",
+      "status": "Status",
       "sellingPrice": "Selling Price",
       "wholesalePrice": "Wholesale Price",
       "purchasePrice": "Purchase Price",
+      "view": "View",
       "actions": "Actions"
     },
     "pagination": {
@@ -1036,12 +1106,14 @@
     },
     "feedback": {
       "loading": "Loading inventory…",
+      "searching": "Searching by serial number…",
       "loadingLookups": "Loading products and suppliers…",
       "loadingDetails": "Loading stock details…",
       "created": "Stock record added.",
       "updated": "Stock record updated.",
       "deleted": "Stock record deleted.",
       "loadError": "Inventory could not be loaded.",
+      "searchError": "Stock could not be searched.",
       "productsLoadError": "Products could not be loaded.",
       "suppliersLoadError": "Suppliers could not be loaded.",
       "detailsError": "Stock details could not be loaded.",
@@ -1294,6 +1366,7 @@
     "description": "Review stock quantities held by each branch.",
     "actions": {
       "retry": "Retry",
+      "view": "View",
       "viewNamed": "View {name}",
       "edit": "Edit",
       "editNamed": "Edit {name}",
@@ -1303,17 +1376,31 @@
       "save": "Save",
       "delete": "Delete"
     },
+    "search": {
+      "label": "Search branch stock",
+      "placeholder": "Search by exact product serial number"
+    },
     "filter": {
       "branch": "Branch",
+      "status": "Status",
+      "allStatuses": "All statuses",
       "allBranches": "All branches",
       "selectBranch": "Select a branch",
       "selectBranchPrompt": "Select a branch to view its inventory.",
       "noBranchesAvailable": "No branches are available."
     },
     "resultsCount": "{count, plural, one {{count, number, western} product} other {{count, number, western} products}}",
+    "status": {
+      "in-stock": "In stock",
+      "out-of-stock": "Out of stock",
+      "concluding": "Low stock"
+    },
     "table": {
       "product": "Product",
+      "serialNumber": "Serial Number",
       "quantity": "Branch quantity",
+      "status": "Status",
+      "view": "View",
       "actions": "Actions"
     },
     "pagination": {
@@ -1344,6 +1431,8 @@
     },
     "feedback": {
       "loading": "Loading branch inventory…",
+      "searching": "Searching branch stock…",
+      "searchError": "Branch stock could not be searched.",
       "loadingDetails": "Loading inventory details…",
       "loadError": "Branch inventory could not be loaded.",
       "branchesError": "Branches could not be loaded.",
@@ -1600,6 +1689,9 @@
       "selectBranch": "Select a branch",
       "product": "Product",
       "selectProduct": "Select a product",
+      "availableQuantity": "Available quantity to transfer: {quantity}",
+      "loadingAvailableQuantity": "Loading available quantity…",
+      "availableQuantityError": "Available quantity could not be loaded.",
       "quantity": "Quantity",
       "quantityPlaceholder": "Enter a whole number greater than zero",
       "summaryTitle": "Transfer summary",

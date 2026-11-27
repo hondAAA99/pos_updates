@@ -60,9 +60,9 @@ export function ReceiptPresentation({
   const unavailable = t("receipts.notAvailable");
 
   const statusVariant =
-    receipt.status === "completed"
+    receipt.status === "paid" || receipt.status === "completed"
       ? "success"
-      : receipt.status === "rejected"
+      : receipt.status === "canceled" || receipt.status === "rejected"
         ? "destructive"
         : "warning";
 

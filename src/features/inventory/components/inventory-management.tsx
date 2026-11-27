@@ -18,16 +18,17 @@ import {
   deleteInventoryStock,
   getInventoryItem,
   listInventory,
+  searchInventoryBySerialNumber,
   updateInventoryStock,
 } from "../services/inventory-api-service";
 import {
-  filterStockRecords,
   withStockProductDetails,
 } from "../services/stock-service";
 import type {
   AddStockDto,
   StockPage,
   StockRecord,
+  StockStatus,
   UpdateStockDto,
 } from "../types/stock";
 import { DeleteStockSheet } from "./delete-stock-sheet";
@@ -70,7 +71,10 @@ export function InventoryManagement() {
     totalPages: 0,
   });
   const [query, setQuery] = useState("");
-  const [productId, setProductId] = useState("all");
+  const [status, setStatus] = useState<StockStatus | "all">("all");
+  const [searchResult, setSearchResult] = useState<StockRecord | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const [hasSearchError, setHasSearchError] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<(typeof pageSizes)[number]>(5);
   const [editorOpen, setEditorOpen] = useState(false);
@@ -171,7 +175,7 @@ export function InventoryManagement() {
     async (
       nextPage = page,
       nextPageSize = pageSize,
-      nextProductId = productId,
+      nextStatus = status,
     ) => {
       if (!token) {
         setStocks({
@@ -191,7 +195,7 @@ export function InventoryManagement() {
         const nextStocks = await listInventory(token, {
           page: nextPage,
           limit: nextPageSize,
-          ...(nextProductId !== "all" ? { productId: nextProductId } : {}),
+          ...(nextStatus !== "all" ? { status: nextStatus } : {}),
         });
         setStocks(nextStocks);
         const lastAvailablePage = Math.max(1, nextStocks.totalPages);
@@ -205,7 +209,7 @@ export function InventoryManagement() {
         setIsLoading(false);
       }
     },
-    [handleApiError, page, pageSize, productId, t, token],
+    [handleApiError, page, pageSize, status, t, token],
   );
 
   useEffect(() => {
@@ -215,15 +219,87 @@ export function InventoryManagement() {
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    void loadStockPage(page, pageSize, productId);
-  }, [loadStockPage, page, pageSize, productId]);
+    void loadStockPage(page, pageSize, status);
+  }, [loadStockPage, page, pageSize, status]);
+
+  useEffect(() => {
+    const serialNumber = query.trim();
+    let active = true;
+
+    if (!serialNumber || !token) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSearchResult(null);
+      setIsSearching(false);
+      setHasSearchError(false);
+      return () => {
+        active = false;
+      };
+    }
+
+    setSearchResult(null);
+    setHasSearchError(false);
+    const timeout = window.setTimeout(() => {
+      setIsSearching(true);
+      void searchInventoryBySerialNumber(token, serialNumber)
+        .then((result) => {
+          if (active) {
+            const resolvedResult = withStockProductDetails(result, products);
+            const returnedSerial =
+              resolvedResult.product_id?.serialNumber?.trim().toLocaleLowerCase();
+            if (returnedSerial === serialNumber.toLocaleLowerCase()) {
+              setSearchResult(resolvedResult);
+            } else {
+              setHasSearchError(true);
+            }
+          }
+        })
+        .catch((error: unknown) => {
+          if (!active) return;
+          if (error instanceof ApiClientError && error.status === 404) {
+            setSearchResult(null);
+            return;
+          }
+          setHasSearchError(true);
+          if (error instanceof ApiClientError && error.status === 401) {
+            handleApiError(error, t("feedback.loadError"));
+          }
+        })
+        .finally(() => {
+          if (active) setIsSearching(false);
+        });
+    }, 300);
+
+    return () => {
+      active = false;
+      window.clearTimeout(timeout);
+    };
+  }, [handleApiError, products, query, t, token]);
 
   const visibleStocks = useMemo(
-    () => ({
-      ...stocks,
-      items: filterStockRecords(stocks.items, query, "all"),
-    }),
-    [query, stocks],
+    () => {
+      const sourceItems = query.trim()
+        ? searchResult
+          ? [searchResult]
+          : []
+        : stocks.items;
+      const items = sourceItems.filter(
+        (stock) =>
+          status === "all" ||
+          (Boolean(query.trim()) && !stock.status) ||
+          stock.status === status,
+      );
+
+      return query.trim()
+        ? {
+            ...stocks,
+            items,
+            page: 1,
+            totalItems: items.length,
+            totalPages: items.length > 0 ? 1 : 0,
+          }
+        : { ...stocks, items };
+    },
+    [query, searchResult, status, stocks],
   );
   const isSuccessFeedback = [
     t("feedback.created"),
@@ -258,7 +334,7 @@ export function InventoryManagement() {
       await createInventoryStock(token, dto);
       setFeedback(t("feedback.created"));
       setPage(1);
-      setProductId("all");
+      setStatus("all");
       await loadStockPage(1, pageSize, "all");
       closeEditor(false);
     } catch (error) {
@@ -273,7 +349,7 @@ export function InventoryManagement() {
       await updateInventoryStock(token, editingStock._id, dto);
       setFeedback(t("feedback.updated"));
       closeEditor(false);
-      await loadStockPage(page, pageSize, productId);
+      await loadStockPage(page, pageSize, status);
     } catch (error) {
       handleApiError(error, t("feedback.saveError"));
     }
@@ -287,7 +363,7 @@ export function InventoryManagement() {
       setFeedback(t("feedback.deleted"));
       setDeletingStock(null);
       setViewingStock(null);
-      await loadStockPage(page, pageSize, productId);
+      await loadStockPage(page, pageSize, status);
     } catch (error) {
       handleApiError(error, t("feedback.deleteError"));
     }
@@ -310,7 +386,7 @@ export function InventoryManagement() {
 
   function clearFilters() {
     setQuery("");
-    setProductId("all");
+    setStatus("all");
     setPage(1);
   }
 
@@ -375,7 +451,7 @@ export function InventoryManagement() {
         <Button
           type="button"
           variant="outline"
-          onClick={() => void loadStockPage(page, pageSize, productId)}
+          onClick={() => void loadStockPage(page, pageSize, status)}
         >
           {t("actions.retry")}
         </Button>
@@ -384,17 +460,24 @@ export function InventoryManagement() {
           stocks={visibleStocks}
           products={products}
           query={query}
-          productId={productId}
-          hasStock={stocks.totalItems > 0 || Boolean(query.trim()) || productId !== "all"}
+          status={status}
+          isSearching={isSearching}
+          hasSearchError={hasSearchError}
+          hasStock={
+            stocks.totalItems > 0 ||
+            Boolean(query.trim()) ||
+            status !== "all"
+          }
           canCreate={Boolean(canCreate && isLookupReady)}
           canEdit={Boolean(canEdit)}
           canDelete={Boolean(canDelete)}
           onQueryChange={(value) => {
             setQuery(value);
+            setPage(1);
             setFeedback("");
           }}
-          onProductChange={(id) => {
-            setProductId(id);
+          onStatusChange={(value) => {
+            setStatus(value);
             setPage(1);
             setFeedback("");
           }}
